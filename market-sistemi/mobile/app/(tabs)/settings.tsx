@@ -180,7 +180,7 @@ export default function SettingsScreen() {
                 {t === 'light' ? '☀️' : t === 'dark' ? '🌙' : '🔄'}
               </Text>
               <Text style={[styles.temaTusMetin, {
-                color     : themePreference === t ? '#FFFFFF' : colors.textMuted,
+                color     : themePreference === t ? '#FFFFFF' : colors.textMuted, // seçili buton: sabit beyaz (mavi bg üzerinde)
                 fontFamily: FONT_FAMILY.bodyMedium,
               }]}>
                 {t === 'light' ? 'Açık' : t === 'dark' ? 'Koyu' : 'Sistem'}

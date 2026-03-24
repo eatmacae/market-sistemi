@@ -5,7 +5,8 @@
  *
  * Kalite kontrol:
  * ✅ Loading state
- * ✅ Error state
+ * ✅ Error state — offline/server ayrımı
+ * ✅ Offline state — isOffline flag
  * ✅ useTheme() — hardcode renk yok
  * ✅ Min 48px dokunma alanı
  * ✅ Türkçe yorum satırları
@@ -98,6 +99,7 @@ export default function SahipPaneli() {
   });
   const [yukleniyor,     setYukleniyor]    = useState(true);
   const [hata,           setHata]          = useState<string | null>(null);
+  const [isOffline,      setIsOffline]     = useState(false);
   const [sonYenileme,    setSonYenileme]   = useState<Date>(new Date());
   const [manuelYenileme, setManuelYenile] = useState(false);
 
@@ -127,8 +129,14 @@ export default function SahipPaneli() {
         stok_ozet  : stokYanit.data,
       });
       setSonYenileme(new Date());
+      setIsOffline(false);
     } catch (err: any) {
-      setHata(err?.response?.data?.detail || 'Veriler yüklenemedi.');
+      if (!err.response) {
+        setIsOffline(true);
+        setHata('Sunucuya bağlanılamıyor.');
+      } else {
+        setHata(err?.response?.data?.detail || 'Veriler yüklenemedi.');
+      }
     } finally {
       setYukleniyor(false);
       setManuelYenile(false);
@@ -159,13 +167,16 @@ export default function SahipPaneli() {
   if (hata) {
     return (
       <View style={[styles.merkez, { backgroundColor: colors.bgPrimary }]}>
-        <Text style={{ fontSize: 40 }}>⚠️</Text>
+        <Text style={{ fontSize: 40 }}>{isOffline ? '📡' : '⚠️'}</Text>
+        <Text style={[styles.bilgiMetin, { color: colors.textPrimary, fontFamily: FONT_FAMILY.bodySemiBold }]}>
+          {isOffline ? 'Bağlantı Yok' : 'Hata'}
+        </Text>
         <Text style={[styles.bilgiMetin, { color: colors.danger }]}>{hata}</Text>
         <TouchableOpacity
-          style={[styles.tekrarBtn, { backgroundColor: colors.blue }]}
+          style={[styles.tekrarBtn, { backgroundColor: colors.blue, minHeight: MIN_TOUCH_SIZE }]}
           onPress={() => verileriYukle(true)}
         >
-          <Text style={{ color: '#fff', fontFamily: FONT_FAMILY.bodyMedium }}>Tekrar Dene</Text>
+          <Text style={{ color: '#FFFFFF', fontFamily: FONT_FAMILY.bodyMedium }}>Tekrar Dene</Text>
         </TouchableOpacity>
       </View>
     );

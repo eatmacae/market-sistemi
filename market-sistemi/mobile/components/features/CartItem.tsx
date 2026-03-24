@@ -125,7 +125,7 @@ export const CartItem = memo(function CartItem({
             ]}
             accessibilityLabel = "Miktarı artır"
           >
-            <Text style={[styles.miktarIkon, { color: '#FFFFFF' }]}>+</Text>
+            <Text style={[styles.miktarIkon, { color: '#FFFFFF' }]}>+</Text>{/* mavi buton üzerinde sabit beyaz */}
           </TouchableOpacity>
         </View>
 

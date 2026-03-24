@@ -189,7 +189,7 @@ export default function KasaScreen() {
         {/* ── Offline / Oturum Uyarısı ── */}
         {(isOffline || bekleyen > 0) && (
           <View style={[styles.uyariBant, { backgroundColor: colors.danger }]}>
-            <Text style={[styles.uyariMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
+            <Text style={[styles.uyariMetin, { fontFamily: FONT_FAMILY.bodyMedium, color: '#FFFFFF' }]}>
               🔴 Offline · {bekleyen} işlem bekliyor
             </Text>
           </View>
@@ -200,7 +200,7 @@ export default function KasaScreen() {
             onPress = {() => router.push('/(kasa)/session-open')}
             style   = {[styles.oturumUyari, { backgroundColor: colors.warning }]}
           >
-            <Text style={[styles.uyariMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
+            <Text style={[styles.uyariMetin, { fontFamily: FONT_FAMILY.bodyMedium, color: '#FFFFFF' }]}>
               ⚠️ Kasa açık değil — Açmak için dokun
             </Text>
           </TouchableOpacity>
@@ -408,7 +408,7 @@ const styles = StyleSheet.create({
     alignItems       : 'center',
   },
   uyariMetin: {
-    color   : '#FFFFFF',
+    // renk inline uygulanır — colored banner üzerinde sabit beyaz
     fontSize: FONT_SIZE.sm,
   },
   icerik: {

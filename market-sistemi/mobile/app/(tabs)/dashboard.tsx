@@ -157,7 +157,7 @@ export default function DashboardScreen() {
             { backgroundColor: colors.blue, minHeight: MIN_TOUCH_SIZE },
           ]}
         >
-          <Text style={[{ color: '#FFFFFF', fontFamily: FONT_FAMILY.bodyMedium }]}>
+          <Text style={[{ color: colors.bgPrimary, fontFamily: FONT_FAMILY.bodyMedium }]}>
             Yenile
           </Text>
         </TouchableOpacity>
@@ -185,7 +185,7 @@ export default function DashboardScreen() {
       {/* ── Offline uyarısı ── */}
       {isOffline && (
         <View style={[styles.offlineBant, { backgroundColor: colors.danger }]}>
-          <Text style={[styles.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
+          <Text style={[styles.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium, color: '#FFFFFF' }]}>
             🔴 Offline · Veriler en son senkronizasyondan
           </Text>
         </View>
@@ -636,7 +636,7 @@ const styles = StyleSheet.create({
     alignItems  : 'center',
   },
   offlineMetin: {
-    color   : '#FFFFFF',
+    // renk inline uygulanır — colored banner üzerinde sabit beyaz
     fontSize: FONT_SIZE.sm,
   },
 

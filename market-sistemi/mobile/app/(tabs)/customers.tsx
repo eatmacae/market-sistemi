@@ -6,7 +6,7 @@
  * ✅ Loading state
  * ✅ Empty state
  * ✅ Error state
- * ✅ Offline state
+ * ✅ Offline state — banner + isOffline ayrımı
  * ✅ useTheme() — hardcode renk yok
  * ✅ Min 48px dokunma alanı
  * ✅ Türkçe yorum satırları
@@ -62,6 +62,7 @@ export default function CustomersScreen() {
   const [yukleniyor, setYukleniyor]     = useState(true);
   const [sayfaYukleniyor, setSayfaYukleniyor] = useState(false);
   const [hata, setHata]                 = useState<string | null>(null);
+  const [isOffline, setIsOffline]       = useState(false);
 
   // Seçili müşteri modal
   const [seciliMusteri, setSeciliMusteri] = useState<Musteri | null>(null);
@@ -109,9 +110,15 @@ export default function CustomersScreen() {
       setToplam(yanit.data.total);
       setDahaSonraki(sf * 20 < yanit.data.total);
       setSayfa(sf);
+      setIsOffline(false);
 
     } catch (err: any) {
-      setHata(err.response?.data?.detail || 'Müşteriler yüklenemedi.');
+      if (!err.response) {
+        setIsOffline(true);
+        setHata('Sunucuya bağlanılamıyor.');
+      } else {
+        setHata(err.response?.data?.detail || 'Müşteriler yüklenemedi.');
+      }
     } finally {
       setYukleniyor(false);
       setSayfaYukleniyor(false);
@@ -199,6 +206,15 @@ export default function CustomersScreen() {
     >
       <View style={[{ flex: 1, backgroundColor: colors.bgPrimary }]}>
 
+        {/* ── Offline uyarısı ── */}
+        {isOffline && (
+          <View style={[styles.offlineBant, { backgroundColor: colors.danger }]}>
+            <Text style={{ color: '#FFFFFF', fontFamily: FONT_FAMILY.bodyMedium, fontSize: FONT_SIZE.sm }}>
+              🔴 Offline · Son veriler gösteriliyor
+            </Text>
+          </View>
+        )}
+
         {/* ── Üst Bar: Arama + Filtre ── */}
         <View style={[styles.ustBar, { backgroundColor: colors.bgPrimary, borderBottomColor: colors.border }]}>
 
@@ -237,7 +253,7 @@ export default function CustomersScreen() {
                   {
                     backgroundColor: filtre === f.id ? colors.blue + '20' : colors.bgSecondary,
                     borderColor    : filtre === f.id ? colors.blue : colors.border,
-                    minHeight      : MIN_TOUCH_SIZE - 8,
+                    minHeight      : MIN_TOUCH_SIZE,
                   },
                 ]}
               >
@@ -529,6 +545,10 @@ const styles = StyleSheet.create({
     alignItems    : 'center',
     justifyContent: 'center',
     gap           : SPACING.base,
+  },
+  offlineBant: {
+    padding   : SPACING.sm,
+    alignItems: 'center',
   },
   ustBar: {
     padding          : SPACING.sm,

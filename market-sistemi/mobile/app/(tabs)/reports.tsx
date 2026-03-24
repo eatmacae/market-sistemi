@@ -183,12 +183,12 @@ export default function ReportsScreen() {
               {
                 backgroundColor: donem === d.id ? colors.blue : 'transparent',
                 borderColor    : donem === d.id ? colors.blue : colors.border,
-                minHeight      : MIN_TOUCH_SIZE - 8,
+                minHeight      : MIN_TOUCH_SIZE,
               },
             ]}
           >
             <Text style={[{
-              color     : donem === d.id ? '#FFFFFF' : colors.textMuted,
+              color     : donem === d.id ? '#FFFFFF' : colors.textMuted, // seçili buton: sabit beyaz (mavi bg üzerinde)
               fontFamily: donem === d.id ? FONT_FAMILY.bodyMedium : FONT_FAMILY.body,
               fontSize  : FONT_SIZE.sm,
             }]}>

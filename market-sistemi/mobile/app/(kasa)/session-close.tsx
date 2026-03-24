@@ -11,7 +11,8 @@
  *
  * Kalite kontrol:
  * ✅ Loading state
- * ✅ Error state
+ * ✅ Error state — offline/server ayrımı
+ * ✅ Offline state — isOffline flag
  * ✅ useTheme() — hardcode renk yok
  * ✅ Min 48px dokunma alanı
  * ✅ Audit log (backend tarafı)
@@ -94,6 +95,7 @@ export default function SessionCloseScreen() {
   const [ozetData, setOzetData]     = useState<OturumOzet | null>(null);
   const [zRaporu, setZRaporu]       = useState<ZRaporu | null>(null);
   const [hata, setHata]             = useState<string | null>(null);
+  const [isOffline, setIsOffline]   = useState(false);
 
   // Kapanış tutarı girişi
   const [kapanis, setKapanis]       = useState('');
@@ -140,10 +142,12 @@ export default function SessionCloseScreen() {
       setDurum('form');
 
     } catch (err: any) {
-      setHata(
-        err.response?.data?.detail ||
-        'Oturum bilgileri yüklenemedi. Bağlantıyı kontrol edin.'
-      );
+      if (!err.response) {
+        setIsOffline(true);
+        setHata('Sunucuya bağlanılamıyor. Kasa kapatmak için bağlantı gereklidir.');
+      } else {
+        setHata(err.response?.data?.detail || 'Oturum bilgileri yüklenemedi.');
+      }
       setDurum('hata');
     }
   }, [hedefSessionId, branchId]);
@@ -266,16 +270,16 @@ export default function SessionCloseScreen() {
   if (durum === 'hata') {
     return (
       <View style={[styles.merkez, { backgroundColor: colors.bgPrimary }]}>
-        <Text style={{ fontSize: 48 }}>⚠️</Text>
+        <Text style={{ fontSize: 48 }}>{isOffline ? '📡' : '⚠️'}</Text>
         <Text style={[styles.hataBaslik, { color: colors.danger, fontFamily: FONT_FAMILY.heading }]}>
-          Hata
+          {isOffline ? 'Bağlantı Yok' : 'Hata'}
         </Text>
         <Text style={[styles.hataMetin, { color: colors.textMuted, fontFamily: FONT_FAMILY.body }]}>
           {hata}
         </Text>
         <View style={{ flexDirection: 'row', gap: SPACING.sm, marginTop: SPACING.base }}>
           <Button label="Geri Dön"   variant="secondary" size="md" onPress={() => router.back()} />
-          <Button label="Tekrar Dene" variant="primary"  size="md" onPress={ozetYukle} />
+          {!isOffline && <Button label="Tekrar Dene" variant="primary" size="md" onPress={ozetYukle} />}
         </View>
       </View>
     );
