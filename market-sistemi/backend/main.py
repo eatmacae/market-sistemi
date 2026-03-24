@@ -35,6 +35,8 @@ from routes.display    import router as display_router
 from routes.settings   import router as settings_router
 from routes.backup     import router as backup_router
 from routes.licenses   import router as licenses_router
+from routes.branches   import router as branches_router
+from routes.transfers  import router as transfers_router
 
 from database import create_tables
 
@@ -305,6 +307,8 @@ app.include_router(display_router)
 app.include_router(settings_router)
 app.include_router(backup_router)
 app.include_router(licenses_router)
+app.include_router(branches_router)
+app.include_router(transfers_router)
 
 
 # ============================================================

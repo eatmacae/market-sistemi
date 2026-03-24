@@ -29,6 +29,7 @@ import { useTheme }        from '../../hooks/useTheme';
 import { useSettingsStore } from '../../stores/settingsStore';
 import { useAuthStore }    from '../../stores/authStore';
 import { api }             from '../../services/api';
+import { router }          from 'expo-router';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 
@@ -56,6 +57,8 @@ interface SistemAyarlari {
   // Display
   display_enabled    : string;
   display_welcome    : string;
+  // Çok Şubeli Mod
+  multi_branch       : string;
 }
 
 const VARSAYILAN: SistemAyarlari = {
@@ -73,6 +76,7 @@ const VARSAYILAN: SistemAyarlari = {
   backup_hour    : '2',
   display_enabled: 'false',
   display_welcome: 'Hoş Geldiniz!',
+  multi_branch   : 'false',
 };
 
 // ============================================================
@@ -80,9 +84,9 @@ const VARSAYILAN: SistemAyarlari = {
 // ============================================================
 
 export default function SystemSettingsScreen() {
-  const { colors }   = useTheme();
-  const { branchId } = useSettingsStore();
-  const { user }     = useAuthStore();
+  const { colors }                             = useTheme();
+  const { branchId, setMultibranchEnabled }    = useSettingsStore();
+  const { user }                               = useAuthStore();
 
   const [ayarlar,    setAyarlar]   = useState<SistemAyarlari>(VARSAYILAN);
   const [yukleniyor, setYukleniyor] = useState(true);
@@ -127,6 +131,9 @@ export default function SystemSettingsScreen() {
       await api.put(`/api/settings/bulk?branch_id=${branchId}`, {
         settings: guncelleme,
       });
+
+      // Çok şubeli mod değişikliğini store'a yansıt
+      setMultibranchEnabled(guncelleme['multi_branch'] === 'true');
 
       Alert.alert('Başarılı', 'Ayarlar kaydedildi.');
     } catch (err: any) {
@@ -324,6 +331,27 @@ export default function SystemSettingsScreen() {
               colors={colors}
               sonItem
             />
+          )}
+        </View>
+
+        {/* ── Çok Şubeli Mod ── */}
+        <BolumBaslik title="🏢 Çok Şubeli Mod" colors={colors} />
+        <View style={[styles.bolum, { backgroundColor: colors.bgSecondary, borderColor: colors.border }]}>
+          <AyarToggle
+            label="Çok Şubeli Modu Etkinleştir"
+            value={bool('multi_branch')}
+            onToggle={() => toggleBool('multi_branch')}
+            colors={colors}
+            sonItem
+          />
+          {bool('multi_branch') && (
+            <TouchableOpacity
+              style={[styles.ayarSatiri, { borderTopWidth: 1, borderTopColor: colors.border, flexDirection: 'row', alignItems: 'center', minHeight: MIN_TOUCH_SIZE }]}
+              onPress={() => router.push('/(yonetim)/branches')}
+            >
+              <Text style={[styles.ayarEtiket, { color: colors.textPrimary, flex: 1 }]}>🏢 Şubeleri Yönet</Text>
+              <Text style={{ color: colors.textHint }}>›</Text>
+            </TouchableOpacity>
           )}
         </View>
 

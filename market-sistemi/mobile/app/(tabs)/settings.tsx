@@ -35,7 +35,7 @@ import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 export default function SettingsScreen() {
   const { colors, isDark }         = useTheme();
   const { user, logout }           = useAuthStore();
-  const { themePreference, setThemePreference, serverUrl, setServerUrl, branchName, lisans } = useSettingsStore();
+  const { themePreference, setThemePreference, serverUrl, setServerUrl, branchName, lisans, multibranchEnabled } = useSettingsStore();
 
   // Sunucu URL düzenleme
   const [urlDuzenle, setUrlDuzenle]   = useState(false);
@@ -258,12 +258,18 @@ export default function SettingsScreen() {
           <Text style={[styles.bolumBaslik, { color: colors.textMuted, fontFamily: FONT_FAMILY.bodyMedium }]}>
             YÖNETİM
           </Text>
-          <AyarSatiri etiket="⚙️ Sistem Ayarları"    onPress={() => router.push('/(yonetim)/system-settings')} />
-          <AyarSatiri etiket="👥 Personel"            onPress={() => router.push('/(yonetim)/personnel')} />
-          <AyarSatiri etiket="🏭 Tedarikçiler"        onPress={() => router.push('/(yonetim)/suppliers')} />
-          <AyarSatiri etiket="🎯 Kampanyalar"         onPress={() => router.push('/(yonetim)/campaigns')} />
-          <AyarSatiri etiket="📈 Satış Hedefleri"     onPress={() => router.push('/(yonetim)/targets')} />
-          <AyarSatiri etiket="💾 Yedekleme"           onPress={() => router.push('/(yonetim)/backup')} />
+          <AyarSatiri etiket="⚙️ Sistem Ayarları"      onPress={() => router.push('/(yonetim)/system-settings')} />
+          <AyarSatiri etiket="👥 Personel"              onPress={() => router.push('/(yonetim)/personnel')} />
+          <AyarSatiri etiket="🏭 Tedarikçiler"          onPress={() => router.push('/(yonetim)/suppliers')} />
+          <AyarSatiri etiket="🎯 Kampanyalar"           onPress={() => router.push('/(yonetim)/campaigns')} />
+          <AyarSatiri etiket="📈 Satış Hedefleri"       onPress={() => router.push('/(yonetim)/targets')} />
+          <AyarSatiri etiket="💾 Yedekleme"             onPress={() => router.push('/(yonetim)/backup')} />
+          {multibranchEnabled && (
+            <>
+              <AyarSatiri etiket="🏢 Şubeler"           onPress={() => router.push('/(yonetim)/branches')} />
+              <AyarSatiri etiket="🔄 Stok Transferleri" onPress={() => router.push('/(yonetim)/transfers')} />
+            </>
+          )}
         </View>
       )}
 

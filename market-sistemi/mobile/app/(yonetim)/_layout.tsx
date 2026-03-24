@@ -37,6 +37,8 @@ export default function YonetimLayout() {
       <Stack.Screen name="customers"       options={{ title: '👤 Müşteriler',    headerBackTitle: 'Geri' }} />
       <Stack.Screen name="suppliers"       options={{ title: '🏭 Tedarikçiler',  headerBackTitle: 'Geri' }} />
       <Stack.Screen name="system-settings" options={{ title: '⚙️ Sistem Ayarları', headerBackTitle: 'Geri' }} />
+      <Stack.Screen name="branches"        options={{ title: '🏢 Şube Yönetimi',   headerBackTitle: 'Geri' }} />
+      <Stack.Screen name="transfers"       options={{ title: '🔄 Stok Transferleri', headerBackTitle: 'Geri' }} />
     </Stack>
   );
 }

@@ -32,6 +32,10 @@ interface SettingsState {
   branchName: string;
   setBranch: (id: number, name: string) => void;
 
+  // Çok şubeli mod
+  multibranchEnabled   : boolean;
+  setMultibranchEnabled: (v: boolean) => void;
+
   // Lisans
   lisans    : LisansBilgi | null;
   setLisans : (l: LisansBilgi | null) => void;
@@ -53,6 +57,10 @@ export const useSettingsStore = create<SettingsState>()(
       branchId  : 1,
       branchName: 'Merkez',
       setBranch : (id, name) => set({ branchId: id, branchName: name }),
+
+      // Çok şubeli mod — varsayılan kapalı
+      multibranchEnabled   : false,
+      setMultibranchEnabled: (v) => set({ multibranchEnabled: v }),
 
       // Lisans
       lisans    : null,
