@@ -92,10 +92,10 @@ Radius  : 8px (btn) | 12px (card) | 16px (modal) | 999px (badge)
 - [x] Faz 0 — Altyapı & Güvenlik
 - [x] Faz 1 — Fatura İşleme & Ürün
 - [x] Faz 2 — Kasa & Satış
-- [ ] Faz 3 — Analiz & Yedekleme
-- [ ] Faz 4 — Personel, Müşteri & Kampanya
-- [ ] Faz 5 — Market Sahibi Paneli & Hedefler
-- [ ] Faz 6 — Sistem & Ayarlar
+- [x] Faz 3 — Analiz & Yedekleme
+- [x] Faz 4 — Personel, Müşteri & Kampanya
+- [x] Faz 5 — Market Sahibi Paneli & Hedefler
+- [x] Faz 6 — Sistem & Ayarlar
 - [ ] Faz 7 — Çok Şubeli Mod (opsiyonel)
 - [ ] Faz 8 — Yazılım Satış Altyapısı
 

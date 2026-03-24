@@ -406,6 +406,43 @@ export default function DashboardScreen() {
             </View>
             <Text style={{ color: colors.textHint, fontSize: 18 }}>›</Text>
           </TouchableOpacity>
+
+          {/* Tedarikçiler & Sistem Ayarları — sadece admin */}
+          {user?.role === 'admin' && (
+            <>
+              <TouchableOpacity
+                style={[styles.hizliErisimButon, { backgroundColor: colors.cyan + '15', borderColor: colors.cyan + '40', marginTop: SPACING.sm }]}
+                onPress={() => router.push('/(yonetim)/suppliers')}
+              >
+                <Text style={{ fontSize: 24 }}>🏭</Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={[{ color: colors.textPrimary, fontFamily: FONT_FAMILY.bodyMedium, fontSize: FONT_SIZE.base }]}>
+                    Tedarikçiler
+                  </Text>
+                  <Text style={[{ color: colors.textHint, fontFamily: FONT_FAMILY.body, fontSize: FONT_SIZE.xs }]}>
+                    Fiyat takibi & iletişim bilgileri
+                  </Text>
+                </View>
+                <Text style={{ color: colors.textHint, fontSize: 18 }}>›</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.hizliErisimButon, { backgroundColor: colors.warning + '15', borderColor: colors.warning + '40', marginTop: SPACING.sm }]}
+                onPress={() => router.push('/(yonetim)/system-settings')}
+              >
+                <Text style={{ fontSize: 24 }}>⚙️</Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={[{ color: colors.textPrimary, fontFamily: FONT_FAMILY.bodyMedium, fontSize: FONT_SIZE.base }]}>
+                    Sistem Ayarları
+                  </Text>
+                  <Text style={[{ color: colors.textHint, fontFamily: FONT_FAMILY.body, fontSize: FONT_SIZE.xs }]}>
+                    Market bilgileri, yazıcı, terazi, SKT
+                  </Text>
+                </View>
+                <Text style={{ color: colors.textHint, fontSize: 18 }}>›</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
       )}
 
