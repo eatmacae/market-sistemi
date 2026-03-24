@@ -1,0 +1,73 @@
+{
+  "name": "market-sistemi-kurulum",
+  "version": "1.0.0",
+  "description": "Market Yönetim Sistemi Kurulum Sihirbazı",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder build --win",
+    "build:dir": "electron-builder build --win --dir"
+  },
+  "dependencies": {
+    "electron-is-dev": "^2.0.0"
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.marketsistemi.installer",
+    "productName": "Market Sistemi Kurulum",
+    "copyright": "Copyright © 2026 Market Sistemi",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "setup.js",
+      "renderer/**/*",
+      "!node_modules/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "../backend",
+        "to": "backend",
+        "filter": [
+          "**/*",
+          "!venv/**",
+          "!__pycache__/**",
+          "!*.pyc"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "assets/icon.ico",
+      "requestedExecutionLevel": "requireAdministrator"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": false,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "installerHeaderIcon": "assets/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Market Sistemi Kurulum",
+      "displayLanguageSelector": false,
+      "language": "1055",
+      "perMachine": true,
+      "allowElevation": true,
+      "installerLanguages": ["tr_TR"],
+      "include": "assets/installer.nsh"
+    },
+    "publish": null
+  }
+}
