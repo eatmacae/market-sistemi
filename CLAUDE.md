@@ -111,7 +111,7 @@ Radius  : 8px (btn) | 12px (card) | 16px (modal) | 999px (badge)
 ## 📦 Her Faz Sonunda — GitHub'a Yükle
 
 ```bash
-cd market-sistemi
+cd ATM   # Repo kökü burası
 
 # 1. Değişiklikleri stage'e al
 git add .
