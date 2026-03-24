@@ -33,6 +33,7 @@ export default function YonetimLayout() {
       <Stack.Screen name="campaigns" options={{ title: '🎯 Kampanyalar' }} />
       <Stack.Screen name="targets"   options={{ title: '📈 Satış Hedefleri' }} />
       <Stack.Screen name="invoices"  options={{ title: '📄 Fatura Yönetimi', headerBackTitle: 'Geri' }} />
+      <Stack.Screen name="backup"    options={{ title: '💾 Yedekleme',       headerBackTitle: 'Geri' }} />
     </Stack>
   );
 }

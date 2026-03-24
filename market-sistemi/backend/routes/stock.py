@@ -403,3 +403,56 @@ async def receive_stock(
         "yeni_stok"  : product.stock_qty,
         "message"    : f"{product.name} → +{miktar} adet girildi. Toplam stok: {product.stock_qty}",
     }
+
+
+# ============================================================
+# SON KULLANMA TARİHİ YAKLAŞAN ÜRÜNLER (SKT)
+# ============================================================
+
+@router.get("/expiring")
+async def skt_urun_listesi(
+    branch_id    : int      = Query(1),
+    gun          : int      = Query(30, ge=1, le=365, description="Kaç gün içinde dolacaklar"),
+    db           : Session  = Depends(get_db),
+    current_user : Personnel = Depends(get_current_user),
+):
+    """
+    Son kullanma tarihi yaklaşan veya geçmiş ürünleri listeler.
+    gun parametresi kaç gün içinde dolacakları filtreler.
+    Tarihe göre sıralar — en yakın tarih en üstte.
+    """
+    sinir_tarih = date.today() + timedelta(days=gun)
+
+    urunler = db.query(Product).filter(
+        Product.branch_id  == branch_id,
+        Product.is_deleted == False,
+        Product.expiry_date != None,
+        Product.expiry_date <= sinir_tarih,
+        Product.stock_qty   >  0,   # Stokta yoksa listeleme
+    ).order_by(Product.expiry_date.asc()).all()
+
+    bugun = date.today()
+
+    return {
+        "toplam"   : len(urunler),
+        "gun_sinir": gun,
+        "urunler"  : [
+            {
+                "id"          : u.id,
+                "name"        : u.name,
+                "barcode"     : u.barcode,
+                "stock_qty"   : u.stock_qty,
+                "unit"        : u.unit,
+                "expiry_date" : str(u.expiry_date),
+                "kalan_gun"   : (u.expiry_date - bugun).days,
+                "durum"       : (
+                    "gecmis"   if u.expiry_date < bugun else
+                    "kritik"   if (u.expiry_date - bugun).days <= 7 else
+                    "uyari"    if (u.expiry_date - bugun).days <= 30 else
+                    "normal"
+                ),
+                "shelf_location": u.shelf_location,
+            }
+            for u in urunler
+        ],
+    }

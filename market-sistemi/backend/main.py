@@ -33,6 +33,7 @@ from routes.targets    import router as targets_router
 from routes.suppliers  import router as suppliers_router
 from routes.display    import router as display_router
 from routes.settings   import router as settings_router
+from routes.backup     import router as backup_router
 
 from database import create_tables
 
@@ -301,6 +302,7 @@ app.include_router(targets_router)
 app.include_router(suppliers_router)
 app.include_router(display_router)
 app.include_router(settings_router)
+app.include_router(backup_router)
 
 
 # ============================================================

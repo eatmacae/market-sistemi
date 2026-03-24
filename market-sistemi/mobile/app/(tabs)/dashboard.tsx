@@ -370,6 +370,25 @@ export default function DashboardScreen() {
             </View>
             <Text style={{ color: colors.textHint, fontSize: 18 }}>›</Text>
           </TouchableOpacity>
+
+          {/* Yedekleme butonu — sadece admin */}
+          {user?.role === 'admin' && (
+            <TouchableOpacity
+              style={[styles.hizliErisimButon, { backgroundColor: colors.success + '15', borderColor: colors.success + '40', marginTop: SPACING.sm }]}
+              onPress={() => router.push('/(yonetim)/backup')}
+            >
+              <Text style={{ fontSize: 24 }}>💾</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={[{ color: colors.textPrimary, fontFamily: FONT_FAMILY.bodyMedium, fontSize: FONT_SIZE.base }]}>
+                  Yedekleme
+                </Text>
+                <Text style={[{ color: colors.textHint, fontFamily: FONT_FAMILY.body, fontSize: FONT_SIZE.xs }]}>
+                  Veritabanı yedeği & SKT kontrol
+                </Text>
+              </View>
+              <Text style={{ color: colors.textHint, fontSize: 18 }}>›</Text>
+            </TouchableOpacity>
+          )}
         </View>
       )}
 
