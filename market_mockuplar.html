@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Yönetim Sistemi — Ekran Mockupları</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --surface3: #212d42;
+    --border: #2a3a55;
+    --accent: #3b82f6;
+    --accent2: #06b6d4;
+    --accent3: #8b5cf6;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --text: #f1f5f9;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --card-glow: 0 0 30px rgba(59,130,246,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  .doc-header {
+    padding: 60px 40px 40px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(59,130,246,0.06) 0%, transparent 100%);
+  }
+  .doc-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #f1f5f9 0%, #3b82f6 50%, #06b6d4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .doc-header p { color: var(--text2); font-size: 1rem; }
+  .badge-row { display: flex; gap: 10px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+  .badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    color: var(--text2);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ─── NAV ─── */
+  .screen-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,14,26,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 40px;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .screen-nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover, .nav-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  /* ─── SECTION ─── */
+  .section {
+    padding: 60px 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-subtitle { color: var(--text2); font-size: 0.9rem; margin-bottom: 32px; }
+
+  /* ─── SCREEN GRID ─── */
+  .screens-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 28px;
+  }
+  .screens-grid.full { grid-template-columns: 1fr; }
+  .screens-grid.two { grid-template-columns: repeat(auto-fill, minmax(480px, 1fr)); }
+
+  /* ─── PHONE FRAME ─── */
+  .phone-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .screen-label {
+    font-size: 0.8rem;
+    color: var(--text3);
+    font-family: 'DM Mono', monospace;
+    text-align: center;
+  }
+  .phone {
+    width: 320px;
+    background: #0d1422;
+    border-radius: 36px;
+    border: 2px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), var(--card-glow);
+    position: relative;
+  }
+  .phone::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    margin: 14px auto 0;
+  }
+  .phone-screen {
+    padding: 10px 0 20px;
+    min-height: 580px;
+  }
+
+  /* ─── STATUS BAR ─── */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 20px 10px;
+    font-size: 0.7rem;
+    color: var(--text2);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ─── SCREEN COMPONENTS ─── */
+  .screen-header {
+    padding: 0 16px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .screen-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+  .icon-btn {
+    width: 34px; height: 34px;
+    background: var(--surface2);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+    border: 1px solid var(--border);
+    cursor: pointer;
+  }
+
+  .search-bar {
+    margin: 0 16px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--text3);
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    margin: 0 16px 10px;
+  }
+  .card.highlight { border-color: var(--accent); background: rgba(59,130,246,0.07); }
+  .card.success { border-color: var(--success); background: rgba(16,185,129,0.06); }
+  .card.warning { border-color: var(--warning); background: rgba(245,158,11,0.06); }
+  .card.danger { border-color: var(--danger); background: rgba(239,68,68,0.06); }
+
+  .card-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .card-title { font-size: 0.88rem; font-weight: 600; }
+  .card-sub { font-size: 0.75rem; color: var(--text2); margin-top: 2px; }
+  .card-value { font-family: 'DM Mono', monospace; font-size: 0.88rem; font-weight: 500; }
+
+  /* STAT CARDS */
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 0 16px 14px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+  }
+  .stat-icon { font-size: 1.2rem; margin-bottom: 6px; }
+  .stat-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+  .stat-label { font-size: 0.72rem; color: var(--text2); margin-top: 2px; }
+  .stat-trend { font-size: 0.72rem; color: var(--success); margin-top: 4px; }
+  .stat-trend.down { color: var(--danger); }
+
+  /* STOCK ITEM */
+  .stock-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(42,58,85,0.5);
+  }
+  .stock-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .stock-info { flex: 1; }
+  .stock-name { font-size: 0.85rem; font-weight: 500; }
+  .stock-meta { font-size: 0.72rem; color: var(--text2); margin-top: 1px; }
+  .stock-badge {
+    font-size: 0.68rem;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+  }
+
+  /* PRODUCT IN CART */
+  .cart-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(42,58,85,0.4);
+  }
+  .cart-thumb {
+    width: 38px; height: 38px;
+    background: var(--surface2);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .cart-info { flex: 1; }
+  .cart-name { font-size: 0.84rem; font-weight: 500; }
+  .cart-price { font-size: 0.75rem; color: var(--text2); }
+  .qty-ctrl {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3px 8px;
+    font-size: 0.8rem;
+  }
+
+  /* BOTTOM TOTAL */
+  .total-bar {
+    margin: 0 16px;
+    background: var(--accent);
+    border-radius: 14px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .total-label { font-size: 0.8rem; opacity: 0.8; }
+  .total-value { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; }
+  .total-btn { font-size: 0.82rem; font-weight: 600; background: white; color: var(--accent); border-radius: 8px; padding: 6px 14px; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    display: flex;
+    border-top: 1px solid var(--border);
+    padding: 10px 0 4px;
+    margin-top: 14px;
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.62rem;
+    color: var(--text3);
+    padding: 4px;
+  }
+  .nav-item.active { color: var(--accent); }
+  .nav-icon { font-size: 1.1rem; }
+
+  /* CHART BAR */
+  .mini-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 60px;
+    margin: 0 16px 14px;
+    padding: 0 4px;
+  }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .bar {
+    width: 100%;
+    background: var(--accent);
+    border-radius: 4px 4px 0 0;
+    opacity: 0.7;
+  }
+  .bar.active { opacity: 1; }
+  .bar-label { font-size: 0.58rem; color: var(--text3); }
+
+  /* CHIP TAGS */
+  .chips { display: flex; gap: 6px; padding: 0 16px; margin-bottom: 12px; overflow-x: auto; scrollbar-width: none; }
+  .chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 5px 12px;
+    font-size: 0.74rem;
+    white-space: nowrap;
+    color: var(--text2);
+  }
+  .chip.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--border); margin: 8px 16px; }
+
+  /* INPUT FIELD */
+  .field {
+    margin: 0 16px 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+  }
+  .field-label { font-size: 0.7rem; color: var(--text2); margin-bottom: 3px; }
+  .field-value { color: var(--text); font-weight: 500; }
+  .field-placeholder { color: var(--text3); }
+
+  /* BUTTON */
+  .btn {
+    margin: 0 16px;
+    background: var(--accent);
+    border-radius: 12px;
+    padding: 13px;
+    text-align: center;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn.secondary { background: var(--surface2); border: 1px solid var(--border); color: var(--text2); }
+  .btn.success-btn { background: var(--success); }
+  .btn.danger-btn { background: var(--danger); }
+  .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 16px; }
+
+  /* LIST ITEM */
+  .list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(42,58,85,0.4);
+    cursor: pointer;
+  }
+  .list-avatar {
+    width: 38px; height: 38px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .list-title { font-size: 0.85rem; font-weight: 500; }
+  .list-sub { font-size: 0.72rem; color: var(--text2); margin-top: 1px; }
+  .list-right { margin-left: auto; text-align: right; }
+  .list-value { font-size: 0.85rem; font-weight: 600; font-family: 'DM Mono', monospace; }
+  .list-badge {
+    font-size: 0.65rem;
+    padding: 2px 7px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 3px;
+  }
+
+  /* PROGRESS */
+  .progress-wrap { margin: 0 16px 10px; }
+  .progress-header { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.78rem; }
+  .progress-bar { height: 8px; background: var(--surface3); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+
+  /* KEYPAD */
+  .keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 0 16px;
+  }
+  .key {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .key.accent { background: var(--accent); border-color: var(--accent); }
+
+  /* TOGGLE */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(42,58,85,0.4);
+  }
+  .toggle {
+    width: 38px; height: 22px;
+    background: var(--success);
+    border-radius: 11px;
+    position: relative;
+  }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    width: 16px; height: 16px;
+    background: white;
+    border-radius: 50%;
+    top: 3px; right: 3px;
+  }
+  .toggle.off { background: var(--surface3); }
+  .toggle.off::after { left: 3px; right: auto; }
+
+  /* ROLE BADGE */
+  .role-badge {
+    font-size: 0.68rem;
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+
+  /* SECTION NAV ANCHOR */
+  .section-anchor { scroll-margin-top: 70px; }
+
+  /* ALERT */
+  .alert {
+    margin: 0 16px 10px;
+    border-radius: 12px;
+    padding: 11px 14px;
+    font-size: 0.8rem;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .alert.info { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.3); }
+  .alert.warn { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); }
+  .alert.err { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); }
+  .alert.ok { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); }
+
+  /* PAYMENT METHODS */
+  .pay-methods { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 0 16px 12px; }
+  .pay-opt {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+  .pay-opt.selected { border-color: var(--accent); background: rgba(59,130,246,0.12); color: var(--accent); }
+  .pay-icon { font-size: 1.3rem; margin-bottom: 4px; }
+
+  /* SCALE DISPLAY */
+  .scale-display {
+    margin: 0 16px 14px;
+    background: var(--surface2);
+    border: 2px solid var(--accent2);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+  }
+  .scale-weight {
+    font-family: 'DM Mono', monospace;
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: var(--accent2);
+  }
+  .scale-unit { font-size: 0.8rem; color: var(--text2); margin-top: 2px; }
+  .scale-status { font-size: 0.72rem; color: var(--success); margin-top: 6px; }
+
+  /* CHART AREA */
+  .chart-area {
+    margin: 0 16px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+  }
+  .chart-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+  .chart-title-sm { font-size: 0.82rem; font-weight: 600; }
+  .chart-val { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+  .chart-sub { font-size: 0.7rem; color: var(--success); }
+  .sparkline { height: 50px; display: flex; align-items: flex-end; gap: 4px; }
+  .spark-bar { flex: 1; border-radius: 3px 3px 0 0; background: var(--accent); opacity: 0.4; }
+  .spark-bar.hi { opacity: 1; }
+
+  /* SECTION LABEL */
+  .section-lbl {
+    font-size: 0.68rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 10px 16px 6px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .section { padding: 40px 16px; }
+    .screen-nav { padding: 12px 16px; }
+    .doc-header { padding: 40px 16px 28px; }
+    .doc-header h1 { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<div class="doc-header">
+  <h1>🏪 Market Yönetim Sistemi</h1>
+  <p>Ekran Mockupları — Tüm Arayüzler</p>
+  <div class="badge-row">
+    <span class="badge">React Native Expo</span>
+    <span class="badge">Python FastAPI</span>
+    <span class="badge">SQLite Local</span>
+    <span class="badge">v1.0 · 2026</span>
+  </div>
+</div>
+
+<!-- ─── NAV ─── -->
+<div class="screen-nav">
+  <button class="nav-btn active" onclick="scrollTo('login')">🔐 Giriş</button>
+  <button class="nav-btn" onclick="scrollTo('dashboard')">📊 Dashboard</button>
+  <button class="nav-btn" onclick="scrollTo('stock')">📦 Stok</button>
+  <button class="nav-btn" onclick="scrollTo('kasa')">🧾 Kasa</button>
+  <button class="nav-btn" onclick="scrollTo('odeme')">💳 Ödeme</button>
+  <button class="nav-btn" onclick="scrollTo('terazi')">⚖️ Terazi</button>
+  <button class="nav-btn" onclick="scrollTo('urun')">🏷️ Ürün</button>
+  <button class="nav-btn" onclick="scrollTo('personel')">👥 Personel</button>
+  <button class="nav-btn" onclick="scrollTo('musteri')">🤝 Müşteri</button>
+  <button class="nav-btn" onclick="scrollTo('kampanya')">💰 Kampanya</button>
+  <button class="nav-btn" onclick="scrollTo('tedarikci')">🚚 Tedarikçi</button>
+  <button class="nav-btn" onclick="scrollTo('fiyat')">🔍 Fiyat Takip</button>
+  <button class="nav-btn" onclick="scrollTo('rapor')">📈 Raporlar</button>
+  <button class="nav-btn" onclick="scrollTo('sahip')">📱 Sahip Panel</button>
+  <button class="nav-btn" onclick="scrollTo('yedek')">💾 Yedek</button>
+  <button class="nav-btn" onclick="scrollTo('ayarlar')">⚙️ Ayarlar</button>
+</div>
+
+<script>
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+</script>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 1. GİRİŞ -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section section-anchor" id="login">
+  <div class="section-title">🔐 Giriş Ekranları</div>
+  <div class="section-subtitle">PIN ile hızlı kasa girişi + şifreli yönetici girişi</div>
+  <div class="screens-grid">
+
+    <!-- PIN GİRİŞ -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>09:41</span><span>🔋 87%</span></div>
+          <div style="text-align:center;padding:20px 16px 16px;">
+            <div style="font-size:2.5rem;margin-bottom:8px;">🏪</div>
+            <div style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;">Market Sistemi</div>
+            <div style="font-size:0.78rem;color:var(--text2);margin-top:4px;">Kasiyer girişi</div>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:center;margin-bottom:24px;">
+            <div style="width:14px;height:14px;border-radius:50%;background:var(--accent);"></div>
+            <div style="width:14px;height:14px;border-radius:50%;background:var(--accent);"></div>
+            <div style="width:14px;height:14px;border-radius:50%;background:var(--surface3);border:2px solid var(--border);"></div>
+            <div style="width:14px;height:14px;border-radius:50%;background:var(--surface3);border:2px solid var(--border);"></div>
+          </div>
+          <div class="keypad">
+            <div class="key">1</div><div class="key">2</div><div class="key">3</div>
+            <div class="key">4</div><div class="key">5</div><div class="key">6</div>
+            <div class="key">7</div><div class="key">8</div><div class="key">9</div>
+            <div class="key">⌫</div><div class="key">0</div><div class="key accent">→</div>
+          </div>
+          <div style="margin:16px 16px 0;display:flex;gap:8px;">
+            <div style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;font-size:0.8rem;">
+              <div style="font-size:1.4rem;margin-bottom:4px;">👤</div>Ahmet K.
+            </div>
+            <div style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;font-size:0.8rem;">
+              <div style="font-size:1.4rem;margin-bottom:4px;">👤</div>Fatma S.
+            </div>
+            <div style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;font-size:0.8rem;">
+              <div style="font-size:1.4rem;margin-bottom:4px;">👑</div>Yönetici
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">01 · PIN Girişi</div>
+    </div>
+
+    <!-- VARDIYA BAŞLAT -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>09:42</span><span>🔋 87%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Vardiya Başlat</div>
+          </div>
+          <div class="alert ok">
+            <span>✅</span>
+            <div>Hoş geldin, <strong>Ahmet</strong>! Bugünkü vardiyann başlıyor.</div>
+          </div>
+          <div class="card" style="margin-bottom:10px;">
+            <div class="card-row">
+              <div>
+                <div class="card-title">Kasa Açılış Parası</div>
+                <div class="card-sub">Kasaya konan bozuk para</div>
+              </div>
+            </div>
+            <div style="margin-top:12px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;font-family:'DM Mono',monospace;font-size:1.4rem;text-align:center;color:var(--accent);">
+              500,00 ₺
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title" style="margin-bottom:8px;">Önceki Vardiya (Fatma)</div>
+            <div class="card-row"><span style="font-size:0.8rem;color:var(--text2);">Toplam Satış</span><span class="card-value">3.240 ₺</span></div>
+            <div class="card-row" style="margin-top:4px;"><span style="font-size:0.8rem;color:var(--text2);">Kasa Farkı</span><span class="card-value" style="color:var(--success);">+0 ₺</span></div>
+          </div>
+          <div style="height:14px;"></div>
+          <div class="btn success-btn">Vardiyayı Başlat ✓</div>
+        </div>
+      </div>
+      <div class="screen-label">02 · Vardiya Başlatma</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 2. DASHBOARD -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section section-anchor" id="dashboard">
+  <div class="section-title">📊 Dashboard</div>
+  <div class="section-subtitle">Günlük özet — ilk açılışta görünen ana ekran</div>
+  <div class="screens-grid">
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>14:22</span><span>🔋 72%</span></div>
+          <div class="screen-header">
+            <div>
+              <div style="font-size:0.72rem;color:var(--text2);">Pazartesi, 22 Mart</div>
+              <div class="screen-title">Günaydın, Ahmet 👋</div>
+            </div>
+            <div class="icon-btn">🔔</div>
+          </div>
+          <div class="stats-row">
+            <div class="stat-card" style="border-color:rgba(59,130,246,0.3);background:rgba(59,130,246,0.06);">
+              <div class="stat-icon">💰</div>
+              <div class="stat-value" style="color:var(--accent);">4.250₺</div>
+              <div class="stat-label">Bugünkü Satış</div>
+              <div class="stat-trend">▲ %12 dün</div>
+            </div>
+            <div class="stat-card" style="border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.06);">
+              <div class="stat-icon">📦</div>
+              <div class="stat-value" style="color:var(--success);">47</div>
+              <div class="stat-label">İşlem Sayısı</div>
+              <div class="stat-trend">▲ +8 dün</div>
+            </div>
+            <div class="stat-card" style="border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.06);">
+              <div class="stat-icon">⚠️</div>
+              <div class="stat-value" style="color:var(--danger);">3</div>
+              <div class="stat-label">Kritik Stok</div>
+              <div class="stat-trend down">Sipariş ver!</div>
+            </div>
+            <div class="stat-card" style="border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.06);">
+              <div class="stat-icon">📈</div>
+              <div class="stat-value" style="color:var(--accent3);">%65</div>
+              <div class="stat-label">Aylık Hedef</div>
+              <div class="stat-trend">12 gün kaldı</div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-header">
+              <div class="chart-title-sm">Haftalık Satış</div>
+              <div style="font-size:0.72rem;color:var(--text2);">Bu Hafta</div>
+            </div>
+            <div class="mini-chart" style="height:50px;">
+              <div class="bar-col"><div class="bar" style="height:55%;"></div><div class="bar-label">Pzt</div></div>
+              <div class="bar-col"><div class="bar" style="height:70%;"></div><div class="bar-label">Sal</div></div>
+              <div class="bar-col"><div class="bar" style="height:45%;"></div><div class="bar-label">Çar</div></div>
+              <div class="bar-col"><div class="bar" style="height:85%;"></div><div class="bar-label">Per</div></div>
+              <div class="bar-col"><div class="bar" style="height:60%;"></div><div class="bar-label">Cum</div></div>
+              <div class="bar-col"><div class="bar" style="height:90%;"></div><div class="bar-label">Cmt</div></div>
+              <div class="bar-col"><div class="bar active" style="height:100%;"></div><div class="bar-label" style="color:var(--accent);">Paz</div></div>
+            </div>
+          </div>
+          <div class="section-lbl">HIZLI ERİŞİM</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:0 16px;">
+            <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;font-size:0.75rem;">
+              <div style="font-size:1.4rem;margin-bottom:4px;">🧾</div>Kasa
+            </div>
+            <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;font-size:0.75rem;">
+              <div style="font-size:1.4rem;margin-bottom:4px;">📦</div>Stok
+            </div>
+            <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;font-size:0.75rem;">
+              <div style="font-size:1.4rem;margin-bottom:4px;">📋</div>Raporlar
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item active"><div class="nav-icon">🏠</div>Ana</div>
+            <div class="nav-item"><div class="nav-icon">🧾</div>Kasa</div>
+            <div class="nav-item"><div class="nav-icon">📦</div>Stok</div>
+            <div class="nav-item"><div class="nav-icon">📈</div>Rapor</div>
+            <div class="nav-item"><div class="nav-icon">⚙️</div>Ayar</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">03 · Ana Dashboard</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 3. STOK -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section section-anchor" id="stock">
+  <div class="section-title">📦 Stok Yönetimi</div>
+  <div class="section-subtitle">Akıllı sıralama — kritik + çok satılan önce gelir</div>
+  <div class="screens-grid">
+
+    <!-- STOK LİSTESİ -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>14:22</span><span>🔋 72%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Stok Durumu</div>
+            <div style="display:flex;gap:6px;">
+              <div class="icon-btn">🔍</div>
+              <div class="icon-btn">＋</div>
+            </div>
+          </div>
+          <div class="search-bar">🔍 <span>Ürün ara veya barkod tara...</span></div>
+          <div class="chips">
+            <div class="chip active">Tümü</div>
+            <div class="chip">🔴 Kritik (3)</div>
+            <div class="chip">🟡 Eşik (5)</div>
+            <div class="chip">💤 Durgun</div>
+          </div>
+
+          <div class="stock-item">
+            <div class="stock-dot" style="background:var(--danger);box-shadow:0 0 6px var(--danger);"></div>
+            <div class="stock-info">
+              <div class="stock-name">Süt 1L ⚡</div>
+              <div class="stock-meta">Kalan: 4 · Min: 20 · 12/gün satıyor</div>
+            </div>
+            <div class="stock-badge" style="background:rgba(239,68,68,0.15);color:var(--danger);">KRİTİK</div>
+          </div>
+          <div class="stock-item">
+            <div class="stock-dot" style="background:var(--danger);"></div>
+            <div class="stock-info">
+              <div class="stock-name">Ekmek ⚡</div>
+              <div class="stock-meta">Kalan: 2 · Min: 30 · 9/gün satıyor</div>
+            </div>
+            <div class="stock-badge" style="background:rgba(239,68,68,0.15);color:var(--danger);">KRİTİK</div>
+          </div>
+          <div class="stock-item">
+            <div class="stock-dot" style="background:var(--warning);"></div>
+            <div class="stock-info">
+              <div class="stock-name">Yoğurt 500g ⚡</div>
+              <div class="stock-meta">Kalan: 14 · Min: 15 · 6/gün satıyor</div>
+            </div>
+            <div class="stock-badge" style="background:rgba(245,158,11,0.15);color:var(--warning);">EŞIK</div>
+          </div>
+          <div class="stock-item">
+            <div class="stock-dot" style="background:var(--warning);"></div>
+            <div class="stock-info">
+              <div class="stock-name">Ayran 250ml</div>
+              <div class="stock-meta">Kalan: 22 · Min: 20 · 5/gün satıyor</div>
+            </div>
+            <div class="stock-badge" style="background:rgba(245,158,11,0.15);color:var(--warning);">EŞIK</div>
+          </div>
+          <div class="stock-item">
+            <div class="stock-dot" style="background:var(--success);"></div>
+            <div class="stock-info">
+              <div class="stock-name">Peynir 200g</div>
+              <div class="stock-meta">Kalan: 45 · Min: 10 · 2/gün satıyor</div>
+            </div>
+            <div class="stock-badge" style="background:rgba(16,185,129,0.15);color:var(--success);">YETERLİ</div>
+          </div>
+          <div class="stock-item">
+            <div class="stock-dot" style="background:var(--text3);"></div>
+            <div class="stock-info">
+              <div class="stock-name">Hardal 200g 💤</div>
+              <div class="stock-meta">Kalan: 15 · 12 gündür satılmadı</div>
+            </div>
+            <div class="stock-badge" style="background:var(--surface3);color:var(--text3);">DURGUN</div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon">🏠</div>Ana</div>
+            <div class="nav-item"><div class="nav-icon">🧾</div>Kasa</div>
+            <div class="nav-item active"><div class="nav-icon">📦</div>Stok</div>
+            <div class="nav-item"><div class="nav-icon">📈</div>Rapor</div>
+            <div class="nav-item"><div class="nav-icon">⚙️</div>Ayar</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">04 · Stok Listesi</div>
+    </div>
+
+    <!-- SİPARİŞ ÖNERİSİ -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>14:23</span><span>🔋 72%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Sipariş Önerileri</div>
+            <div class="icon-btn">📤</div>
+          </div>
+          <div class="alert warn">
+            <span>⚠️</span>
+            <div>3 üründe kritik stok! Önerilen siparişler hazırlandı.</div>
+          </div>
+          <div class="card danger">
+            <div class="card-row">
+              <div>
+                <div class="card-title">Süt 1L</div>
+                <div class="card-sub">Kalan: 4 · Günlük Sat: 12</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--accent);">60 adet</div>
+                <div style="font-size:0.7rem;color:var(--text2);">5 koli (12'li)</div>
+              </div>
+            </div>
+          </div>
+          <div class="card danger">
+            <div class="card-row">
+              <div>
+                <div class="card-title">Ekmek</div>
+                <div class="card-sub">Kalan: 2 · Günlük Sat: 9</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--accent);">50 adet</div>
+                <div style="font-size:0.7rem;color:var(--text2);">10 paket (5'li)</div>
+              </div>
+            </div>
+          </div>
+          <div class="card warning">
+            <div class="card-row">
+              <div>
+                <div class="card-title">Yoğurt 500g</div>
+                <div class="card-sub">Kalan: 14 · Günlük Sat: 6</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--accent);">30 adet</div>
+                <div style="font-size:0.7rem;color:var(--text2);">3 koli (10'lu)</div>
+              </div>
+            </div>
+          </div>
+          <div style="height:10px;"></div>
+          <div class="btn">📧 Tedarikçiye Mail At</div>
+          <div style="height:8px;"></div>
+          <div class="btn secondary">Listeyi Yazdır 🖨️</div>
+        </div>
+      </div>
+      <div class="screen-label">05 · Sipariş Önerileri</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 4. KASA -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section section-anchor" id="kasa">
+  <div class="section-title">🧾 Kasa & Satış</div>
+  <div class="section-subtitle">Hızlı satış ekranı — barkod okuyunca sepete otomatik eklenir</div>
+  <div class="screens-grid">
+
+    <!-- KASA ANA -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>14:25</span><span>🔋 72%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Kasa</div>
+            <div style="display:flex;gap:6px;">
+              <div class="icon-btn">⏸️</div>
+              <div class="icon-btn">👤</div>
+            </div>
+          </div>
+          <div class="search-bar">📷 <span style="color:var(--accent);">Barkod okut veya ara...</span></div>
+
+          <div class="cart-item">
+            <div class="cart-thumb">🥛</div>
+            <div class="cart-info">
+              <div class="cart-name">Süt 1L</div>
+              <div class="cart-price">18,90 ₺ / adet</div>
+            </div>
+            <div class="qty-ctrl">➖ <span style="font-family:'DM Mono',monospace;font-weight:600;">2</span> ➕</div>
+            <div style="font-family:'DM Mono',monospace;font-size:0.88rem;font-weight:600;margin-left:6px;">37,80₺</div>
+          </div>
+          <div class="cart-item">
+            <div class="cart-thumb">🍞</div>
+            <div class="cart-info">
+              <div class="cart-name">Ekmek</div>
+              <div class="cart-price">7,50 ₺ / adet</div>
+            </div>
+            <div class="qty-ctrl">➖ <span style="font-family:'DM Mono',monospace;font-weight:600;">1</span> ➕</div>
+            <div style="font-family:'DM Mono',monospace;font-size:0.88rem;font-weight:600;margin-left:6px;">7,50₺</div>
+          </div>
+          <div class="cart-item">
+            <div class="cart-thumb">🧀</div>
+            <div class="cart-info">
+              <div class="cart-name">Peynir 200g</div>
+              <div class="cart-price">32,00 ₺ / adet <span style="background:rgba(16,185,129,0.15);color:var(--success);padding:1px 5px;border-radius:4px;font-size:0.65rem;">%10 İnd.</span></div>
+            </div>
+            <div class="qty-ctrl">➖ <span style="font-family:'DM Mono',monospace;font-weight:600;">1</span> ➕</div>
+            <div style="font-family:'DM Mono',monospace;font-size:0.88rem;font-weight:600;margin-left:6px;">28,80₺</div>
+          </div>
+          <div class="divider"></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 16px;font-size:0.8rem;color:var(--text2);">
+            <span>3 ürün · KDV dahil</span>
+            <span style="color:var(--success);">Kampanya uygulandı 🎉</span>
+          </div>
+          <div class="total-bar">
+            <div><div class="total-label">Toplam</div><div class="total-value">74,10 ₺</div></div>
+            <div class="total-btn">Öde →</div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon">🏠</div>Ana</div>
+            <div class="nav-item active"><div class="nav-icon">🧾</div>Kasa</div>
+            <div class="nav-item"><div class="nav-icon">📦</div>Stok</div>
+            <div class="nav-item"><div class="nav-icon">📈</div>Rapor</div>
+            <div class="nav-item"><div class="nav-icon">⚙️</div>Ayar</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">06 · Kasa Ana Ekranı</div>
+    </div>
+
+    <!-- BEKLEYEN SEPET -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>14:26</span><span>🔋 72%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Bekleyen Sepetler</div>
+            <div class="icon-btn">＋</div>
+          </div>
+          <div class="card highlight" style="margin-bottom:10px;">
+            <div class="card-row">
+              <div>
+                <div class="card-title">Sepet #1 — Ali Bey</div>
+                <div class="card-sub">3 ürün · 74,10 ₺ · 2 dk önce</div>
+              </div>
+              <div class="btn" style="margin:0;padding:6px 14px;font-size:0.78rem;border-radius:8px;">Devam</div>
+            </div>
+          </div>
+          <div class="card" style="margin-bottom:10px;">
+            <div class="card-row">
+              <div>
+                <div class="card-title">Sepet #2</div>
+                <div class="card-sub">5 ürün · 143,20 ₺ · 5 dk önce</div>
+              </div>
+              <div class="btn" style="margin:0;padding:6px 14px;font-size:0.78rem;border-radius:8px;">Devam</div>
+            </div>
+          </div>
+          <div style="height:20px;"></div>
+          <div class="btn secondary">+ Yeni Sepet Aç</div>
+        </div>
+      </div>
+      <div class="screen-label">07 · Bekleyen Sepetler</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 5. ÖDEME -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section section-anchor" id="odeme">
+  <div class="section-title">💳 Ödeme Ekranı</div>
+  <div class="section-subtitle">Nakit, kart veya karma ödeme — para üstü otomatik hesaplanır</div>
+  <div class="screens-grid">
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>14:27</span><span>🔋 71%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Ödeme Al</div>
+            <div class="icon-btn">✕</div>
+          </div>
+          <div style="text-align:center;padding:14px 16px 10px;">
+            <div style="font-size:0.78rem;color:var(--text2);">Tahsil Edilecek</div>
+            <div style="font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:var(--accent);">74,10 ₺</div>
+          </div>
+          <div class="pay-methods">
+            <div class="pay-opt selected">
+              <div class="pay-icon">💵</div>Nakit
+            </div>
+            <div class="pay-opt">
+              <div class="pay-icon">💳</div>Kart
+            </div>
+            <div class="pay-opt">
+              <div class="pay-icon">🔀</div>Karma
+            </div>
+          </div>
+          <div class="field" style="margin-bottom:10px;">
+            <div class="field-label">Alınan Nakit</div>
+            <div style="font-family:'DM Mono',monospace;font-size:1.4rem;font-weight:600;color:var(--accent);">100,00 ₺</div>
+          </div>
+          <div class="card success" style="margin-bottom:10px;">
+            <div class="card-row">
+              <div class="card-title">Para Üstü</div>
+              <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:var(--success);">25,90 ₺</div>
+            </div>
+          </div>
+          <div class="keypad" style="margin-bottom:10px;">
+            <div class="key">1</div><div class="key">2</div><div class="key">3</div>
+            <div class="key">4</div><div class="key">5</div><div class="key">6</div>
+            <div class="key">7</div><div class="key">8</div><div class="key">9</div>
+            <div class="key">00</div><div class="key">0</div><div class="key">⌫</div>
+          </div>
+          <div class="btn success-btn">✓ Ödemeyi Tamamla</div>
+        </div>
+      </div>
+      <div class="screen-label">08 · Nakit Ödeme</div>
+    </div>
+
+    <!-- FİŞ -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>14:28</span><span>🔋 71%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Fiş Önizleme</div>
+            <div class="icon-btn">🖨️</div>
+          </div>
+          <div style="margin:0 16px;background:white;border-radius:12px;padding:16px;color:#111;font-family:'DM Mono',monospace;font-size:0.72rem;">
+            <div style="text-align:center;margin-bottom:8px;">
+              <div style="font-weight:700;font-size:0.9rem;">🏪 MARKET ADI</div>
+              <div style="color:#555;">Atatürk Cad. No:12 · İzmir</div>
+              <div style="color:#555;">Tel: 0232 XXX XX XX</div>
+              <div style="border-top:1px dashed #ccc;margin:8px 0;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;"><span>Süt 1L x2</span><span>37,80 ₺</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>Ekmek x1</span><span>7,50 ₺</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>Peynir 200g x1</span><span>28,80 ₺</span></div>
+            <div style="border-top:1px dashed #ccc;margin:8px 0;"></div>
+            <div style="display:flex;justify-content:space-between;"><span>Ara Toplam</span><span>74,10 ₺</span></div>
+            <div style="display:flex;justify-content:space-between;color:var(--success);"><span>İndirim</span><span>-3,20 ₺</span></div>
+            <div style="display:flex;justify-content:space-between;font-weight:700;font-size:0.88rem;margin-top:4px;"><span>TOPLAM</span><span>74,10 ₺</span></div>
+            <div style="border-top:1px dashed #ccc;margin:8px 0;"></div>
+            <div style="display:flex;justify-content:space-between;"><span>Nakit</span><span>100,00 ₺</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>Para Üstü</span><span>25,90 ₺</span></div>
+            <div style="border-top:1px dashed #ccc;margin:8px 0;"></div>
+            <div style="text-align:center;color:#888;font-size:0.65rem;">22.03.2026 14:28 · Kasiyer: Ahmet<br/>Teşekkürler! Güle güle 😊</div>
+          </div>
+          <div style="height:10px;"></div>
+          <div class="btn">🖨️ Fişi Yazdır</div>
+          <div style="height:8px;"></div>
+          <div class="btn secondary">Fişsiz Devam Et →</div>
+        </div>
+      </div>
+      <div class="screen-label">09 · Fiş Önizleme</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 6. TERAZİ -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section section-anchor" id="terazi">
+  <div class="section-title">⚖️ Terazi Entegrasyonu</div>
+  <div class="section-subtitle">Network terazisinden ağırlık otomatik okunur</div>
+  <div class="screens-grid">
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>14:30</span><span>🔋 70%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Tartım Satışı</div>
+            <div class="icon-btn">⚙️</div>
+          </div>
+          <div class="field" style="margin-bottom:10px;">
+            <div class="field-label">Seçilen Ürün</div>
+            <div class="field-value">🧀 Beyaz Peynir — 85,00 ₺/kg</div>
+          </div>
+          <div class="scale-display">
+            <div style="font-size:0.72rem;color:var(--text2);margin-bottom:8px;">⚖️ TERAZI 1 · Bağlı</div>
+            <div class="scale-weight">0.650</div>
+            <div class="scale-unit">kilogram</div>
+            <div class="scale-status">✅ Stabil · Okuma başarılı</div>
+          </div>
+          <div class="card success">
+            <div class="card-row">
+              <div>
+                <div class="card-title">Hesaplanan Tutar</div>
+                <div class="card-sub">650g × 85,00 ₺/kg</div>
+              </div>
+              <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:var(--success);">55,25 ₺</div>
+            </div>
+          </div>
+          <div style="height:10px;"></div>
+          <div class="btn-row">
+            <div class="btn secondary">Tekrar Tart</div>
+            <div class="btn">Sepete Ekle ✓</div>
+          </div>
+          <div style="height:10px;"></div>
+          <div class="section-lbl">TERAZILER</div>
+          <div class="toggle-row">
+            <div><div style="font-size:0.84rem;font-weight:500;">Terazi 1 — Et Tezgahı</div><div style="font-size:0.72rem;color:var(--text2);">192.168.1.101:8008</div></div>
+            <div class="toggle"></div>
+          </div>
+          <div class="toggle-row">
+            <div><div style="font-size:0.84rem;font-weight:500;">Terazi 2 — Meyve Sebze</div><div style="font-size:0.72rem;color:var(--text2);">192.168.1.102:8008</div></div>
+            <div class="toggle off"></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">10 · Terazi Ekranı</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 7. ÜRÜN -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section section-anchor" id="urun">
+  <div class="section-title">🏷️ Ürün Yönetimi</div>
+  <div class="section-subtitle">Ürün ekleme, düzenleme ve barkod etiketi basma</div>
+  <div class="screens-grid">
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>14:35</span><span>🔋 69%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Ürün Ekle / Düzenle</div>
+            <div class="icon-btn">💾</div>
+          </div>
+          <div class="field"><div class="field-label">Ürün Adı</div><div class="field-value">Süt 1L</div></div>
+          <div class="field"><div class="field-label">Barkod</div><div class="field-value" style="display:flex;justify-content:space-between;align-items:center;"><span>8690526085552</span><span style="font-size:0.72rem;color:var(--accent);">📷 Tara</span></div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 16px 10px;">
+            <div class="field" style="margin:0;"><div class="field-label">Satış Fiyatı</div><div class="field-value" style="color:var(--accent);">18,90 ₺</div></div>
+            <div class="field" style="margin:0;"><div class="field-label">Maliyet</div><div class="field-value">14,50 ₺</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 16px 10px;">
+            <div class="field" style="margin:0;"><div class="field-label">Stok</div><div class="field-value">4 adet</div></div>
+            <div class="field" style="margin:0;"><div class="field-label">Min Stok</div><div class="field-value">20 adet</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 16px 10px;">
+            <div class="field" style="margin:0;"><div class="field-label">KDV</div><div class="field-value">%1</div></div>
+            <div class="field" style="margin:0;"><div class="field-label">SKT</div><div class="field-value">15.04.2026</div></div>
+          </div>
+          <div class="field"><div class="field-label">Kategori</div><div class="field-value">🥛 Süt Ürünleri</div></div>
+          <div class="field"><div class="field-label">Raf Yeri</div><div class="field-value">A-12-3</div></div>
+          <div class="card" style="margin-bottom:10px;">
+            <div class="card-row">
+              <div><div class="card-title">Kâr Marjı</div><div class="card-sub">Satış - Maliyet</div></div>
+              <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--success);">%30,3</div>
+            </div>
+          </div>
+          <div class="btn-row">
+            <div class="btn secondary">🏷️ Etiket Bas</div>
+            <div class="btn">💾 Kaydet</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">11 · Ürün Detay & Düzenle</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 8. PERSONEL -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section section-anchor" id="personel">
+  <div class="section-title">👥 Personel & Vardiya</div>
+  <div class="section-subtitle">Rol bazlı yetki — vardiya devir tutanağı otomatik oluşur</div>
+  <div class="screens-grid">
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>15:00</span><span>🔋 65%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Personel</div>
+            <div class="icon-btn">＋</div>
+          </div>
+          <div class="list-item">
+            <div class="list-avatar" style="background:rgba(59,130,246,0.15);">👑</div>
+            <div>
+              <div class="list-title">Mehmet Yılmaz</div>
+              <div class="list-sub">Son giriş: bugün 09:00</div>
+            </div>
+            <div class="list-right">
+              <div class="role-badge" style="background:rgba(59,130,246,0.15);color:var(--accent);">Yönetici</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-avatar" style="background:rgba(16,185,129,0.15);">👤</div>
+            <div>
+              <div class="list-title">Ahmet Kaya</div>
+              <div class="list-sub">🟢 Aktif vardiya · 09:42'den beri</div>
+            </div>
+            <div class="list-right">
+              <div class="role-badge" style="background:rgba(16,185,129,0.15);color:var(--success);">Kasiyer</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-avatar" style="background:rgba(16,185,129,0.15);">👤</div>
+            <div>
+              <div class="list-title">Fatma Şahin</div>
+              <div class="list-sub">⚫ Vardiya dışı</div>
+            </div>
+            <div class="list-right">
+              <div class="role-badge" style="background:rgba(16,185,129,0.15);color:var(--success);">Kasiyer</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-avatar" style="background:rgba(245,158,11,0.15);">👤</div>
+            <div>
+              <div class="list-title">Ali Demir</div>
+              <div class="list-sub">⚫ Vardiya dışı</div>
+            </div>
+            <div class="list-right">
+              <div class="role-badge" style="background:rgba(245,158,11,0.15);color:var(--warning);">Depocu</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="section-lbl">AHMETİN BUGÜNKÜ VARDIYAS</div>
+          <div class="card" style="margin-bottom:0;">
+            <div class="card-row"><span style="font-size:0.8rem;color:var(--text2);">Satış</span><span class="card-value">2.140 ₺</span></div>
+            <div class="card-row" style="margin-top:4px;"><span style="font-size:0.8rem;color:var(--text2);">İşlem</span><span class="card-value">23 adet</span></div>
+            <div class="card-row" style="margin-top:4px;"><span style="font-size:0.8rem;color:var(--text2);">İade</span><span class="card-value">1 adet</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">12 · Personel Listesi</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 9. MÜŞTERİ -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section section-anchor" id="musteri">
+  <div class="section-title">🤝 Müşteri & Veresiye</div>
+  <div class="section-subtitle">Veresiye takibi — vadesi geçenler otomatik üste çıkar</div>
+  <div class="screens-grid">
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>15:05</span><span>🔋 64%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Müşteriler</div>
+            <div class="icon-btn">＋</div>
+          </div>
+          <div class="search-bar">🔍 <span>Müşteri ara...</span></div>
+          <div class="section-lbl">⚠️ VADESİ GEÇEN</div>
+          <div class="list-item">
+            <div class="list-avatar" style="background:rgba(239,68,68,0.15);">👤</div>
+            <div>
+              <div class="list-title">Ali Koçak</div>
+              <div class="list-sub">Son alış: 5 gün önce · Limit: 500₺</div>
+            </div>
+            <div class="list-right">
+              <div class="list-value" style="color:var(--danger);">480,00 ₺</div>
+              <div class="list-badge" style="background:rgba(239,68,68,0.15);color:var(--danger);">7 gün geçti</div>
+            </div>
+          </div>
+          <div class="section-lbl">DİĞER MÜŞTERİLER</div>
+          <div class="list-item">
+            <div class="list-avatar" style="background:rgba(59,130,246,0.15);">👤</div>
+            <div>
+              <div class="list-title">Ayşe Kaya</div>
+              <div class="list-sub">⭐ 340 puan · VIP Müşteri</div>
+            </div>
+            <div class="list-right">
+              <div class="list-value" style="color:var(--success);">0,00 ₺</div>
+              <div class="list-badge" style="background:rgba(16,185,129,0.15);color:var(--success);">Borç yok</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-avatar" style="background:rgba(139,92,246,0.15);">👤</div>
+            <div>
+              <div class="list-title">Hasan Öztürk</div>
+              <div class="list-sub">Toptan fiyat · Son alış: 2 gün</div>
+            </div>
+            <div class="list-right">
+              <div class="list-value" style="color:var(--warning);">250,00 ₺</div>
+              <div class="list-badge" style="background:rgba(245,158,11,0.15);color:var(--warning);">Aktif</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">13 · Müşteri Listesi</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 10. KAMPANYA -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section section-anchor" id="kampanya">
+  <div class="section-title">💰 Kampanya & Fiyat</div>
+  <div class="section-subtitle">Kampanyalar otomatik uygulanır, süresi dolunca otomatik kapanır</div>
+  <div class="screens-grid">
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>15:10</span><span>🔋 63%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Kampanyalar</div>
+            <div class="icon-btn">＋</div>
+          </div>
+          <div class="section-lbl">🟢 AKTİF KAMPANYALAR</div>
+          <div class="card success" style="margin-bottom:10px;">
+            <div class="card-row">
+              <div>
+                <div class="card-title">🥛 Süt Ürünleri %10 İndirim</div>
+                <div class="card-sub">Bitiş: 31.03.2026 · 9 gün kaldı</div>
+              </div>
+              <div class="list-badge" style="background:rgba(16,185,129,0.15);color:var(--success);padding:4px 10px;border-radius:8px;">Aktif</div>
+            </div>
+            <div style="margin-top:8px;font-size:0.75rem;color:var(--text2);">Bu ay 124 kez uygulandı · 387₺ indirim verildi</div>
+          </div>
+          <div class="card success" style="margin-bottom:10px;">
+            <div class="card-row">
+              <div>
+                <div class="card-title">3 Al 2 Öde — Şampuan</div>
+                <div class="card-sub">Bitiş: 25.03.2026 · 3 gün kaldı</div>
+              </div>
+              <div class="list-badge" style="background:rgba(16,185,129,0.15);color:var(--success);padding:4px 10px;border-radius:8px;">Aktif</div>
+            </div>
+          </div>
+          <div class="section-lbl">⚫ SONA EREN</div>
+          <div class="card" style="margin-bottom:0;opacity:0.6;">
+            <div class="card-row">
+              <div>
+                <div class="card-title">Kurban Bayramı İndirimi</div>
+                <div class="card-sub">Bitti: 20.03.2026</div>
+              </div>
+              <div class="list-badge" style="background:var(--surface3);color:var(--text3);padding:4px 10px;border-radius:8px;">Bitti</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">14 · Kampanya Listesi</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 11. TEDARİKÇİ -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section section-anchor" id="tedarikci">
+  <div class="section-title">🚚 Tedarikçi & Fatura</div>
+  <div class="section-subtitle">PDF yükle → AI okur → stok otomatik güncellenir</div>
+  <div class="screens-grid">
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>15:15</span><span>🔋 62%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Fatura Yükle</div>
+            <div class="icon-btn">📋</div>
+          </div>
+          <div style="margin:0 16px 14px;border:2px dashed var(--border);border-radius:16px;padding:28px;text-align:center;">
+            <div style="font-size:2.5rem;margin-bottom:8px;">📄</div>
+            <div style="font-size:0.88rem;font-weight:600;margin-bottom:4px;">PDF Fatura Yükle</div>
+            <div style="font-size:0.75rem;color:var(--text2);">Dokunarak seç veya galeride bul</div>
+          </div>
+          <div class="section-lbl">SON YÜKLENEN FATURALAR</div>
+          <div class="list-item">
+            <div class="list-avatar" style="background:rgba(16,185,129,0.15);font-size:1.2rem;">✅</div>
+            <div>
+              <div class="list-title">Sütaş — INV-2026-441</div>
+              <div class="list-sub">22.03.2026 · 12 ürün · 4.320 ₺</div>
+            </div>
+            <div class="list-right">
+              <div class="list-badge" style="background:rgba(16,185,129,0.15);color:var(--success);">İşlendi</div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-avatar" style="background:rgba(245,158,11,0.15);font-size:1.2rem;">⚠️</div>
+            <div>
+              <div class="list-title">Eti — INV-2026-438</div>
+              <div class="list-sub">21.03.2026 · 1 ürün eşleşmedi</div>
+            </div>
+            <div class="list-right">
+              <div class="list-badge" style="background:rgba(245,158,11,0.15);color:var(--warning);">Bekliyor</div>
+            </div>
+          </div>
+          <div style="height:14px;"></div>
+          <div class="card warning">
+            <div class="card-title" style="margin-bottom:6px;">⚠️ Eşleşmeyen Ürün</div>
+            <div style="font-size:0.8rem;color:var(--text2);margin-bottom:8px;">Faturada: "Eti Ciklt 60g"</div>
+            <div style="font-size:0.8rem;margin-bottom:8px;">Sistem önerisi:</div>
+            <div class="btn" style="margin:0;padding:8px;font-size:0.78rem;">✓ Eti Çikolata 60g — Evet bu!</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">15 · Fatura Yükleme & AI Parse</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 12. FİYAT TAKİP -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section section-anchor" id="fiyat">
+  <div class="section-title">🔍 Fiyat Takip Sistemi</div>
+  <div class="section-subtitle">Gece otomatik tarama — sabah etiket güncelleme listesi</div>
+  <div class="screens-grid">
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>09:05</span><span>🔋 90%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Fiyat Değişiklikleri</div>
+            <div class="icon-btn">✉️</div>
+          </div>
+          <div class="alert warn">
+            <span>🔔</span>
+            <div>Bu sabah <strong>8 üründe</strong> fiyat değişikliği tespit edildi.</div>
+          </div>
+          <div class="section-lbl">🔴 ZAM YAPILAN ÜRÜNLER</div>
+          <div class="card danger" style="margin-bottom:8px;">
+            <div class="card-row">
+              <div><div class="card-title">Süt 1L</div><div class="card-sub">Metro Tedarik</div></div>
+              <div style="text-align:right;">
+                <div style="font-family:'DM Mono',monospace;font-size:0.82rem;"><span style="color:var(--text2);text-decoration:line-through;">14,50₺</span> → <span style="color:var(--danger);font-weight:600;">16,80₺</span></div>
+                <div style="font-size:0.72rem;color:var(--danger);margin-top:2px;">▲ %15,9</div>
+              </div>
+            </div>
+            <div style="margin-top:8px;display:flex;gap:6px;">
+              <div style="flex:1;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:6px;text-align:center;font-size:0.72rem;color:var(--danger);">Etiketi Güncelle</div>
+              <div style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:6px 10px;text-align:center;font-size:0.72rem;color:var(--text2);">Atla</div>
+            </div>
+          </div>
+          <div class="card danger" style="margin-bottom:8px;">
+            <div class="card-row">
+              <div><div class="card-title">Yoğurt 500g</div><div class="card-sub">Metro Tedarik</div></div>
+              <div style="text-align:right;">
+                <div style="font-family:'DM Mono',monospace;font-size:0.82rem;"><span style="color:var(--text2);text-decoration:line-through;">9,80₺</span> → <span style="color:var(--danger);font-weight:600;">11,50₺</span></div>
+                <div style="font-size:0.72rem;color:var(--danger);margin-top:2px;">▲ %17,3</div>
+              </div>
+            </div>
+          </div>
+          <div class="section-lbl">🟢 İNDİRİM YAPILAN</div>
+          <div class="card success" style="margin-bottom:10px;">
+            <div class="card-row">
+              <div><div class="card-title">Peynir 200g</div><div class="card-sub">Metro Tedarik</div></div>
+              <div style="text-align:right;">
+                <div style="font-family:'DM Mono',monospace;font-size:0.82rem;"><span style="color:var(--text2);text-decoration:line-through;">28,00₺</span> → <span style="color:var(--success);font-weight:600;">25,50₺</span></div>
+                <div style="font-size:0.72rem;color:var(--success);margin-top:2px;">▼ %8,9</div>
+              </div>
+            </div>
+          </div>
+          <div class="btn">✓ Tümünü Güncelle (8)</div>
+        </div>
+      </div>
+      <div class="screen-label">16 · Sabah Fiyat Güncelleme</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 13. RAPORLAR -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section section-anchor" id="rapor">
+  <div class="section-title">📈 Raporlama & Analitik</div>
+  <div class="section-subtitle">Satış grafikleri, kâr/zarar, en çok satılan</div>
+  <div class="screens-grid">
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>15:20</span><span>🔋 61%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Raporlar</div>
+            <div class="icon-btn">📤</div>
+          </div>
+          <div class="chips">
+            <div class="chip active">Bugün</div>
+            <div class="chip">Hafta</div>
+            <div class="chip">Ay</div>
+            <div class="chip">Yıl</div>
+          </div>
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="stat-icon">💰</div>
+              <div class="stat-value" style="color:var(--accent);">4.250₺</div>
+              <div class="stat-label">Ciro</div>
+              <div class="stat-trend">▲ %12</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">📈</div>
+              <div class="stat-value" style="color:var(--success);">1.240₺</div>
+              <div class="stat-label">Net Kâr</div>
+              <div class="stat-trend">%29,2 marj</div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <div class="chart-header">
+              <div class="chart-title-sm">Saatlik Yoğunluk</div>
+            </div>
+            <div class="sparkline">
+              <div class="spark-bar" style="height:20%;"></div>
+              <div class="spark-bar" style="height:30%;"></div>
+              <div class="spark-bar" style="height:25%;"></div>
+              <div class="spark-bar" style="height:70%;"></div>
+              <div class="spark-bar hi" style="height:100%;"></div>
+              <div class="spark-bar" style="height:85%;"></div>
+              <div class="spark-bar" style="height:60%;"></div>
+              <div class="spark-bar" style="height:40%;"></div>
+              <div class="spark-bar hi" style="height:95%;"></div>
+              <div class="spark-bar" style="height:50%;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.62rem;color:var(--text3);margin-top:4px;padding:0 2px;">
+              <span>09</span><span>11</span><span>13</span><span>15</span><span>17</span><span>19</span><span>21</span>
+            </div>
+          </div>
+          <div class="section-lbl">EN ÇOK SATILAN</div>
+          <div class="list-item">
+            <div style="font-family:'DM Mono',monospace;font-size:0.9rem;font-weight:600;color:var(--accent);width:20px;">1</div>
+            <div class="list-title" style="flex:1;">🥛 Süt 1L</div>
+            <div style="font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--text2);">47 adet · 887₺</div>
+          </div>
+          <div class="list-item">
+            <div style="font-family:'DM Mono',monospace;font-size:0.9rem;font-weight:600;color:var(--accent2);width:20px;">2</div>
+            <div class="list-title" style="flex:1;">🍞 Ekmek</div>
+            <div style="font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--text2);">31 adet · 232₺</div>
+          </div>
+          <div class="list-item">
+            <div style="font-family:'DM Mono',monospace;font-size:0.9rem;font-weight:600;color:var(--accent3);width:20px;">3</div>
+            <div class="list-title" style="flex:1;">🥛 Yoğurt 500g</div>
+            <div style="font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--text2);">28 adet · 274₺</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">17 · Satış Raporları</div>
+    </div>
+
+    <!-- Z RAPORU -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>21:30</span><span>🔋 40%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Gün Sonu — Z Raporu</div>
+          </div>
+          <div class="card" style="margin-bottom:10px;">
+            <div class="card-row"><span style="font-size:0.8rem;color:var(--text2);">Kasa Açılış</span><span class="card-value">500,00 ₺</span></div>
+            <div class="card-row" style="margin-top:4px;"><span style="font-size:0.8rem;color:var(--text2);">Toplam Satış</span><span class="card-value">4.250,00 ₺</span></div>
+            <div class="card-row" style="margin-top:4px;"><span style="font-size:0.8rem;color:var(--text2);">— Nakit</span><span class="card-value">2.800,00 ₺</span></div>
+            <div class="card-row" style="margin-top:4px;"><span style="font-size:0.8rem;color:var(--text2);">— Kart</span><span class="card-value">1.450,00 ₺</span></div>
+            <div class="card-row" style="margin-top:4px;"><span style="font-size:0.8rem;color:var(--text2);">Masraflar</span><span class="card-value" style="color:var(--danger);">-120,00 ₺</span></div>
+            <div class="divider" style="margin:8px 0;"></div>
+            <div class="card-row"><span style="font-size:0.88rem;font-weight:600;">Kasada Olması Gereken</span><span style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--accent);">3.180,00 ₺</span></div>
+          </div>
+          <div class="field" style="margin-bottom:10px;">
+            <div class="field-label">Sayılan Kasa</div>
+            <div style="font-family:'DM Mono',monospace;font-size:1.3rem;color:var(--accent);">3.180,00 ₺</div>
+          </div>
+          <div class="card success" style="margin-bottom:10px;">
+            <div class="card-row">
+              <div class="card-title">Kasa Farkı</div>
+              <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;color:var(--success);">0,00 ₺ ✓</div>
+            </div>
+          </div>
+          <div class="btn success-btn">✓ Kasayı Kapat & Mail Gönder</div>
+        </div>
+      </div>
+      <div class="screen-label">18 · Z Raporu & Kasa Kapanış</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 14. SAHİP PANELİ -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section section-anchor" id="sahip">
+  <div class="section-title">📱 Market Sahibi Mobil Paneli</div>
+  <div class="section-subtitle">Evden veya dışarıdan WiFi ile bağlanarak market durumunu görür</div>
+  <div class="screens-grid">
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>20:14</span><span>🔋 55%</span></div>
+          <div class="screen-header">
+            <div>
+              <div style="font-size:0.72rem;color:var(--success);">🟢 Sisteme Bağlı · 192.168.1.100</div>
+              <div class="screen-title">Market Paneli</div>
+            </div>
+            <div style="font-size:0.72rem;color:var(--text2);">Son güncelleme<br/>2 dk önce</div>
+          </div>
+          <div class="stats-row">
+            <div class="stat-card" style="border-color:rgba(59,130,246,0.3);background:rgba(59,130,246,0.06);">
+              <div class="stat-icon">💰</div>
+              <div class="stat-value" style="color:var(--accent);">4.250₺</div>
+              <div class="stat-label">Bugün</div>
+              <div class="stat-trend">47 işlem</div>
+            </div>
+            <div class="stat-card" style="border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.06);">
+              <div class="stat-icon">⚠️</div>
+              <div class="stat-value" style="color:var(--danger);">3</div>
+              <div class="stat-label">Kritik Stok</div>
+              <div class="stat-trend down">Sipariş ver!</div>
+            </div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-header">
+              <span style="font-size:0.8rem;font-weight:500;">Aylık Hedef</span>
+              <span style="font-size:0.8rem;color:var(--accent);font-family:'DM Mono',monospace;">%65 · 78.000₺/120.000₺</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:65%;"></div></div>
+          </div>
+          <div class="section-lbl">ACİL STOK (Akıllı Sıralama)</div>
+          <div class="stock-item">
+            <div class="stock-dot" style="background:var(--danger);box-shadow:0 0 6px var(--danger);"></div>
+            <div class="stock-info">
+              <div class="stock-name">Süt 1L ⚡</div>
+              <div class="stock-meta">4 kaldı · 12/gün satıyor</div>
+            </div>
+            <div class="stock-badge" style="background:rgba(239,68,68,0.15);color:var(--danger);">KRİTİK</div>
+          </div>
+          <div class="stock-item">
+            <div class="stock-dot" style="background:var(--danger);"></div>
+            <div class="stock-info">
+              <div class="stock-name">Ekmek ⚡</div>
+              <div class="stock-meta">2 kaldı · 9/gün satıyor</div>
+            </div>
+            <div class="stock-badge" style="background:rgba(239,68,68,0.15);color:var(--danger);">KRİTİK</div>
+          </div>
+          <div class="section-lbl">EN ÇOK SATILAN (Bugün)</div>
+          <div class="list-item">
+            <div style="font-size:0.9rem;color:var(--accent);font-weight:700;width:20px;font-family:'DM Mono',monospace;">1</div>
+            <div class="list-title" style="flex:1;">🥛 Süt 1L</div>
+            <span style="font-size:0.8rem;color:var(--text2);">47 adet</span>
+          </div>
+          <div class="list-item">
+            <div style="font-size:0.9rem;color:var(--accent2);font-weight:700;width:20px;font-family:'DM Mono',monospace;">2</div>
+            <div class="list-title" style="flex:1;">🍞 Ekmek</div>
+            <span style="font-size:0.8rem;color:var(--text2);">31 adet</span>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">19 · Market Sahibi Paneli</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 15. YEDEKLEME -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section section-anchor" id="yedek">
+  <div class="section-title">💾 Yedekleme & Felaket Kurtarma</div>
+  <div class="section-subtitle">Gün sonu otomatik ZIP + Gmail — bilgisayar göçerse 5 dakikada geri dön</div>
+  <div class="screens-grid">
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>21:35</span><span>🔋 38%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Yedekleme</div>
+            <div class="icon-btn">📋</div>
+          </div>
+          <div class="alert ok">
+            <span>✅</span>
+            <div>Bugünkü yedek başarıyla Gmail'e gönderildi.</div>
+          </div>
+          <div class="card success" style="margin-bottom:10px;">
+            <div class="card-title" style="margin-bottom:8px;">Son Yedek</div>
+            <div class="card-row"><span style="font-size:0.78rem;color:var(--text2);">Tarih</span><span class="card-value">22.03.2026 21:34</span></div>
+            <div class="card-row" style="margin-top:4px;"><span style="font-size:0.78rem;color:var(--text2);">Boyut</span><span class="card-value">4.2 MB</span></div>
+            <div class="card-row" style="margin-top:4px;"><span style="font-size:0.78rem;color:var(--text2);">Kayıt</span><span class="card-value">1.247 ürün · 18.432 satış</span></div>
+            <div class="card-row" style="margin-top:4px;"><span style="font-size:0.78rem;color:var(--text2);">Gmail</span><span class="card-value" style="color:var(--success);">✅ Gönderildi</span></div>
+          </div>
+          <div class="section-lbl">YEDEKten GERİ YÜKLEME</div>
+          <div class="card" style="margin-bottom:10px;">
+            <div style="font-size:0.8rem;color:var(--text2);margin-bottom:10px;">Gmail'den ZIP dosyasını indirin ve aşağıdan seçin.</div>
+            <div class="btn" style="margin:0;font-size:0.82rem;">📁 ZIP Dosyası Seç & Yükle</div>
+          </div>
+          <div class="section-lbl">LOKAL ARŞİV (Son 30 Gün)</div>
+          <div class="list-item">
+            <div class="list-avatar" style="background:rgba(16,185,129,0.15);font-size:1rem;">💾</div>
+            <div><div class="list-title">yedek_22_03_2026.zip</div><div class="list-sub">4.2 MB · Bugün</div></div>
+            <div class="list-badge" style="background:rgba(16,185,129,0.15);color:var(--success);">Güncel</div>
+          </div>
+          <div class="list-item">
+            <div class="list-avatar" style="background:rgba(42,58,85,0.5);font-size:1rem;">💾</div>
+            <div><div class="list-title">yedek_21_03_2026.zip</div><div class="list-sub">4.1 MB · Dün</div></div>
+          </div>
+          <div class="list-item">
+            <div class="list-avatar" style="background:rgba(42,58,85,0.5);font-size:1rem;">💾</div>
+            <div><div class="list-title">yedek_20_03_2026.zip</div><div class="list-sub">4.0 MB · 2 gün önce</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">20 · Yedekleme Ekranı</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 16. AYARLAR -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section section-anchor" id="ayarlar">
+  <div class="section-title">⚙️ Sistem Ayarları</div>
+  <div class="section-subtitle">Yazıcı, terazi, mail, tedarikçi girişleri ve sistem yapılandırması</div>
+  <div class="screens-grid">
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>15:30</span><span>🔋 60%</span></div>
+          <div class="screen-header">
+            <div class="screen-title">Ayarlar</div>
+          </div>
+          <div class="section-lbl">MARKET BİLGİLERİ</div>
+          <div class="toggle-row">
+            <div><div style="font-size:0.84rem;font-weight:500;">🏪 Market Adı</div><div style="font-size:0.72rem;color:var(--text2);">Örnek Market</div></div>
+            <div style="font-size:0.72rem;color:var(--accent);">Düzenle</div>
+          </div>
+          <div class="section-lbl">DONANIM</div>
+          <div class="toggle-row">
+            <div><div style="font-size:0.84rem;font-weight:500;">🖨️ Bluetooth Yazıcı</div><div style="font-size:0.72rem;color:var(--success);">Bağlı · XP-T58H</div></div>
+            <div class="toggle"></div>
+          </div>
+          <div class="toggle-row">
+            <div><div style="font-size:0.84rem;font-weight:500;">⚖️ Terazi 1</div><div style="font-size:0.72rem;color:var(--success);">192.168.1.101:8008</div></div>
+            <div class="toggle"></div>
+          </div>
+          <div class="toggle-row">
+            <div><div style="font-size:0.84rem;font-weight:500;">📷 Barkod Okuyucu</div><div style="font-size:0.72rem;color:var(--text2);">Kamera veya USB/BT</div></div>
+            <div style="font-size:0.72rem;color:var(--accent);">Ayarla</div>
+          </div>
+          <div class="section-lbl">BİLDİRİMLER & MAİL</div>
+          <div class="toggle-row">
+            <div><div style="font-size:0.84rem;font-weight:500;">✉️ Gmail SMTP</div><div style="font-size:0.72rem;color:var(--success);">market@gmail.com · Aktif</div></div>
+            <div style="font-size:0.72rem;color:var(--accent);">Düzenle</div>
+          </div>
+          <div class="toggle-row">
+            <div><div style="font-size:0.84rem;font-weight:500;">🕑 Scraping Saati</div><div style="font-size:0.72rem;color:var(--text2);">Her gece 02:00</div></div>
+            <div style="font-size:0.72rem;color:var(--accent);">Değiştir</div>
+          </div>
+          <div class="section-lbl">SİSTEM</div>
+          <div class="toggle-row">
+            <div><div style="font-size:0.84rem;font-weight:500;">🔌 Offline Mod</div><div style="font-size:0.72rem;color:var(--text2);">Internet yoksa kasa çalışır</div></div>
+            <div class="toggle"></div>
+          </div>
+          <div class="toggle-row">
+            <div><div style="font-size:0.84rem;font-weight:500;">📦 Versiyon</div><div style="font-size:0.72rem;color:var(--text2);">v1.0.0 · Güncel</div></div>
+            <div style="font-size:0.72rem;color:var(--text3);">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">21 · Sistem Ayarları</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:40px;color:var(--text3);font-size:0.8rem;border-top:1px solid var(--border);">
+  <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text2);margin-bottom:6px;">🏪 Market Yönetim Sistemi</div>
+  <div>21 Ekran Mockupu · Tüm Modüller · v1.0 · 2026</div>
+  <div style="margin-top:6px;font-family:'DM Mono',monospace;font-size:0.72rem;">React Native Expo + Python FastAPI + SQLite</div>
+</div>
+
+</body>
+</html>

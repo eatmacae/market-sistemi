@@ -1,0 +1,65 @@
+# ============================================================
+# Market Yönetim Sistemi — Docker Compose
+# ============================================================
+# Kurulum:
+#   1. cp backend/.env.example backend/.env
+#   2. backend/.env dosyasını doldurun
+#   3. docker-compose up -d
+#
+# Sonra: docker-compose exec backend python seed.py
+# API Docs: http://sunucu-ip:8000/api/docs
+# ============================================================
+
+version: "3.9"
+
+services:
+
+  # ──────────────────────────────────────────────────────────
+  # PostgreSQL Veritabanı
+  # ──────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:15-alpine
+    container_name: market_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       market_db
+      POSTGRES_USER:     market_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-guclu_sifre_degistir}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"          # Geliştirme için açık — production'da kapatın
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U market_user -d market_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ──────────────────────────────────────────────────────────
+  # FastAPI Backend
+  # ──────────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: market_backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      # Docker Compose'da postgres servisi adını kullan
+      DATABASE_URL: postgresql://market_user:${POSTGRES_PASSWORD:-guclu_sifre_degistir}@postgres:5432/market_db
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/backups:/app/backups   # Yedekler host makinede saklanır
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+# ──────────────────────────────────────────────────────────
+# Kalıcı Veri
+# ──────────────────────────────────────────────────────────
+volumes:
+  postgres_data:
+    driver: local

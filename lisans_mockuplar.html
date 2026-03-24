@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lisans Yönetim Sistemi — Mockuplar</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0f1a;
+  --surface: #131929;
+  --surface2: #1a2438;
+  --surface3: #212d42;
+  --border: #2a3a55;
+  --border2: #3a4f72;
+  --accent: #4f8ef7;
+  --accent2: #06c4d4;
+  --accent3: #9b6ef7;
+  --success: #12c98a;
+  --warning: #f5a623;
+  --danger: #f04f4f;
+  --text: #edf2f8;
+  --text2: #8fa3bf;
+  --text3: #4d6380;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; flex-direction:column; }
+
+/* HEADER */
+.hdr { padding:18px 32px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:16px; background:rgba(11,15,26,0.95); backdrop-filter:blur(12px); }
+.hdr-logo { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:800; background:linear-gradient(135deg,#edf2f8,#4f8ef7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.hdr-sub { font-size:0.75rem; color:var(--text3); font-family:'DM Mono',monospace; }
+
+/* LAYOUT */
+.layout { display:flex; flex:1; }
+
+/* SIDEBAR */
+.sidebar { width:220px; min-width:220px; border-right:1px solid var(--border); padding:16px 0; background:var(--surface); overflow-y:auto; }
+.sb-group { font-size:0.65rem; color:var(--text3); text-transform:uppercase; letter-spacing:0.1em; padding:10px 16px 4px; font-family:'DM Mono',monospace; }
+.sb-item { display:flex; align-items:center; gap:9px; padding:8px 16px; cursor:pointer; font-size:0.82rem; color:var(--text2); transition:all 0.15s; border-left:2px solid transparent; }
+.sb-item:hover { background:var(--surface2); color:var(--text); }
+.sb-item.active { background:rgba(79,142,247,0.1); color:var(--accent); border-left-color:var(--accent); font-weight:500; }
+.sb-icon { font-size:0.9rem; width:16px; text-align:center; }
+
+/* CONTENT */
+.content { flex:1; overflow-y:auto; padding:32px; }
+.screen { display:none; }
+.screen.active { display:block; }
+.screen-label { font-size:0.72rem; color:var(--text3); font-family:'DM Mono',monospace; margin-bottom:20px; }
+
+/* ─── COMPONENTS ─── */
+.card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:20px; }
+.card.hi { border-color:rgba(79,142,247,0.4); background:rgba(79,142,247,0.05); }
+.card.success { border-color:rgba(18,201,138,0.35); background:rgba(18,201,138,0.05); }
+.card.danger { border-color:rgba(240,79,79,0.35); background:rgba(240,79,79,0.05); }
+.card.warn { border-color:rgba(245,166,35,0.35); background:rgba(245,166,35,0.05); }
+
+.badge { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:999px; font-size:0.7rem; font-weight:500; }
+.badge.green { background:rgba(18,201,138,0.15); color:var(--success); }
+.badge.red { background:rgba(240,79,79,0.15); color:var(--danger); }
+.badge.yellow { background:rgba(245,166,35,0.15); color:var(--warning); }
+.badge.blue { background:rgba(79,142,247,0.15); color:var(--accent); }
+.badge.purple { background:rgba(155,110,247,0.15); color:var(--accent3); }
+.badge.gray { background:rgba(79,99,128,0.2); color:var(--text2); }
+
+.btn { display:inline-flex; align-items:center; gap:6px; padding:9px 18px; border-radius:10px; font-size:0.82rem; font-weight:500; cursor:pointer; border:none; transition:all 0.15s; font-family:'DM Sans',sans-serif; }
+.btn.primary { background:var(--accent); color:white; }
+.btn.primary:hover { background:#3d7ef6; }
+.btn.success { background:var(--success); color:white; }
+.btn.danger { background:var(--danger); color:white; }
+.btn.ghost { background:var(--surface2); border:1px solid var(--border); color:var(--text2); }
+.btn.ghost:hover { color:var(--text); border-color:var(--border2); }
+.btn.sm { padding:5px 12px; font-size:0.75rem; border-radius:7px; }
+
+.input-wrap { margin-bottom:14px; }
+.input-label { font-size:0.72rem; color:var(--text2); margin-bottom:5px; display:block; }
+.input { width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; font-size:0.84rem; color:var(--text); font-family:'DM Sans',sans-serif; }
+.input:focus { outline:none; border-color:var(--accent); }
+.select { appearance:none; cursor:pointer; }
+
+.table { width:100%; border-collapse:collapse; }
+.table th { font-size:0.7rem; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); font-family:'DM Mono',monospace; font-weight:400; }
+.table td { padding:12px 14px; font-size:0.82rem; border-bottom:1px solid rgba(42,58,85,0.4); vertical-align:middle; }
+.table tr:last-child td { border-bottom:none; }
+.table tr:hover td { background:rgba(79,142,247,0.04); }
+
+.stat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px; }
+.stat { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px; }
+.stat-icon { font-size:1.1rem; margin-bottom:6px; }
+.stat-val { font-family:'Syne',sans-serif; font-size:1.5rem; font-weight:700; }
+.stat-lbl { font-size:0.72rem; color:var(--text2); margin-top:3px; }
+.stat-trend { font-size:0.7rem; margin-top:5px; }
+
+.divider { height:1px; background:var(--border); margin:20px 0; }
+.row { display:flex; align-items:center; gap:10px; }
+.row.between { justify-content:space-between; }
+.col { display:flex; flex-direction:column; gap:4px; }
+.mono { font-family:'DM Mono',monospace; }
+.muted { color:var(--text2); }
+.small { font-size:0.78rem; }
+.xs { font-size:0.7rem; }
+
+/* PHONE FRAME */
+.phone-wrap { display:flex; justify-content:center; padding:20px 0; }
+.phone { width:320px; background:#0d1520; border-radius:36px; border:2px solid var(--border); overflow:hidden; box-shadow:0 24px 64px rgba(0,0,0,0.5); }
+.phone-notch { width:72px; height:5px; background:var(--border); border-radius:3px; margin:12px auto 0; }
+.phone-screen { padding:8px 0 20px; min-height:580px; }
+.p-sbar { display:flex; justify-content:space-between; padding:6px 18px 8px; font-size:10px; color:var(--text3); font-family:'DM Mono',monospace; }
+.p-head { padding:0 16px 12px; display:flex; align-items:center; justify-content:space-between; }
+.p-title { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700; color:#f1f5f9; }
+.p-card { background:#111827; border:1px solid #2a3a55; border-radius:14px; padding:14px; margin:0 16px 10px; }
+.p-card.danger { border-color:#7f1d1d; background:rgba(239,68,68,0.06); }
+.p-card.success { border-color:#065f46; background:rgba(16,185,129,0.06); }
+.p-card.warn { border-color:#78350f; background:rgba(245,158,11,0.06); }
+.p-field { margin:0 16px 10px; background:#1a2235; border:1px solid #2a3a55; border-radius:10px; padding:10px 14px; }
+.p-flbl { font-size:10px; color:#64748b; margin-bottom:3px; }
+.p-fval { font-size:13px; color:#f1f5f9; font-weight:500; }
+.p-btn { margin:0 16px; background:#4f8ef7; border-radius:10px; padding:12px; text-align:center; font-size:13px; font-weight:500; color:white; }
+.p-btn.success { background:#12c98a; }
+.p-btn.ghost { background:#1a2235; border:1px solid #2a3a55; color:#94a3b8; }
+.p-btn.danger { background:#f04f4f; }
+.p-lbl { font-size:10px; color:#475569; text-transform:uppercase; letter-spacing:0.07em; padding:8px 16px 4px; font-family:'DM Mono',monospace; }
+.p-row { display:flex; align-items:center; gap:8px; padding:9px 16px; border-bottom:1px solid rgba(42,58,85,0.35); }
+.p-alert { margin:0 16px 12px; border-radius:10px; padding:10px 12px; font-size:12px; display:flex; gap:7px; }
+.p-alert.ok { background:rgba(18,201,138,0.1); border:1px solid rgba(18,201,138,0.25); color:#6ee7b7; }
+.p-alert.err { background:rgba(240,79,79,0.1); border:1px solid rgba(240,79,79,0.25); color:#fca5a5; }
+.p-alert.warn { background:rgba(245,166,35,0.1); border:1px solid rgba(245,166,35,0.25); color:#fcd34d; }
+.p-keypad { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin:0 16px; }
+.p-key { background:#1a2235; border:1px solid #2a3a55; border-radius:10px; padding:12px; text-align:center; font-size:15px; font-weight:500; color:#f1f5f9; }
+.p-key.accent { background:#4f8ef7; border-color:#4f8ef7; }
+
+/* PROGRESS */
+.progress { height:6px; background:var(--surface3); border-radius:3px; overflow:hidden; }
+.progress-fill { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--accent),var(--accent2)); }
+
+/* TIMELINE */
+.timeline { display:flex; flex-direction:column; gap:0; }
+.tl-item { display:flex; gap:14px; padding-bottom:20px; position:relative; }
+.tl-item:last-child { padding-bottom:0; }
+.tl-dot { width:10px; height:10px; border-radius:50%; margin-top:5px; flex-shrink:0; }
+.tl-line { position:absolute; left:4px; top:15px; bottom:0; width:2px; background:var(--border); }
+.tl-item:last-child .tl-line { display:none; }
+
+/* ALERT BAR */
+.alert-bar { border-radius:10px; padding:12px 16px; display:flex; align-items:center; gap:10px; margin-bottom:16px; font-size:0.82rem; }
+.alert-bar.warn { background:rgba(245,166,35,0.1); border:1px solid rgba(245,166,35,0.25); color:#f5a623; }
+.alert-bar.danger { background:rgba(240,79,79,0.1); border:1px solid rgba(240,79,79,0.25); color:#f04f4f; }
+.alert-bar.success { background:rgba(18,201,138,0.1); border:1px solid rgba(18,201,138,0.25); color:#12c98a; }
+
+/* KEY BOX */
+.key-box { background:var(--surface2); border:1px solid var(--border2); border-radius:12px; padding:16px 20px; font-family:'DM Mono',monospace; font-size:1.1rem; letter-spacing:0.08em; color:var(--accent); text-align:center; margin:12px 0; }
+
+/* DEVICE ITEM */
+.device-item { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid rgba(42,58,85,0.4); }
+.device-item:last-child { border-bottom:none; }
+.device-icon { width:36px; height:36px; background:var(--surface2); border:1px solid var(--border); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <div class="hdr-logo">🏪 Market Yönetim Sistemi</div>
+    <div class="hdr-sub">Lisans & Admin Sistem Mockupları</div>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sb-group">Admin Panel</div>
+    <div class="sb-item active" onclick="show('admin-dashboard')"><span class="sb-icon">📊</span>Dashboard</div>
+    <div class="sb-item" onclick="show('admin-musteri')"><span class="sb-icon">👥</span>Müşteri Listesi</div>
+    <div class="sb-item" onclick="show('admin-lisans-olustur')"><span class="sb-icon">🔑</span>Lisans Oluştur</div>
+    <div class="sb-item" onclick="show('admin-musteri-detay')"><span class="sb-icon">📋</span>Müşteri Detay</div>
+    <div class="sb-item" onclick="show('admin-cihaz')"><span class="sb-icon">📱</span>Cihaz Yönetimi</div>
+    <div class="sb-item" onclick="show('admin-backup')"><span class="sb-icon">💾</span>Backup Arşivi</div>
+
+    <div class="sb-group">Müşteri Ekranları</div>
+    <div class="sb-item" onclick="show('aktivasyon')"><span class="sb-icon">🔐</span>Lisans Aktivasyon</div>
+    <div class="sb-item" onclick="show('kilit')"><span class="sb-icon">🔒</span>Kilit Ekranı</div>
+    <div class="sb-item" onclick="show('unuttum')"><span class="sb-icon">❓</span>Lisansımı Unuttum</div>
+    <div class="sb-item" onclick="show('yeni-cihaz')"><span class="sb-icon">📲</span>Yeni Cihaz</div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- ADMIN DASHBOARD -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="screen active" id="s-admin-dashboard">
+      <div class="screen-label">Ekran 01 · Admin Dashboard</div>
+
+      <div class="stat-grid">
+        <div class="stat" style="border-color:rgba(79,142,247,0.3);background:rgba(79,142,247,0.05);">
+          <div class="stat-icon">👥</div>
+          <div class="stat-val" style="color:var(--accent);">24</div>
+          <div class="stat-lbl">Toplam Müşteri</div>
+          <div class="stat-trend" style="color:var(--success);">▲ 3 bu ay yeni</div>
+        </div>
+        <div class="stat" style="border-color:rgba(18,201,138,0.3);background:rgba(18,201,138,0.05);">
+          <div class="stat-icon">✅</div>
+          <div class="stat-val" style="color:var(--success);">21</div>
+          <div class="stat-lbl">Aktif Lisans</div>
+          <div class="stat-trend" style="color:var(--success);">%87,5 aktif oran</div>
+        </div>
+        <div class="stat" style="border-color:rgba(245,166,35,0.3);background:rgba(245,166,35,0.05);">
+          <div class="stat-icon">⚠️</div>
+          <div class="stat-val" style="color:var(--warning);">5</div>
+          <div class="stat-lbl">Yaklaşan Bitiş</div>
+          <div class="stat-trend" style="color:var(--warning);">30 gün içinde</div>
+        </div>
+        <div class="stat" style="border-color:rgba(240,79,79,0.3);background:rgba(240,79,79,0.05);">
+          <div class="stat-icon">🔒</div>
+          <div class="stat-val" style="color:var(--danger);">3</div>
+          <div class="stat-lbl">Durdurulmuş</div>
+          <div class="stat-trend" style="color:var(--danger);">Ödeme bekliyor</div>
+        </div>
+      </div>
+
+      <div class="alert-bar warn">
+        <span>⚠️</span>
+        <div><strong>5 müşterinin</strong> lisansı 30 gün içinde bitiyor. Hatırlatma mailleri otomatik gönderilecek.</div>
+      </div>
+
+      <div class="card" style="margin-bottom:20px;">
+        <div class="row between" style="margin-bottom:16px;">
+          <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;">Yaklaşan Bitiş Tarihleri</div>
+          <button class="btn ghost sm">Tümünü Gör</button>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Müşteri</th>
+              <th>Paket</th>
+              <th>Bitiş</th>
+              <th>Kalan</th>
+              <th>Durum</th>
+              <th>İşlem</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div style="font-weight:500;">Ahmet Market</div><div class="xs muted">2 şube · 4 cihaz</div></td>
+              <td><span class="badge blue">Pro</span></td>
+              <td class="mono small">25.04.2026</td>
+              <td><span style="color:var(--danger);font-weight:500;">3 gün</span></td>
+              <td><span class="badge yellow">⚠ Acil</span></td>
+              <td><div class="row" style="gap:5px;"><button class="btn primary sm">Uzat</button><button class="btn ghost sm">Mail</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;">Fatma Süper</div><div class="xs muted">1 şube · 2 cihaz</div></td>
+              <td><span class="badge gray">Starter</span></td>
+              <td class="mono small">01.05.2026</td>
+              <td><span style="color:var(--warning);font-weight:500;">9 gün</span></td>
+              <td><span class="badge yellow">⚠ Yakın</span></td>
+              <td><div class="row" style="gap:5px;"><button class="btn primary sm">Uzat</button><button class="btn ghost sm">Mail</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;">Mehmet Bakkal</div><div class="xs muted">1 şube · 1 cihaz</div></td>
+              <td><span class="badge gray">Starter</span></td>
+              <td class="mono small">15.05.2026</td>
+              <td><span style="color:var(--text2);font-weight:500;">23 gün</span></td>
+              <td><span class="badge blue">● Aktif</span></td>
+              <td><div class="row" style="gap:5px;"><button class="btn primary sm">Uzat</button><button class="btn ghost sm">Mail</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="row between" style="margin-bottom:16px;">
+          <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;">Durdurulmuş Lisanslar</div>
+        </div>
+        <table class="table">
+          <thead>
+            <tr><th>Müşteri</th><th>Bitiş Tarihi</th><th>Gecikme</th><th>İşlem</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div style="font-weight:500;">Hasan Market</div><div class="xs muted">1 şube</div></td>
+              <td class="mono small">10.04.2026</td>
+              <td><span style="color:var(--danger);">12 gün geçti</span></td>
+              <td><button class="btn success sm">Aktif Et</button></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;">Zeynep Bakkal</div><div class="xs muted">1 şube</div></td>
+              <td class="mono small">05.04.2026</td>
+              <td><span style="color:var(--danger);">17 gün geçti</span></td>
+              <td><button class="btn success sm">Aktif Et</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- ADMIN MÜŞTERİ LİSTESİ -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="screen" id="s-admin-musteri">
+      <div class="screen-label">Ekran 02 · Müşteri Listesi</div>
+
+      <div class="row between" style="margin-bottom:20px;">
+        <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;">Müşteriler <span class="muted small">(24)</span></div>
+        <div class="row" style="gap:8px;">
+          <input class="input" style="width:220px;padding:8px 14px;" placeholder="🔍  Müşteri ara...">
+          <button class="btn primary">+ Yeni Müşteri</button>
+        </div>
+      </div>
+
+      <div class="card" style="padding:0;overflow:hidden;">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Müşteri</th>
+              <th>Paket</th>
+              <th>Şube / Cihaz</th>
+              <th>Başlangıç</th>
+              <th>Bitiş</th>
+              <th>Durum</th>
+              <th>Son Backup</th>
+              <th>İşlemler</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div style="font-weight:500;">Ahmet Market</div><div class="xs muted">ahmet@market.com</div></td>
+              <td><span class="badge blue">Pro</span></td>
+              <td class="small muted">2 / 4</td>
+              <td class="mono small muted">22.03.2025</td>
+              <td class="mono small" style="color:var(--danger);">25.04.2026</td>
+              <td><span class="badge yellow">⚠ 3 gün</span></td>
+              <td class="mono small muted">Bugün 21:34</td>
+              <td><div class="row" style="gap:4px;"><button class="btn ghost sm">Detay</button><button class="btn ghost sm">Durdur</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;">Fatma Süper</div><div class="xs muted">fatma@super.com</div></td>
+              <td><span class="badge gray">Starter</span></td>
+              <td class="small muted">1 / 2</td>
+              <td class="mono small muted">01.05.2025</td>
+              <td class="mono small" style="color:var(--warning);">01.05.2026</td>
+              <td><span class="badge yellow">⚠ 9 gün</span></td>
+              <td class="mono small muted">Dün 22:01</td>
+              <td><div class="row" style="gap:4px;"><button class="btn ghost sm">Detay</button><button class="btn ghost sm">Durdur</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;">Hasan Market</div><div class="xs muted">hasan@market.com</div></td>
+              <td><span class="badge gray">Starter</span></td>
+              <td class="small muted">1 / 1</td>
+              <td class="mono small muted">10.04.2025</td>
+              <td class="mono small" style="color:var(--danger);">10.04.2026</td>
+              <td><span class="badge red">🔒 Durduruldu</span></td>
+              <td class="mono small muted">10.04.2026</td>
+              <td><div class="row" style="gap:4px;"><button class="btn ghost sm">Detay</button><button class="btn success sm">Aktif Et</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;">Ali Zincir Market</div><div class="xs muted">ali@zincir.com</div></td>
+              <td><span class="badge purple">Zincir</span></td>
+              <td class="small muted">8 / 24</td>
+              <td class="mono small muted">15.01.2025</td>
+              <td class="mono small" style="color:var(--success);">15.01.2027</td>
+              <td><span class="badge green">✓ Aktif</span></td>
+              <td class="mono small muted">Bugün 21:55</td>
+              <td><div class="row" style="gap:4px;"><button class="btn ghost sm">Detay</button><button class="btn ghost sm">Durdur</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;">Ayşe Bakkal</div><div class="xs muted">ayse@bakkal.com</div></td>
+              <td><span class="badge gray">Starter</span></td>
+              <td class="small muted">1 / 1</td>
+              <td class="mono small muted">20.06.2025</td>
+              <td class="mono small" style="color:var(--success);">20.06.2027</td>
+              <td><span class="badge purple">♾ Ömür Boyu</span></td>
+              <td class="mono small muted">Bugün 22:10</td>
+              <td><div class="row" style="gap:4px;"><button class="btn ghost sm">Detay</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- LİSANS OLUŞTUR -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="screen" id="s-admin-lisans-olustur">
+      <div class="screen-label">Ekran 03 · Yeni Lisans Oluştur</div>
+
+      <div style="display:grid;grid-template-columns:1fr 400px;gap:24px;">
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:16px;">Müşteri Bilgileri</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px;">
+              <div class="input-wrap">
+                <label class="input-label">Market / Firma Adı</label>
+                <input class="input" placeholder="Örn: Ahmet Market">
+              </div>
+              <div class="input-wrap">
+                <label class="input-label">Yetkili Kişi</label>
+                <input class="input" placeholder="Ahmet Yılmaz">
+              </div>
+              <div class="input-wrap">
+                <label class="input-label">E-posta Adresi</label>
+                <input class="input" placeholder="ahmet@market.com">
+              </div>
+              <div class="input-wrap">
+                <label class="input-label">Telefon</label>
+                <input class="input" placeholder="0532 XXX XX XX">
+              </div>
+              <div class="input-wrap" style="grid-column:1/-1;">
+                <label class="input-label">Adres (opsiyonel)</label>
+                <input class="input" placeholder="İzmir / Bornova">
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:16px;">Lisans Detayları</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px;">
+              <div class="input-wrap">
+                <label class="input-label">Paket</label>
+                <select class="input select">
+                  <option>Starter — 1 Şube, 2 Cihaz</option>
+                  <option selected>Pro — 3 Şube, 6 Cihaz</option>
+                  <option>Zincir — 10+ Şube, Sınırsız</option>
+                </select>
+              </div>
+              <div class="input-wrap">
+                <label class="input-label">Lisans Tipi</label>
+                <select class="input select">
+                  <option>Aylık</option>
+                  <option selected>Yıllık</option>
+                  <option>Ömür Boyu</option>
+                </select>
+              </div>
+              <div class="input-wrap">
+                <label class="input-label">Başlangıç Tarihi</label>
+                <input class="input" value="22.03.2026">
+              </div>
+              <div class="input-wrap">
+                <label class="input-label">Bitiş Tarihi</label>
+                <input class="input" value="22.03.2027">
+              </div>
+              <div class="input-wrap">
+                <label class="input-label">Tutar</label>
+                <input class="input" value="7.500 ₺">
+              </div>
+              <div class="input-wrap">
+                <label class="input-label">Ödeme Durumu</label>
+                <select class="input select">
+                  <option selected>Ödendi</option>
+                  <option>Bekliyor</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:4px;">Lisans Önizleme</div>
+            <div class="muted small" style="margin-bottom:14px;">Sistem otomatik üretecek</div>
+            <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px;">
+              <div class="xs muted" style="margin-bottom:6px;">Lisans Anahtarı</div>
+              <div style="font-family:'DM Mono',monospace;font-size:0.95rem;color:var(--accent);letter-spacing:0.05em;word-break:break-all;">MYS-2026-AHMT-<span style="color:var(--text3);">????-????-????</span></div>
+              <div class="xs muted" style="margin-top:6px;">Buton tıklandığında otomatik tamamlanır</div>
+            </div>
+            <div class="divider"></div>
+            <div class="row between small" style="margin-bottom:6px;"><span class="muted">Paket</span><span style="font-weight:500;">Pro — 3 Şube</span></div>
+            <div class="row between small" style="margin-bottom:6px;"><span class="muted">Cihaz Limiti</span><span style="font-weight:500;">6 cihaz</span></div>
+            <div class="row between small" style="margin-bottom:6px;"><span class="muted">Başlangıç</span><span class="mono" style="font-weight:500;">22.03.2026</span></div>
+            <div class="row between small" style="margin-bottom:6px;"><span class="muted">Bitiş</span><span class="mono" style="font-weight:500;">22.03.2027</span></div>
+            <div class="row between small"><span class="muted">Tutar</span><span style="font-weight:500;color:var(--success);">7.500 ₺ ✓</span></div>
+          </div>
+
+          <button class="btn primary" style="width:100%;justify-content:center;padding:13px;font-size:0.9rem;margin-bottom:10px;">
+            🔑 Lisans Üret & Mail Gönder
+          </button>
+          <div class="muted xs" style="text-align:center;">Sistem anahtarı otomatik üretir ve müşteriye aktivasyon maili gönderir.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- MÜŞTERİ DETAY -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="screen" id="s-admin-musteri-detay">
+      <div class="screen-label">Ekran 04 · Müşteri Detay & Yönetim</div>
+
+      <div class="row between" style="margin-bottom:20px;">
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;">Ahmet Market</div>
+          <div class="muted small">ahmet@market.com · 0532 XXX XX XX</div>
+        </div>
+        <div class="row" style="gap:8px;">
+          <button class="btn ghost">📧 Mail Gönder</button>
+          <button class="btn danger">🔒 Durdur</button>
+          <button class="btn primary">↻ Lisansı Uzat</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+        <div class="card hi">
+          <div class="xs muted" style="margin-bottom:8px;">Aktif Lisans</div>
+          <div class="key-box" style="margin:8px 0;">MYS-2026-AHMT-X7K9-P2M4-Q8W1</div>
+          <div class="row between small" style="margin-bottom:4px;"><span class="muted">Paket</span><span class="badge blue">Pro</span></div>
+          <div class="row between small" style="margin-bottom:4px;"><span class="muted">Başlangıç</span><span class="mono">22.03.2025</span></div>
+          <div class="row between small" style="margin-bottom:4px;"><span class="muted">Bitiş</span><span class="mono" style="color:var(--danger);">25.04.2026 (3 gün)</span></div>
+          <div class="row between small"><span class="muted">Ödeme</span><span style="color:var(--success);">✓ Ödendi</span></div>
+          <div class="divider"></div>
+          <div style="margin-bottom:4px;" class="small muted">Kalan Süre</div>
+          <div class="progress"><div class="progress-fill" style="width:92%;"></div></div>
+          <div class="xs muted" style="margin-top:4px;text-align:right;">362/365 gün</div>
+        </div>
+
+        <div class="card">
+          <div class="xs muted" style="margin-bottom:8px;">Mail Takvimi</div>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--success);"></div>
+              <div class="tl-line"></div>
+              <div><div class="small" style="font-weight:500;">30 gün kala — Gönderildi</div><div class="xs muted">25.03.2026</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--success);"></div>
+              <div class="tl-line"></div>
+              <div><div class="small" style="font-weight:500;">23 gün kala — Gönderildi</div><div class="xs muted">01.04.2026</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--success);"></div>
+              <div class="tl-line"></div>
+              <div><div class="small" style="font-weight:500;">16 gün kala — Gönderildi</div><div class="xs muted">08.04.2026</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--success);"></div>
+              <div class="tl-line"></div>
+              <div><div class="small" style="font-weight:500;">9 gün kala — Gönderildi</div><div class="xs muted">15.04.2026</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--warning);box-shadow:0 0 6px var(--warning);"></div>
+              <div class="tl-line"></div>
+              <div><div class="small" style="font-weight:500;color:var(--warning);">2 gün kala — Bekliyor</div><div class="xs muted">22.04.2026</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--border);"></div>
+              <div class="tl-line"></div>
+              <div><div class="small muted">Bitiş günü maili</div><div class="xs muted">24.04.2026</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--border);"></div>
+              <div><div class="small muted">Sistem durduruldu maili</div><div class="xs muted">25.04.2026</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="xs muted" style="margin-bottom:12px;">Son Backup Geçmişi</div>
+        <table class="table">
+          <thead><tr><th>Tarih</th><th>Boyut</th><th>Durum</th><th>İndir</th></tr></thead>
+          <tbody>
+            <tr><td class="mono small">22.04.2026 21:34</td><td class="small">4.8 MB</td><td><span class="badge green">✓ Başarılı</span></td><td><button class="btn ghost sm">İndir</button></td></tr>
+            <tr><td class="mono small">21.04.2026 21:31</td><td class="small">4.7 MB</td><td><span class="badge green">✓ Başarılı</span></td><td><button class="btn ghost sm">İndir</button></td></tr>
+            <tr><td class="mono small">20.04.2026 21:29</td><td class="small">4.7 MB</td><td><span class="badge green">✓ Başarılı</span></td><td><button class="btn ghost sm">İndir</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- CİHAZ YÖNETİMİ -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="screen" id="s-admin-cihaz">
+      <div class="screen-label">Ekran 05 · Cihaz Yönetimi — Ahmet Market</div>
+
+      <div class="alert-bar warn" style="margin-bottom:20px;">
+        <span>📱</span>
+        <div>Bu müşteri <strong>4 / 6</strong> cihaz limitini kullanıyor. (Pro paket)</div>
+      </div>
+
+      <div class="card">
+        <div class="row between" style="margin-bottom:16px;">
+          <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;">Aktif Cihazlar <span class="muted">(4/6)</span></div>
+          <button class="btn ghost sm">+ Limit Artır</button>
+        </div>
+        <div>
+          <div class="device-item">
+            <div class="device-icon">📱</div>
+            <div style="flex:1;">
+              <div style="font-weight:500;font-size:0.88rem;">Samsung Galaxy Tab A8</div>
+              <div class="xs muted">Şube 1 — Kasa 1 · Son aktif: Bugün 14:22</div>
+            </div>
+            <span class="badge green">● Aktif</span>
+            <button class="btn danger sm">Kaldır</button>
+          </div>
+          <div class="device-item">
+            <div class="device-icon">📱</div>
+            <div style="flex:1;">
+              <div style="font-weight:500;font-size:0.88rem;">Lenovo Tab M10</div>
+              <div class="xs muted">Şube 1 — Depo · Son aktif: Bugün 09:15</div>
+            </div>
+            <span class="badge green">● Aktif</span>
+            <button class="btn danger sm">Kaldır</button>
+          </div>
+          <div class="device-item">
+            <div class="device-icon">📱</div>
+            <div style="flex:1;">
+              <div style="font-weight:500;font-size:0.88rem;">Samsung Galaxy Tab S6</div>
+              <div class="xs muted">Şube 2 — Kasa · Son aktif: Dün 21:30</div>
+            </div>
+            <span class="badge green">● Aktif</span>
+            <button class="btn danger sm">Kaldır</button>
+          </div>
+          <div class="device-item">
+            <div class="device-icon">📱</div>
+            <div style="flex:1;">
+              <div style="font-weight:500;font-size:0.88rem;">Huawei MatePad</div>
+              <div class="xs muted">Şube 2 — Depo · Son aktif: 3 gün önce</div>
+            </div>
+            <span class="badge yellow">● Pasif</span>
+            <button class="btn danger sm">Kaldır</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- BACKUP ARŞİVİ -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="screen" id="s-admin-backup">
+      <div class="screen-label">Ekran 06 · Backup Arşivi</div>
+
+      <div class="row between" style="margin-bottom:20px;">
+        <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;">Backup Arşivi</div>
+        <select class="input" style="width:220px;padding:8px 14px;">
+          <option>Ahmet Market</option>
+          <option>Fatma Süper</option>
+          <option>Ali Zincir Market</option>
+        </select>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;">
+        <div class="stat" style="border-color:rgba(79,142,247,0.3);background:rgba(79,142,247,0.05);">
+          <div class="stat-icon">📦</div>
+          <div class="stat-val" style="color:var(--accent);">30</div>
+          <div class="stat-lbl">Toplam Yedek</div>
+        </div>
+        <div class="stat" style="border-color:rgba(18,201,138,0.3);background:rgba(18,201,138,0.05);">
+          <div class="stat-icon">💾</div>
+          <div class="stat-val" style="color:var(--success);">142 MB</div>
+          <div class="stat-lbl">Toplam Boyut</div>
+        </div>
+        <div class="stat" style="border-color:rgba(18,201,138,0.3);background:rgba(18,201,138,0.05);">
+          <div class="stat-icon">✅</div>
+          <div class="stat-val" style="color:var(--success);">Bugün</div>
+          <div class="stat-lbl">Son Backup</div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:0;overflow:hidden;">
+        <table class="table">
+          <thead><tr><th>Tarih & Saat</th><th>Boyut</th><th>Kayıt Sayısı</th><th>Durum</th><th>İşlem</th></tr></thead>
+          <tbody>
+            <tr><td class="mono small">22.04.2026 · 21:34</td><td class="small">4.8 MB</td><td class="small muted">1.284 ürün · 19.420 satış</td><td><span class="badge green">✓ Tam</span></td><td><button class="btn ghost sm">İndir</button></td></tr>
+            <tr><td class="mono small">21.04.2026 · 21:31</td><td class="small">4.7 MB</td><td class="small muted">1.280 ürün · 19.350 satış</td><td><span class="badge green">✓ Tam</span></td><td><button class="btn ghost sm">İndir</button></td></tr>
+            <tr><td class="mono small">20.04.2026 · 21:29</td><td class="small">4.7 MB</td><td class="small muted">1.278 ürün · 19.280 satış</td><td><span class="badge green">✓ Tam</span></td><td><button class="btn ghost sm">İndir</button></td></tr>
+            <tr><td class="mono small">19.04.2026 · 21:25</td><td class="small">4.6 MB</td><td class="small muted">1.275 ürün · 19.190 satış</td><td><span class="badge green">✓ Tam</span></td><td><button class="btn ghost sm">İndir</button></td></tr>
+            <tr><td class="mono small">18.04.2026 · 22:10</td><td class="small">—</td><td class="small muted">—</td><td><span class="badge red">✗ Hata</span></td><td><button class="btn ghost sm">Log</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- AKTİVASYON EKRANI (MÜŞTERİ) -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="screen" id="s-aktivasyon">
+      <div class="screen-label">Ekran 07 · Lisans Aktivasyon (Müşteri Görür)</div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="p-sbar"><span>09:41</span><span>100%</span></div>
+            <div style="text-align:center;padding:20px 16px 16px;">
+              <div style="font-size:2.8rem;margin-bottom:8px;">🏪</div>
+              <div style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;color:#f1f5f9;">Market Sistemi</div>
+              <div style="font-size:12px;color:#64748b;margin-top:4px;">Lisans aktivasyonu gerekiyor</div>
+            </div>
+            <div class="p-field" style="margin-bottom:8px;">
+              <div class="p-flbl">Lisans Anahtarı</div>
+              <div style="font-family:'DM Mono',monospace;font-size:12px;color:#4f8ef7;letter-spacing:0.05em;">MYS-2026-AHMT-X7K9-P2M4-Q8W1</div>
+            </div>
+            <div class="p-field" style="margin-bottom:14px;">
+              <div class="p-flbl">E-posta Adresi</div>
+              <div style="font-size:13px;color:#f1f5f9;">ahmet@market.com</div>
+            </div>
+            <div class="p-btn" style="margin-bottom:8px;">Aktivasyonu Başlat →</div>
+            <div style="text-align:center;font-size:11px;color:#475569;padding:0 16px;">
+              Lisans anahtarınız aktivasyon mailinizde bulunmaktadır.
+            </div>
+            <div class="p-lbl" style="margin-top:12px;">Sorun mu yaşıyorsunuz?</div>
+            <div style="margin:0 16px;background:#1a2235;border:1px solid #2a3a55;border-radius:10px;padding:12px;font-size:12px;color:#94a3b8;text-align:center;">
+              📞 0532 XXX XX XX<br>
+              <span style="font-size:11px;color:#475569;">Hafta içi 09:00 — 18:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- KİLİT EKRANI (MÜŞTERİ) -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="screen" id="s-kilit">
+      <div class="screen-label">Ekran 08 · Lisans Kilit Ekranı (Müşteri Görür)</div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="p-sbar"><span>09:41</span><span>84%</span></div>
+            <div style="text-align:center;padding:28px 16px 20px;">
+              <div style="width:64px;height:64px;background:rgba(240,79,79,0.15);border:2px solid rgba(240,79,79,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 14px;">🔒</div>
+              <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;color:#f1f5f9;margin-bottom:6px;">Lisansınız Sona Erdi</div>
+              <div style="font-size:12px;color:#64748b;line-height:1.6;">Hizmetiniz 22.04.2026 tarihinde sona ermiştir. Yenilemek için lütfen bizimle iletişime geçin.</div>
+            </div>
+            <div class="p-card danger" style="margin-bottom:10px;">
+              <div style="font-size:12px;color:#fca5a5;font-weight:500;margin-bottom:6px;">Lisans Bilgileri</div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:#64748b;">Paket</span><span style="color:#f1f5f9;">Pro — 2 Şube</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:#64748b;">Sona Erdi</span><span style="color:#f04f4f;font-family:'DM Mono',monospace;">22.04.2026</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:#64748b;">Gecikme</span><span style="color:#f04f4f;">2 gün</span></div>
+            </div>
+            <div class="p-card" style="margin-bottom:14px;text-align:center;">
+              <div style="font-size:11px;color:#64748b;margin-bottom:6px;">Yenilemek için iletişime geçin</div>
+              <div style="font-size:16px;font-weight:600;color:#4f8ef7;margin-bottom:2px;">📞 0532 XXX XX XX</div>
+              <div style="font-size:11px;color:#475569;">Hafta içi 09:00 — 18:00</div>
+            </div>
+            <div class="p-btn danger" style="margin-bottom:8px;">📞 Hemen Ara</div>
+            <div class="p-btn ghost">✉ Mail Gönder</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- LISANSIMI UNUTTUM -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="screen" id="s-unuttum">
+      <div class="screen-label">Ekran 09 · Lisansımı Unuttum</div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="p-sbar"><span>09:41</span><span>84%</span></div>
+            <div class="p-head">
+              <div class="p-title">Lisansımı Unuttum</div>
+            </div>
+            <div style="padding:0 16px 12px;font-size:12px;color:#64748b;line-height:1.6;">
+              Kayıtlı e-posta adresinize lisans bilgilerinizi gönderelim.
+            </div>
+            <div class="p-field" style="margin-bottom:10px;">
+              <div class="p-flbl">E-posta Adresiniz</div>
+              <div style="font-size:13px;color:#475569;">ahmet@market.com</div>
+            </div>
+            <div class="p-btn" style="margin-bottom:14px;">Lisans Bilgilerimi Gönder →</div>
+            <div class="p-alert ok">
+              <span>✓</span>
+              <div>Lisans bilgileriniz <strong>ahmet@market.com</strong> adresine gönderildi.</div>
+            </div>
+            <div class="p-card success" style="margin:0 16px 10px;">
+              <div style="font-size:11px;color:#6ee7b7;margin-bottom:8px;">Gönderilen Bilgiler</div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:#64748b;">Lisans</span><span style="font-family:'DM Mono',monospace;color:#4f8ef7;font-size:11px;">MYS-2026-AHMT-X7K9...</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:#64748b;">Paket</span><span style="color:#f1f5f9;">Pro</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:#64748b;">Kalan Süre</span><span style="color:#12c98a;">187 gün</span></div>
+            </div>
+            <div style="text-align:center;font-size:11px;color:#475569;padding:0 16px;margin-top:12px;">
+              Mail gelmediyse spam klasörünü kontrol edin.<br>
+              Sorun için: 📞 0532 XXX XX XX
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- YENİ CİHAZ -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="screen" id="s-yeni-cihaz">
+      <div class="screen-label">Ekran 10 · Yeni Cihaz Kaydı</div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="p-sbar"><span>09:41</span><span>100%</span></div>
+            <div style="text-align:center;padding:20px 16px 14px;">
+              <div style="font-size:2.4rem;margin-bottom:8px;">📲</div>
+              <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;color:#f1f5f9;">Yeni Cihaz</div>
+              <div style="font-size:12px;color:#64748b;margin-top:3px;">Mevcut lisansınızla bu cihazı aktif edin</div>
+            </div>
+            <div class="p-field" style="margin-bottom:8px;">
+              <div class="p-flbl">Lisans Anahtarı</div>
+              <div style="font-family:'DM Mono',monospace;font-size:12px;color:#4f8ef7;letter-spacing:0.04em;">MYS-2026-AHMT-X7K9-P2M4-Q8W1</div>
+            </div>
+            <div class="p-field" style="margin-bottom:8px;">
+              <div class="p-flbl">E-posta Adresi</div>
+              <div style="font-size:13px;color:#f1f5f9;">ahmet@market.com</div>
+            </div>
+            <div class="p-card warn" style="margin-bottom:10px;">
+              <div style="font-size:11px;color:#fcd34d;margin-bottom:5px;">Cihaz Durumu</div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:#64748b;">Kullanılan</span><span style="color:#f1f5f9;">4 / 6 cihaz</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:#64748b;">Bu cihaz</span><span style="color:#f5a623;">5. cihaz olarak eklenecek</span></div>
+            </div>
+            <div class="p-btn success" style="margin-bottom:8px;">✓ Bu Cihazı Aktif Et</div>
+            <div style="text-align:center;font-size:11px;color:#475569;padding:0 16px;margin-top:8px;">
+              Anahtarı bilmiyorsanız "Lisansımı Unuttum" seçeneğini kullanın.
+            </div>
+            <div class="p-btn ghost" style="margin-top:8px;">❓ Lisansımı Unuttum</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(n => n.classList.remove('active'));
+  var el = document.getElementById('s-'+id);
+  if(el) el.classList.add('active');
+  event.currentTarget.classList.add('active');
+  document.querySelector('.content').scrollTop = 0;
+}
+</script>
+</body>
+</html>

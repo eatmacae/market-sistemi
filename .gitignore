@@ -1,0 +1,38 @@
+# Gizli dosyalar
+**/.env
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.mypy_cache/
+.pytest_cache/
+
+# Node / Expo
+node_modules/
+.expo/
+dist/
+web-build/
+
+# Yedekler
+market-sistemi/backend/backups/
+*.zip
+*.7z
+*.tar.gz
+
+# Editör / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Log
+*.log
+logs/
+# Claude Code dahili dosyaları
+.claude/

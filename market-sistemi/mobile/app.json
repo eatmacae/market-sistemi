@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "Market Yönetim",
+    "slug": "market-yonetim-sistemi",
+    "version": "1.0.0",
+    "orientation": "landscape",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0A0E1A"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.market.yonetim"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0A0E1A"
+      },
+      "package": "com.market.yonetim"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Barkod okumak için kamera izni gereklidir."
+        }
+      ]
+    ],
+    "scheme": "market",
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

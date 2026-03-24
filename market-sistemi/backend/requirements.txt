@@ -1,0 +1,46 @@
+# ============================================================
+# Market Yönetim Sistemi — Backend Bağımlılıkları
+# Kurulum: pip install -r requirements.txt
+# ============================================================
+
+# Web framework
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+
+# Veritabanı
+sqlalchemy==2.0.30
+alembic==1.13.1
+psycopg2-binary==2.9.9
+
+# Güvenlik
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+cryptography==42.0.7
+
+# Ortam değişkenleri
+python-dotenv==1.0.1
+
+# Doğrulama
+pydantic==2.7.1
+pydantic-settings==2.2.1
+email-validator==2.1.1
+
+# Dosya işleme
+pandas==2.2.2
+openpyxl==3.1.2
+python-docx==1.1.2
+reportlab==4.2.2
+
+# Fuzzy eşleştirme (fatura akıllı eşleşme)
+rapidfuzz==3.9.3
+
+# Zamanlayıcı (gece görevleri)
+apscheduler==3.10.4
+
+# HTTP istemci (Claude API, scraping)
+httpx==0.27.0
+beautifulsoup4==4.12.3
+anthropic==0.28.0
+
+# Form & dosya yükleme
+python-multipart==0.0.9

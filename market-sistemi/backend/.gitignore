@@ -1,0 +1,27 @@
+# Ortam değişkenleri — ASLA git'e ekleme
+.env
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Alembic (migration versiyonları hariç)
+# alembic/versions/ git'te tutulur
+
+# Yedekler
+backups/
+*.bak
+
+# Loglar
+*.log
+logs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
