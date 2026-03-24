@@ -37,6 +37,9 @@ wheels/
 .venv/
 venv/
 env/
+mobile/Scripts/
+mobile/Lib/
+mobile/pyvenv.cfg
 .mypy_cache/
 .pytest_cache/
 
