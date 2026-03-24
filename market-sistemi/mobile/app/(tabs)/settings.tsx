@@ -35,7 +35,7 @@ import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 export default function SettingsScreen() {
   const { colors, isDark }         = useTheme();
   const { user, logout }           = useAuthStore();
-  const { themePreference, setThemePreference, serverUrl, setServerUrl, branchName } = useSettingsStore();
+  const { themePreference, setThemePreference, serverUrl, setServerUrl, branchName, lisans } = useSettingsStore();
 
   // Sunucu URL düzenleme
   const [urlDuzenle, setUrlDuzenle]   = useState(false);
@@ -249,6 +249,42 @@ export default function SettingsScreen() {
                 style={{ flex: 1 }} />
             </View>
           </View>
+        )}
+      </View>
+
+      {/* ── Yönetim (sadece admin) ── */}
+      {user?.role === 'admin' && (
+        <View style={[styles.bolumKutu, { backgroundColor: colors.bgSecondary, borderColor: colors.border }]}>
+          <Text style={[styles.bolumBaslik, { color: colors.textMuted, fontFamily: FONT_FAMILY.bodyMedium }]}>
+            YÖNETİM
+          </Text>
+          <AyarSatiri etiket="⚙️ Sistem Ayarları"    onPress={() => router.push('/(yonetim)/system-settings')} />
+          <AyarSatiri etiket="👥 Personel"            onPress={() => router.push('/(yonetim)/personnel')} />
+          <AyarSatiri etiket="🏭 Tedarikçiler"        onPress={() => router.push('/(yonetim)/suppliers')} />
+          <AyarSatiri etiket="🎯 Kampanyalar"         onPress={() => router.push('/(yonetim)/campaigns')} />
+          <AyarSatiri etiket="📈 Satış Hedefleri"     onPress={() => router.push('/(yonetim)/targets')} />
+          <AyarSatiri etiket="💾 Yedekleme"           onPress={() => router.push('/(yonetim)/backup')} />
+        </View>
+      )}
+
+      {/* ── Lisans ── */}
+      <View style={[styles.bolumKutu, { backgroundColor: colors.bgSecondary, borderColor: colors.border }]}>
+        <Text style={[styles.bolumBaslik, { color: colors.textMuted, fontFamily: FONT_FAMILY.bodyMedium }]}>
+          LİSANS
+        </Text>
+        {lisans ? (
+          <>
+            <AyarSatiri etiket="Paket"    deger={lisans.package.toUpperCase()} />
+            <AyarSatiri etiket="Müşteri"  deger={lisans.customerName} />
+            <AyarSatiri etiket="Geçerlilik" deger={lisans.endDate ? `${lisans.endDate} tarihine kadar` : 'Sınırsız'} />
+          </>
+        ) : (
+          <AyarSatiri
+            etiket="Lisans Aktif Değil"
+            deger="Aktivasyon gerekli"
+            onPress={() => router.push('/(auth)/activate')}
+            tehlikeli
+          />
         )}
       </View>
 

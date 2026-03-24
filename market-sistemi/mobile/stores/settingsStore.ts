@@ -9,6 +9,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type ThemePreference = 'light' | 'dark' | 'system';
 
+interface LisansBilgi {
+  key          : string;
+  package      : string;
+  customerName : string;
+  endDate      : string | null;
+  branchLimit  : number;
+  deviceLimit  : number;
+}
+
 interface SettingsState {
   // Tema
   themePreference: ThemePreference;
@@ -22,6 +31,10 @@ interface SettingsState {
   branchId  : number;
   branchName: string;
   setBranch: (id: number, name: string) => void;
+
+  // Lisans
+  lisans    : LisansBilgi | null;
+  setLisans : (l: LisansBilgi | null) => void;
 }
 
 export const useSettingsStore = create<SettingsState>()(
@@ -40,6 +53,10 @@ export const useSettingsStore = create<SettingsState>()(
       branchId  : 1,
       branchName: 'Merkez',
       setBranch : (id, name) => set({ branchId: id, branchName: name }),
+
+      // Lisans
+      lisans    : null,
+      setLisans : (l) => set({ lisans: l }),
     }),
     {
       name   : 'market-settings',      // AsyncStorage anahtarı

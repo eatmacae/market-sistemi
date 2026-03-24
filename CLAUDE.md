@@ -97,7 +97,7 @@ Radius  : 8px (btn) | 12px (card) | 16px (modal) | 999px (badge)
 - [x] Faz 5 — Market Sahibi Paneli & Hedefler
 - [x] Faz 6 — Sistem & Ayarlar
 - [ ] Faz 7 — Çok Şubeli Mod (opsiyonel)
-- [ ] Faz 8 — Yazılım Satış Altyapısı
+- [x] Faz 8 — Yazılım Satış Altyapısı
 
 ## 🚀 Her Faz Başında
 
