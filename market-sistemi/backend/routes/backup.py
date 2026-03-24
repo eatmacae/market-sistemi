@@ -10,9 +10,10 @@ from pathlib            import Path
 from datetime           import datetime
 import os
 
-from database   import get_db
-from models     import Personnel
+from database    import get_db
+from models      import Personnel
 from routes.auth import get_current_user, require_role
+from services    import audit_log
 
 router = APIRouter(prefix="/api/backup", tags=["Yedekleme"])
 
@@ -64,11 +65,22 @@ async def manuel_yedek_al(
     background_tasks: BackgroundTasks,
     mail_gonder     : bool      = Query(True, description="Yedek tamamlanınca mail gönder"),
     current_user    : Personnel = Depends(require_role("admin")),
+    db              : Session   = Depends(get_db),
 ):
     """
     Admin isteğiyle anlık yedek alır.
     İşlem arka planda çalışır — hemen 202 Accepted döner.
     """
+    # Yedek başlatma audit log
+    audit_log.log_action(
+        db          = db,
+        action_type = "BACKUP_MANUAL_START",
+        user_id     = current_user.id,
+        branch_id   = current_user.branch_id,
+        table_name  = "backup",
+        note        = f"mail_gonder={mail_gonder}",
+    )
+
     def _arka_planda_yedek():
         from services.backup import yedek_al
         sonuc = yedek_al(mail_gonder=mail_gonder)
@@ -148,6 +160,7 @@ async def yedek_durumu(
 async def yedek_indir(
     dosya_adi   : str,
     current_user: Personnel = Depends(require_role("admin")),
+    db          : Session   = Depends(get_db),
 ):
     """
     Belirli bir yedek dosyasını indirir.
@@ -170,6 +183,16 @@ async def yedek_indir(
     if not dosya.exists():
         raise HTTPException(status_code=404, detail="Yedek dosyası bulunamadı.")
 
+    # Yedek indirme audit log
+    audit_log.log_action(
+        db          = db,
+        action_type = "BACKUP_DOWNLOAD",
+        user_id     = current_user.id,
+        branch_id   = current_user.branch_id,
+        table_name  = "backup",
+        note        = dosya_adi,
+    )
+
     return FileResponse(
         path             = str(dosya),
         filename         = dosya_adi,
@@ -185,6 +208,7 @@ async def yedek_indir(
 async def yedek_sil(
     dosya_adi   : str,
     current_user: Personnel = Depends(require_role("admin")),
+    db          : Session   = Depends(get_db),
 ):
     """Belirli bir yedek dosyasını siler. Sadece admin yapabilir."""
     if not dosya_adi.startswith("yedek_") or not dosya_adi.endswith(".zip"):
@@ -198,6 +222,16 @@ async def yedek_sil(
 
     if not dosya.exists():
         raise HTTPException(status_code=404, detail="Yedek dosyası bulunamadı.")
+
+    # Yedek silme audit log — kritik işlem
+    audit_log.log_action(
+        db          = db,
+        action_type = "BACKUP_DELETE",
+        user_id     = current_user.id,
+        branch_id   = current_user.branch_id,
+        table_name  = "backup",
+        note        = dosya_adi,
+    )
 
     dosya.unlink()
     return {"success": True, "message": f"{dosya_adi} silindi."}
