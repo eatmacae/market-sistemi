@@ -31,7 +31,7 @@ import { useAuthStore }    from '../../stores/authStore';
 import { useSettingsStore } from '../../stores/settingsStore';
 import { Button }          from '../../components/ui/Button';
 import { api }             from '../../services/api';
-import { getPendingCount } from '../services/storage';
+import { getPendingCount } from '../../services/storage';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 

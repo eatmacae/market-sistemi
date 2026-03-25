@@ -28,7 +28,7 @@ import { router }          from 'expo-router';
 import { useTheme }        from '../../hooks/useTheme';
 import { useSettingsStore } from '../../stores/settingsStore';
 import { api }             from '../../services/api';
-import { getPendingCount } from '../services/storage';
+import { getPendingCount } from '../../services/storage';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 

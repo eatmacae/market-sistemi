@@ -11,29 +11,38 @@
 
 import { useEffect } from 'react';
 import { Stack } from 'expo-router';
-import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useAuthStore } from '../stores/authStore';
-import { useSettingsStore } from '../stores/settingsStore';
 import { useTheme } from '../hooks/useTheme';
+import {
+  useFonts,
+  DMSans_400Regular,
+  DMSans_500Medium,
+  DMSans_600SemiBold,
+  DMSans_700Bold,
+} from '@expo-google-fonts/dm-sans';
+import {
+  Syne_700Bold,
+  Syne_600SemiBold,
+} from '@expo-google-fonts/syne';
 
 // Splash screen fontlar yüklenene kadar beklesin
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const { isLoggedIn }  = useAuthStore();
+  const { isLoggedIn }     = useAuthStore();
   const { colors, isDark } = useTheme();
 
-  // DMSans ve Syne fontlarını yükle
+  // DMSans ve Syne fontlarını Google Fonts üzerinden yükle
   const [fontsLoaded, fontError] = useFonts({
-    'DMSans-Regular'  : require('../assets/fonts/DMSans-Regular.ttf'),
-    'DMSans-Medium'   : require('../assets/fonts/DMSans-Medium.ttf'),
-    'DMSans-SemiBold' : require('../assets/fonts/DMSans-SemiBold.ttf'),
-    'DMSans-Bold'     : require('../assets/fonts/DMSans-Bold.ttf'),
-    'Syne-Bold'       : require('../assets/fonts/Syne-Bold.ttf'),
-    'Syne-SemiBold'   : require('../assets/fonts/Syne-SemiBold.ttf'),
+    'DMSans-Regular'  : DMSans_400Regular,
+    'DMSans-Medium'   : DMSans_500Medium,
+    'DMSans-SemiBold' : DMSans_600SemiBold,
+    'DMSans-Bold'     : DMSans_700Bold,
+    'Syne-Bold'       : Syne_700Bold,
+    'Syne-SemiBold'   : Syne_600SemiBold,
   });
 
   useEffect(() => {
