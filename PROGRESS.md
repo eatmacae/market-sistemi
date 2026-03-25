@@ -124,10 +124,10 @@ npm test
 
 ---
 
-## 📱 Android Emülatör Ekran Testleri (2026-03-25)
+## 📱 Android Emülatör Ekran Testleri (2026-03-25) — TÜM EKRANLAR ✅
 
-> Pixel 8 Pro, Android 16, Expo Go, Metro `exp://127.0.0.1:8081`
-> Düzeltilen hatalar bu oturumda commit edildi.
+> Pixel 8 Pro, Android 16, Expo Go, Metro `exp://127.0.0.1:8082`
+> 25/25 ekran test edildi. Tüm hatalar düzeltildi.
 
 | # | Ekran | Durum | Notlar |
 |---|-------|-------|--------|
@@ -142,34 +142,20 @@ npm test
 | 9 | `(tabs)/reports` | ✅ Tamamlandı | Error state + Yenile |
 | 10 | `(tabs)/customers` | ✅ Tamamlandı | Tab navigasyonu çalışıyor |
 | 11 | `(tabs)/settings` | ✅ Tamamlandı | Tema (Açık/Koyu/Sistem) ✅, dark mode ✅, Çıkış Yap |
-| 12 | `(sahip)/index` | ⏳ Bekliyor | Route `/sahip` unmatched — sitemap'ten açılacak |
-| 13 | `(yonetim)/backup` | ⏳ Bekliyor | — |
+| 12 | `(sahip)/index` | ✅ Tamamlandı | Deep link `/(sahip)/` ile açıldı, loading + error state ✅ |
+| 13 | `(yonetim)/backup` | ✅ Tamamlandı | Loading state görünüyor |
 | 14 | `(yonetim)/branches` | ✅ Tamamlandı | Şube Yönetimi, error state + Tekrar Dene |
-| 15 | `(yonetim)/campaigns` | ⏳ Bekliyor | — |
-| 16 | `(yonetim)/customers` | ⏳ Bekliyor | — |
-| 17 | `(yonetim)/invoices` | ✅ Tamamlandı | **Hata düzeltildi:** `user` → `branchId` dependency |
-| 18 | `(yonetim)/musteri-form` | ⏳ Bekliyor | — |
-| 19 | `(yonetim)/personnel` | ⏳ Bekliyor | — |
-| 20 | `(yonetim)/stok-hareket` | ⏳ Bekliyor | — |
-| 21 | `(yonetim)/suppliers` | ⏳ Bekliyor | — |
-| 22 | `(yonetim)/system-settings` | ⏳ Bekliyor | — |
-| 23 | `(yonetim)/targets` | ⏳ Bekliyor | — |
-| 24 | `(yonetim)/transfers` | ⏳ Bekliyor | — |
-| 25 | `(yonetim)/urun-form` | ⏳ Bekliyor | — |
-
-### Bir sonraki oturumda çalıştırılacak otomatik test
-```bash
-# 1. Metro başlat
-cd market-sistemi/mobile && npx expo start --clear
-
-# 2. ADB tüneli
-adb -s emulator-5554 reverse tcp:8081 tcp:8081
-
-# 3. Kalan 14 ekranı otomatik test et (screenshot alır)
-bash scripts/test-screens.sh
-# Çıktı: market-sistemi/mobile/scripts/screenshots/*.png
-```
-Script dosyası: `market-sistemi/mobile/scripts/test-screens.sh`
+| 15 | `(yonetim)/campaigns` | ✅ Tamamlandı | Offline banner + error state + empty state + Ekle butonu |
+| 16 | `(yonetim)/customers` | ✅ Tamamlandı | Error state + Tekrar Dene |
+| 17 | `(yonetim)/invoices` | ✅ Tamamlandı | Fatura Yönetimi, Dosya Seç & Yükle butonu, son faturalar |
+| 18 | `(yonetim)/musteri-form` | ✅ Tamamlandı | Form alanları dark temada düzgün |
+| 19 | `(yonetim)/personnel` | ✅ Tamamlandı | Offline banner + error state + Ekle butonu |
+| 20 | `(yonetim)/stok-hareket` | ✅ Tamamlandı | Ürün arama ekranı render edildi |
+| 21 | `(yonetim)/suppliers` | ✅ Tamamlandı | Error state + Tekrar Dene |
+| 22 | `(yonetim)/system-settings` | ✅ Tamamlandı | Error state + Tekrar Dene |
+| 23 | `(yonetim)/targets` | ✅ Tamamlandı | Error state + Tekrar Dene |
+| 24 | `(yonetim)/transfers` | ✅ Tamamlandı | Error state + Tekrar Dene |
+| 25 | `(yonetim)/urun-form` | ✅ Tamamlandı | Ürün Adı, Barkod, Kategori, Birim form alanları |
 
 ### Bu oturumda düzeltilen hatalar (emülatör testinde bulunanlar)
 1. `login.tsx` + `activate.tsx` → `../services/storage` yanlış import yolu → `../../services/storage`
@@ -200,6 +186,22 @@ Script dosyası: `market-sistemi/mobile/scripts/test-screens.sh`
 - `invoices.tsx`: circular `branchId` referansı giderildi
 
 **Son commit:** `fix: tüm ekranlarda hardcode renk kaldırıldı, TS hataları giderildi`
+
+---
+
+## ✅ Bu Oturumda Tamamlananlar (2026-03-25 — devam 2)
+
+### 7. Tüm 25 Ekran Emülatör Testi Tamamlandı ✅
+
+- Kalan 14 ekran MCP mobile araçları ile test edildi
+- `(sahip)/index`: deep link `exp://127.0.0.1:8082/--/(sahip)/` ile açıldı
+- Tüm ekranlar: loading / error / empty state → doğrulandı
+
+### 8. Orientation Kilidi Kaldırıldı ✅
+
+**`app.json`:** `"orientation": "landscape"` → `"orientation": "default"`
+
+Portrait modda test: Sahip Paneli ekranı portrait orientasyonda düzgün çalıştı.
 
 ---
 
