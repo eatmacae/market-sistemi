@@ -32,6 +32,7 @@ import { useTheme }         from '../../hooks/useTheme';
 import { useAuthStore }     from '../../stores/authStore';
 import { useSettingsStore } from '../../stores/settingsStore';
 import { api }              from '../../services/api';
+import { getPendingCount }  from '../../services/storage';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 
@@ -68,6 +69,8 @@ export default function BranchesScreen() {
   const [yukleniyor, setYukleniyor] = useState(true);
   const [yenileniyor, setYenileniyor] = useState(false);
   const [hata,       setHata]       = useState<string | null>(null);
+  const [isOffline,        setIsOffline]        = useState(false);
+  const [bekleyenIslem,    setBekleyenIslem]    = useState(0);
 
   // Sadece aktif/tüm toggle
   const [sadeceAktif, setSadeceAktif] = useState(true);
@@ -92,7 +95,9 @@ export default function BranchesScreen() {
     try {
       const yanit = await api.get(`/api/branches?sadece_aktif=${sadeceAktif}`);
       setSubeler(yanit.data.items);
+      setIsOffline(false);
     } catch (err: any) {
+      if (!err.response) setIsOffline(true);
       setHata(err?.response?.data?.detail || 'Şubeler yüklenemedi.');
     } finally {
       setYukleniyor(false);
@@ -100,7 +105,10 @@ export default function BranchesScreen() {
     }
   }, [sadeceAktif]);
 
-  useFocusEffect(useCallback(() => { yukle(); }, [yukle]));
+  useFocusEffect(useCallback(() => {
+    yukle();
+    getPendingCount().then(setBekleyenIslem);
+  }, [yukle]));
 
   // ============================================================
   // MODAL AÇ
@@ -279,6 +287,15 @@ export default function BranchesScreen() {
   return (
     <View style={[styles.konteyner, { backgroundColor: colors.bgPrimary }]}>
 
+      {/* Offline Banner */}
+      {(isOffline || bekleyenIslem > 0) && (
+        <View style={[styles.offlineBant, { backgroundColor: colors.danger }]}>
+          <Text style={[styles.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
+            🔴 Offline · {bekleyenIslem} işlem bekliyor
+          </Text>
+        </View>
+      )}
+
       {/* Filtre + Yeni Şube */}
       <View style={[styles.araYüz, { backgroundColor: colors.bgSecondary, borderBottomColor: colors.border }]}>
         <TouchableOpacity
@@ -455,4 +472,13 @@ const styles = StyleSheet.create({
   modalBtnlar: { flexDirection: 'row', gap: SPACING.sm, marginTop: SPACING.sm },
   modalBtn  : { flex: 1, borderRadius: RADIUS.button, paddingVertical: SPACING.md, alignItems: 'center', justifyContent: 'center', minHeight: MIN_TOUCH_SIZE, borderWidth: 1 },
   modalBtnMetin: { fontSize: FONT_SIZE.base, fontFamily: FONT_FAMILY.bodyBold },
+  offlineBant: {
+    paddingVertical  : SPACING.sm,
+    paddingHorizontal: SPACING.base,
+    alignItems       : 'center',
+  },
+  offlineMetin: {
+    color   : '#FFFFFF',
+    fontSize: FONT_SIZE.sm,
+  },
 });

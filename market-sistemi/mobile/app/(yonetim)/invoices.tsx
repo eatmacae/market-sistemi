@@ -26,6 +26,9 @@ import { useFocusEffect }   from 'expo-router';
 import { useTheme }         from '../../hooks/useTheme';
 import { useAuthStore }     from '../../stores/authStore';
 import { useSettingsStore } from '../../stores/settingsStore';
+import { getPendingCount } from '../../services/storage';
+import { SPACING } from '../../constants/spacing';
+import { FONT_FAMILY, FONT_SIZE } from '../../constants/typography';
 
 // ============================================================
 // TİPLER
@@ -126,6 +129,8 @@ export default function FaturaYonetimi() {
 
   const [ekran, setEkran]                     = useState<Ekran>('liste');
   const [hataMesaji, setHataMesaji]           = useState('');
+  const [isOffline, setIsOffline]         = useState(false);
+  const [bekleyenIslem, setBekleyenIslem] = useState(0);
   const [faturaListesi, setFaturaListesi]     = useState<FaturaOzet[]>([]);
   const [listeYukleniyor, setListeYukleniyor] = useState(false);
   const [yenileniyor, setYenileniyor]         = useState(false);
@@ -163,7 +168,9 @@ export default function FaturaYonetimi() {
       if (!yanit.ok) throw new Error(`HTTP ${yanit.status}`);
       const veri = await yanit.json();
       setFaturaListesi(veri.items ?? []);
+      setIsOffline(false);
     } catch (err: any) {
+      if (!err.response && !(err instanceof Response)) setIsOffline(true);
       setHataMesaji(err.message ?? 'Fatura listesi yüklenemedi.');
       setEkran('hata');
     } finally {
@@ -175,6 +182,7 @@ export default function FaturaYonetimi() {
   useFocusEffect(
     useCallback(() => {
       faturaListesiniYukle();
+      getPendingCount().then(setBekleyenIslem);
     }, [faturaListesiniYukle]),
   );
 
@@ -597,6 +605,15 @@ export default function FaturaYonetimi() {
   // --- LİSTE (varsayılan) ---
   return (
     <View style={s.kapsayici}>
+
+      {/* ── Offline Banner ── */}
+      {(isOffline || bekleyenIslem > 0) && (
+        <View style={[s.offlineBant, { backgroundColor: colors.danger }]}>
+          <Text style={[s.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
+            🔴 Offline · {bekleyenIslem} işlem bekliyor
+          </Text>
+        </View>
+      )}
       {/* Yeni fatura yükle kartı */}
       <View style={s.yukleKart}>
         <Text style={s.yukleBaslik}>Fatura Yükle</Text>
@@ -722,6 +739,15 @@ export default function FaturaYonetimi() {
 
 const styles = (c: ReturnType<typeof useTheme>['colors']) =>
   StyleSheet.create({
+  offlineBant: {
+    paddingVertical  : SPACING.sm,
+    paddingHorizontal: SPACING.base,
+    alignItems       : 'center',
+  },
+  offlineMetin: {
+    color   : '#FFFFFF',
+    fontSize: FONT_SIZE.sm,
+  },
     kapsayici: {
       flex           : 1,
       backgroundColor: c.bgPrimary,

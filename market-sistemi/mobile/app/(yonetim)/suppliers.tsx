@@ -32,6 +32,7 @@ import { useAuthStore }    from '../../stores/authStore';
 import { api }             from '../../services/api';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
+import { getPendingCount } from '../../services/storage';
 
 // ============================================================
 // TİPLER
@@ -83,6 +84,8 @@ export default function SuppliersScreen() {
   const [yukleniyor, setYukleniyor]    = useState(true);
   const [yenileniyor, setYenile]       = useState(false);
   const [hata, setHata]                = useState<string | null>(null);
+  const [isOffline, setIsOffline]         = useState(false);
+  const [bekleyenIslem, setBekleyenIslem] = useState(0);
   const [arama, setArama]              = useState('');
   const [toplam, setToplam]            = useState(0);
   const [sayfa, setSayfa]              = useState(1);
@@ -127,7 +130,9 @@ export default function SuppliersScreen() {
       setToplam(data.total);
       setSayfa(yeniSayfa);
       setDahaVar(yeniSayfa * 30 < data.total);
+      setIsOffline(false);
     } catch (err: any) {
+      if (!err.response) setIsOffline(true);
       setHata(err?.response?.data?.detail || 'Tedarikçiler yüklenemedi.');
     } finally {
       setYukleniyor(false);
@@ -136,7 +141,8 @@ export default function SuppliersScreen() {
     }
   }, [branchId, arama]);
 
-  useEffect(() => { yukle(1); }, [yukle]);
+  useEffect(() => {
+    getPendingCount().then(setBekleyenIslem); yukle(1); }, [yukle]);
 
   // ============================================================
   // FORM İŞLEMLERİ
@@ -361,6 +367,15 @@ export default function SuppliersScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bgPrimary }]}>
+
+      {/* ── Offline Banner ── */}
+      {(isOffline || bekleyenIslem > 0) && (
+        <View style={[styles.offlineBant, { backgroundColor: colors.danger }]}>
+          <Text style={[styles.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
+            🔴 Offline · {bekleyenIslem} işlem bekliyor
+          </Text>
+        </View>
+      )}
       {/* Arama */}
       <View style={[styles.aramaKutu, { backgroundColor: colors.bgSecondary, borderBottomColor: colors.border }]}>
         <TextInput
@@ -412,6 +427,15 @@ export default function SuppliersScreen() {
 // ============================================================
 
 const styles = StyleSheet.create({
+  offlineBant: {
+    paddingVertical  : SPACING.sm,
+    paddingHorizontal: SPACING.base,
+    alignItems       : 'center',
+  },
+  offlineMetin: {
+    color   : '#FFFFFF',
+    fontSize: FONT_SIZE.sm,
+  },
   container  : { flex: 1 },
   merkez     : { flex: 1, justifyContent: 'center', alignItems: 'center', gap: SPACING.md, padding: SPACING.xxl },
   bilgiMetin : { fontSize: FONT_SIZE.base, fontFamily: FONT_FAMILY.body, textAlign: 'center' },

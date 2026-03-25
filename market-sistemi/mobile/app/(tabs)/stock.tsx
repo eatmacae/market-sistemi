@@ -23,6 +23,7 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 import { useTheme } from '../../hooks/useTheme';
 import { useSettingsStore } from '../../stores/settingsStore';
 import { useAuthStore } from '../../stores/authStore';
@@ -30,7 +31,7 @@ import { StockItem } from '../../components/features/StockItem';
 import { Button } from '../../components/ui/Button';
 import { api } from '../../services/api';
 import { getPendingCount } from '../../services/storage';
-import { SPACING, MIN_TOUCH_SIZE } from '../../constants/spacing';
+import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE } from '../../constants/typography';
 
 // Filtre seçenekleri
@@ -58,6 +59,7 @@ export default function StockScreen() {
   const { colors }         = useTheme();
   const { branchId }       = useSettingsStore();
   const { token }          = useAuthStore();
+  const router             = useRouter();
 
   // Durum
   const [stoklar, setStoklar]         = useState<StokOzet[]>([]);
@@ -243,9 +245,9 @@ export default function StockScreen() {
         </View>
       )}
 
-      {/* ── Başlık + Özet ── */}
+      {/* ── Başlık + Özet + Aksiyon Butonları ── */}
       <View style={[styles.baslik, { borderBottomColor: colors.border }]}>
-        <View>
+        <View style={{ flex: 1 }}>
           <Text style={[styles.baslikMetin, { color: colors.textPrimary, fontFamily: FONT_FAMILY.heading }]}>
             Stok Yönetimi
           </Text>
@@ -255,6 +257,15 @@ export default function StockScreen() {
             {sktUyariSayi > 0 && ` · ⚠️ ${sktUyariSayi} SKT`}
           </Text>
         </View>
+        {/* Ürün ekle butonu */}
+        <TouchableOpacity
+          onPress = {() => router.push('/(yonetim)/urun-form')}
+          style={[styles.ekleButon, { backgroundColor: colors.blue, minHeight: MIN_TOUCH_SIZE }]}
+        >
+          <Text style={[{ color: '#fff', fontFamily: FONT_FAMILY.bodyMedium, fontSize: FONT_SIZE.sm }]}>
+            + Ürün Ekle
+          </Text>
+        </TouchableOpacity>
       </View>
 
       {/* ── Arama ── */}
@@ -323,7 +334,7 @@ export default function StockScreen() {
         renderItem        = {({ item }) => (
           <StockItem
             {...item}
-            onPress = {(id) => {/* Ürün detay sayfasına git */}}
+            onPress = {(id) => router.push(`/(yonetim)/urun-form?id=${id}`)}
           />
         )}
         ListEmptyComponent = {<EmptyState />}
@@ -388,8 +399,18 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.sm,
   },
   baslik: {
+    flexDirection: 'row',
+    alignItems   : 'center',
     padding      : SPACING.base,
     borderBottomWidth: 1,
+    gap          : SPACING.sm,
+  },
+  ekleButon: {
+    paddingHorizontal: SPACING.base,
+    paddingVertical  : SPACING.sm,
+    borderRadius     : RADIUS.button,
+    alignItems       : 'center',
+    justifyContent   : 'center',
   },
   baslikMetin: {
     fontSize: FONT_SIZE.xl,

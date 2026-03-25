@@ -33,6 +33,7 @@ import { useAuthStore }    from '../../stores/authStore';
 import { api }             from '../../services/api';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
+import { getPendingCount } from '../../services/storage';
 
 // ============================================================
 // TİPLER
@@ -99,6 +100,8 @@ export default function HedeflerEkrani() {
   const [yukleniyor,  setYukleniyor] = useState(true);
   const [yenileniyor, setYenile]     = useState(false);
   const [hata,        setHata]       = useState<string | null>(null);
+  const [isOffline, setIsOffline]         = useState(false);
+  const [bekleyenIslem, setBekleyenIslem] = useState(0);
 
   // Form modal
   const [modalAcik, setModalAcik]   = useState(false);
@@ -125,7 +128,9 @@ export default function HedeflerEkrani() {
       ]);
       setAktifler(aktifYanit.data.hedefler ?? []);
       setGecmisler(listYanit.data.items ?? []);
+      setIsOffline(false);
     } catch (err: any) {
+      if (!err.response) setIsOffline(true);
       setHata(err?.response?.data?.detail || 'Veriler yüklenemedi.');
     } finally {
       setYukleniyor(false);
@@ -133,7 +138,8 @@ export default function HedeflerEkrani() {
     }
   }, [branchId]);
 
-  useEffect(() => { yukle(); }, [yukle]);
+  useEffect(() => {
+    getPendingCount().then(setBekleyenIslem); yukle(); }, [yukle]);
 
   // ============================================================
   // HEDEF KAYDET
@@ -245,6 +251,15 @@ export default function HedeflerEkrani() {
 
   return (
     <View style={[styles.kapsayici, { backgroundColor: colors.bgPrimary }]}>
+
+      {/* ── Offline Banner ── */}
+      {(isOffline || bekleyenIslem > 0) && (
+        <View style={[styles.offlineBant, { backgroundColor: colors.danger }]}>
+          <Text style={[styles.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
+            🔴 Offline · {bekleyenIslem} işlem bekliyor
+          </Text>
+        </View>
+      )}
       <ScrollView
         contentContainerStyle={styles.icerik}
         refreshControl={
@@ -545,6 +560,15 @@ function GecmisHedefSatiri({
 // ============================================================
 
 const styles = StyleSheet.create({
+  offlineBant: {
+    paddingVertical  : SPACING.sm,
+    paddingHorizontal: SPACING.base,
+    alignItems       : 'center',
+  },
+  offlineMetin: {
+    color   : '#FFFFFF',
+    fontSize: FONT_SIZE.sm,
+  },
   kapsayici: { flex: 1 },
   icerik   : { padding: SPACING.base },
   merkez   : {

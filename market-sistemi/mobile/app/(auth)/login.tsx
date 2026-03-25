@@ -13,7 +13,7 @@
  * ✅ Türkçe yorum satırları
  */
 
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -31,6 +31,7 @@ import { useAuthStore }    from '../../stores/authStore';
 import { useSettingsStore } from '../../stores/settingsStore';
 import { Button }          from '../../components/ui/Button';
 import { api }             from '../../services/api';
+import { getPendingCount } from '../services/storage';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 
@@ -56,8 +57,14 @@ export default function LoginScreen() {
   // Durum
   const [yukleniyor, setYukleniyor] = useState(false);
   const [hata, setHata]             = useState<string | null>(null);
+  const [isOffline, setIsOffline]         = useState(false);
+  const [bekleyenIslem, setBekleyenIslem] = useState(0);
 
   const sifreRef = useRef<TextInput>(null);
+
+  useEffect(() => {
+    getPendingCount().then(setBekleyenIslem);
+  }, []);
 
   // ============================================================
   // E-POSTA + ŞİFRE GİRİŞİ
@@ -93,6 +100,7 @@ export default function LoginScreen() {
 
     } catch (err: any) {
       if (!err.response) {
+        setIsOffline(true);
         setHata(`Sunucuya bağlanılamıyor.\nURL: ${serverUrl}\nLütfen WiFi bağlantısını kontrol edin.`);
       } else {
         setHata(err.response?.data?.detail || 'Giriş başarısız. Bilgileri kontrol edin.');
@@ -136,6 +144,7 @@ export default function LoginScreen() {
 
     } catch (err: any) {
       if (!err.response) {
+        setIsOffline(true);
         setHata(`Sunucuya bağlanılamıyor.\nURL: ${serverUrl}`);
       } else {
         setHata('PIN hatalı. Lütfen tekrar deneyin.');
@@ -191,6 +200,15 @@ export default function LoginScreen() {
         contentContainerStyle = {[styles.konteyner, { backgroundColor: colors.bgPrimary }]}
         keyboardShouldPersistTaps = "handled"
       >
+        {/* ── Offline Bant ── */}
+        {(isOffline || bekleyenIslem > 0) && (
+          <View style={[styles.offlineBant, { backgroundColor: colors.danger }]}>
+            <Text style={[styles.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
+              🔴 Offline · {bekleyenIslem} işlem bekliyor
+            </Text>
+          </View>
+        )}
+
         {/* ── Logo / Başlık ── */}
         <View style={styles.baslik}>
           <Text style={[styles.logo, { color: colors.blue, fontFamily: FONT_FAMILY.heading }]}>
@@ -483,5 +501,14 @@ const styles = StyleSheet.create({
   sunucuMetin: {
     fontSize  : FONT_SIZE.xs,
     marginTop : SPACING.xl,
+  },
+  offlineBant: {
+    paddingVertical  : SPACING.sm,
+    paddingHorizontal: SPACING.base,
+    alignItems       : 'center',
+  },
+  offlineMetin: {
+    color   : '#FFFFFF',
+    fontSize: FONT_SIZE.sm,
   },
 });

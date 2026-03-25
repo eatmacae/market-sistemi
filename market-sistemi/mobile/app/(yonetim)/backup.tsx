@@ -33,6 +33,9 @@ import { useFocusEffect } from 'expo-router';
 import { useTheme }         from '../../hooks/useTheme';
 import { useAuthStore }     from '../../stores/authStore';
 import { useSettingsStore } from '../../stores/settingsStore';
+import { getPendingCount } from '../../services/storage';
+import { SPACING } from '../../constants/spacing';
+import { FONT_FAMILY, FONT_SIZE } from '../../constants/typography';
 
 // ============================================================
 // TİPLER
@@ -98,6 +101,8 @@ export default function YedekYonetimi() {
   const [yenileniyor, setYenileniyor]   = useState(false);
   const [yedekAliniyor, setYedekAliniyor] = useState(false);
   const [hata, setHata]                 = useState<string | null>(null);
+  const [isOffline, setIsOffline]         = useState(false);
+  const [bekleyenIslem, setBekleyenIslem] = useState(0);
 
   const [durum, setDurum]     = useState<YedekDurum | null>(null);
   const [yedekler, setYedekler] = useState<YedekDosya[]>([]);
@@ -132,7 +137,9 @@ export default function YedekYonetimi() {
         const v = await sktYanit.json();
         setSktUrunler(v.urunler ?? []);
       }
+      setIsOffline(false);
     } catch (err: any) {
+      if (err instanceof TypeError) setIsOffline(true);
       setHata(err.message ?? 'Yüklenemedi.');
     } finally {
       setYukleniyor(false);
@@ -140,7 +147,8 @@ export default function YedekYonetimi() {
     }
   }, [serverUrl, token, branchId]);
 
-  useFocusEffect(useCallback(() => { yukle(); }, [yukle]));
+  useFocusEffect(useCallback(() => {
+    getPendingCount().then(setBekleyenIslem); yukle(); }, [yukle]));
 
   // ============================================================
   // MANUEL YEDEK AL
@@ -246,15 +254,26 @@ export default function YedekYonetimi() {
   const uyariSkt  = sktUrunler.filter(u => u.durum === 'uyari');
 
   return (
-    <ScrollView
-      style                = {{ backgroundColor: colors.bgPrimary }}
-      contentContainerStyle= {{ padding: 16, gap: 16, paddingBottom: 40 }}
-      refreshControl={
-        <RefreshControl
-          refreshing={yenileniyor}
-          onRefresh={() => yukle(true)}
-          tintColor="#4F8EF7"
-        />
+    <View style={{ flex: 1, backgroundColor: colors.bgPrimary }}>
+
+      {/* ── Offline Banner ── */}
+      {(isOffline || bekleyenIslem > 0) && (
+        <View style={[s.offlineBant, { backgroundColor: colors.danger }]}>
+          <Text style={[s.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
+            🔴 Offline · {bekleyenIslem} işlem bekliyor
+          </Text>
+        </View>
+      )}
+
+      <ScrollView
+        style                = {{ backgroundColor: colors.bgPrimary }}
+        contentContainerStyle= {{ padding: 16, gap: 16, paddingBottom: 40 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={yenileniyor}
+            onRefresh={() => yukle(true)}
+            tintColor="#4F8EF7"
+          />
       }
     >
 
@@ -405,6 +424,7 @@ export default function YedekYonetimi() {
       </View>
 
     </ScrollView>
+    </View>
   );
 }
 
@@ -414,6 +434,15 @@ export default function YedekYonetimi() {
 
 const styles = (c: ReturnType<typeof useTheme>['colors']) =>
   StyleSheet.create({
+  offlineBant: {
+    paddingVertical  : SPACING.sm,
+    paddingHorizontal: SPACING.base,
+    alignItems       : 'center',
+  },
+  offlineMetin: {
+    color   : '#FFFFFF',
+    fontSize: FONT_SIZE.sm,
+  },
     merkez: {
       flex           : 1,
       justifyContent : 'center',

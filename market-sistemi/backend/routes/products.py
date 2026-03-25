@@ -150,6 +150,7 @@ async def get_product(
 ):
     product = db.query(Product).filter(
         Product.id         == product_id,
+        Product.branch_id  == current_user.branch_id,
         Product.is_deleted == False,
     ).first()
 
@@ -226,6 +227,7 @@ async def update_product(
     """
     product = db.query(Product).filter(
         Product.id         == product_id,
+        Product.branch_id  == current_user.branch_id,
         Product.is_deleted == False,
     ).first()
 
@@ -294,6 +296,7 @@ async def delete_product(
     """
     product = db.query(Product).filter(
         Product.id         == product_id,
+        Product.branch_id  == current_user.branch_id,
         Product.is_deleted == False,
     ).first()
 

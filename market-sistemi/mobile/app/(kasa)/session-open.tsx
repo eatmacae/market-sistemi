@@ -11,7 +11,7 @@
  * ✅ Türkçe yorum satırları
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -30,6 +30,7 @@ import { useSettingsStore } from '../../stores/settingsStore';
 import { useCartStore }    from '../../stores/cartStore';
 import { Button }          from '../../components/ui/Button';
 import { api }             from '../../services/api';
+import { getPendingCount } from '../../services/storage';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 
@@ -43,6 +44,12 @@ export default function SessionOpenScreen() {
   const [kasaMiktari, setKasaMiktari] = useState('');
   const [yukleniyor, setYukleniyor]   = useState(false);
   const [hata, setHata]               = useState<string | null>(null);
+  const [isOffline, setIsOffline]         = useState(false);
+  const [bekleyenIslem, setBekleyenIslem] = useState(0);
+
+  useEffect(() => {
+    getPendingCount().then(setBekleyenIslem);
+  }, []);
 
   // ============================================================
   // KASA AÇ
@@ -74,6 +81,7 @@ export default function SessionOpenScreen() {
 
     } catch (err: any) {
       if (!err.response) {
+        setIsOffline(true);
         setHata('Sunucuya bağlanılamıyor. Bağlantıyı kontrol edin.');
       } else {
         setHata(err.response?.data?.detail || 'Kasa açılırken hata oluştu.');
@@ -102,6 +110,15 @@ export default function SessionOpenScreen() {
         contentContainerStyle = {[styles.konteyner, { backgroundColor: colors.bgPrimary }]}
         keyboardShouldPersistTaps = "handled"
       >
+        {/* ── Offline Bant ── */}
+        {(isOffline || bekleyenIslem > 0) && (
+          <View style={[styles.offlineBant, { backgroundColor: colors.danger }]}>
+            <Text style={[styles.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
+              🔴 Offline · {bekleyenIslem} işlem bekliyor
+            </Text>
+          </View>
+        )}
+
         {/* ── Başlık ── */}
         <View style={styles.baslik}>
           <Text style={[styles.baslikMetin, { color: colors.textPrimary, fontFamily: FONT_FAMILY.heading }]}>
@@ -261,5 +278,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap          : SPACING.sm,
     marginTop    : SPACING.sm,
+  },
+  offlineBant: {
+    paddingVertical  : SPACING.sm,
+    paddingHorizontal: SPACING.base,
+    alignItems       : 'center',
+  },
+  offlineMetin: {
+    color   : '#FFFFFF',
+    fontSize: FONT_SIZE.sm,
   },
 });

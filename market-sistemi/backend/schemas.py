@@ -3,7 +3,7 @@ Market Yönetim Sistemi — Pydantic Şemaları
 API request/response doğrulama modelleri
 """
 
-from pydantic import BaseModel, EmailStr, field_validator
+from pydantic import BaseModel, EmailStr, field_validator, Field
 from typing import Optional, List
 from datetime import datetime, date
 from decimal import Decimal
@@ -152,11 +152,11 @@ class CategoryResponse(CategoryBase):
 # ============================================================
 
 class ProductBase(BaseModel):
-    name:            str
+    name:            str = Field(..., max_length=200)
     barcode:         Optional[str] = None
     category_id:     Optional[int] = None
     unit:            str = "adet"
-    price:           Decimal
+    price:           Decimal = Field(..., gt=0)
     price_wholesale: Optional[Decimal] = None
     price_credit:    Optional[Decimal] = None
     price_staff:     Optional[Decimal] = None

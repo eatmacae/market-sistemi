@@ -13,7 +13,7 @@
  * ✅ Müşteri seçimi (opsiyonel)
  */
 
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -35,6 +35,7 @@ import { useSettingsStore } from '../../stores/settingsStore';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { api } from '../../services/api';
+import { getPendingCount } from '../../services/storage';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE } from '../../constants/typography';
 
@@ -89,7 +90,14 @@ export default function PaymentScreen() {
   const [tamamlandi, setTamamlandi]           = useState(false);
   const [satisYanit, setSatisYanit]           = useState<SatisYanit | null>(null);
 
+  const [isOffline, setIsOffline]         = useState(false);
+  const [bekleyenIslem, setBekleyenIslem] = useState(0);
+
   const nakitInputRef = useRef<TextInput>(null);
+
+  useEffect(() => {
+    getPendingCount().then(setBekleyenIslem);
+  }, []);
 
   // ============================================================
   // HESAPLAMALAR
@@ -204,6 +212,9 @@ export default function PaymentScreen() {
       cart.clearCart();
 
     } catch (err: any) {
+      if (!err.response) {
+        setIsOffline(true);
+      }
       const detay = err.response?.data?.detail;
       if (typeof detay === 'string') {
         setHata(detay);
@@ -342,6 +353,13 @@ export default function PaymentScreen() {
       behavior = {Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <View style={[styles.ekran, { backgroundColor: colors.bgPrimary }]}>
+        {(isOffline || bekleyenIslem > 0) && (
+          <View style={[styles.offlineBant, { backgroundColor: colors.danger }]}>
+            <Text style={[styles.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
+              🔴 Offline · {bekleyenIslem} işlem bekliyor
+            </Text>
+          </View>
+        )}
         <ScrollView
           contentContainerStyle = {styles.kaydirmaIcerik}
           showsVerticalScrollIndicator = {false}
@@ -776,6 +794,15 @@ function _hizliNakitSumleri(toplam: number): number[] {
 const styles = StyleSheet.create({
   ekran: {
     flex: 1,
+  },
+  offlineBant: {
+    paddingVertical  : SPACING.sm,
+    paddingHorizontal: SPACING.base,
+    alignItems       : 'center',
+  },
+  offlineMetin: {
+    color   : '#FFFFFF',
+    fontSize: FONT_SIZE.sm,
   },
   kaydirmaIcerik: {
     padding: SPACING.base,

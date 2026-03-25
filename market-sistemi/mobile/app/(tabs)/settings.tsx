@@ -10,7 +10,7 @@
  * ✅ Türkçe yorum satırları
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -29,6 +29,7 @@ import { Button }          from '../../components/ui/Button';
 import { Card }            from '../../components/ui/Card';
 import { Badge }           from '../../components/ui/Badge';
 import { api }             from '../../services/api';
+import { getPendingCount } from '../../services/storage';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 
@@ -41,6 +42,12 @@ export default function SettingsScreen() {
   const [urlDuzenle, setUrlDuzenle]   = useState(false);
   const [yeniUrl, setYeniUrl]         = useState(serverUrl);
   const [baglantiTest, setBaglantiTest] = useState<'idle' | 'testing' | 'ok' | 'error'>('idle');
+  const [isOffline, setIsOffline]         = useState(false);
+  const [bekleyenIslem, setBekleyenIslem] = useState(0);
+
+  useEffect(() => {
+    getPendingCount().then(setBekleyenIslem);
+  }, []);
 
   // ============================================================
   // BAĞLANTI TESTİ
@@ -51,7 +58,10 @@ export default function SettingsScreen() {
     try {
       await api.get('/api/health', { baseURL: yeniUrl, timeout: 5000 });
       setBaglantiTest('ok');
-    } catch {
+    } catch (err: any) {
+      if (!err.response) {
+        setIsOffline(true);
+      }
       setBaglantiTest('error');
     }
   };
@@ -133,6 +143,15 @@ export default function SettingsScreen() {
       style                 = {{ backgroundColor: colors.bgPrimary }}
       contentContainerStyle = {{ padding: SPACING.base, gap: SPACING.base, paddingBottom: SPACING.xxl }}
     >
+      {/* ── Offline Bant ── */}
+      {(isOffline || bekleyenIslem > 0) && (
+        <View style={[styles.offlineBant, { backgroundColor: colors.danger }]}>
+          <Text style={[styles.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
+            🔴 Offline · {bekleyenIslem} işlem bekliyor
+          </Text>
+        </View>
+      )}
+
       {/* ── Başlık ── */}
       <Text style={[styles.baslik, { color: colors.textPrimary, fontFamily: FONT_FAMILY.heading }]}>
         ⚙️ Ayarlar
@@ -387,5 +406,14 @@ const styles = StyleSheet.create({
     borderRadius     : RADIUS.button,
     borderWidth      : 1,
     fontSize         : FONT_SIZE.sm,
+  },
+  offlineBant: {
+    paddingVertical  : SPACING.sm,
+    paddingHorizontal: SPACING.base,
+    alignItems       : 'center',
+  },
+  offlineMetin: {
+    color   : '#FFFFFF',
+    fontSize: FONT_SIZE.sm,
   },
 });

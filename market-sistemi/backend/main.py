@@ -3,7 +3,7 @@ Market Yönetim Sistemi — FastAPI Uygulama Giriş Noktası
 Tüm route'lar, middleware'ler ve zamanlayıcı burada başlatılır.
 """
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
@@ -38,7 +38,7 @@ from routes.licenses   import router as licenses_router
 from routes.branches   import router as branches_router
 from routes.transfers  import router as transfers_router
 
-from database import create_tables
+from database import create_tables, get_db
 
 # Ortam değişkenlerini yükle
 load_dotenv()
@@ -316,14 +316,12 @@ app.include_router(transfers_router)
 # ============================================================
 
 @app.get("/api/health", tags=["Sistem"])
-async def health_check():
+async def health_check(db=Depends(get_db)):
     """Sunucu ve veritabanı sağlık kontrolü"""
-    from database import engine
     from sqlalchemy import text
 
     try:
-        with engine.connect() as conn:
-            conn.execute(text("SELECT 1"))
+        db.execute(text("SELECT 1"))
         db_status = "ok"
     except Exception as e:
         db_status = f"hata: {str(e)}"

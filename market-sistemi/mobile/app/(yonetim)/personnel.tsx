@@ -35,6 +35,7 @@ import { Button }          from '../../components/ui/Button';
 import { api }             from '../../services/api';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
+import { getPendingCount } from '../../services/storage';
 
 interface Personel {
   id        : number;
@@ -66,6 +67,8 @@ export default function PersonnelScreen() {
   const [personeller, setPersoneller]   = useState<Personel[]>([]);
   const [yukleniyor, setYukleniyor]     = useState(true);
   const [hata, setHata]                 = useState<string | null>(null);
+  const [isOffline, setIsOffline]         = useState(false);
+  const [bekleyenIslem, setBekleyenIslem] = useState(0);
 
   // Form modal
   const [formAcik, setFormAcik]       = useState(false);
@@ -110,7 +113,9 @@ export default function PersonnelScreen() {
     try {
       const yanit = await api.get(`/api/personnel?branch_id=${branchId}&per_page=100`);
       setPersoneller(yanit.data.items);
+      setIsOffline(false);
     } catch (err: any) {
+      if (!err.response) setIsOffline(true);
       setHata(err.response?.data?.detail || 'Personel listesi yüklenemedi.');
     } finally {
       setYukleniyor(false);
@@ -118,6 +123,7 @@ export default function PersonnelScreen() {
   }, [branchId]);
 
   useEffect(() => {
+    getPendingCount().then(setBekleyenIslem);
     personelleriYukle();
   }, [personelleriYukle]);
 
@@ -250,6 +256,15 @@ export default function PersonnelScreen() {
 
   return (
     <View style={[{ flex: 1, backgroundColor: colors.bgPrimary }]}>
+
+      {/* ── Offline Banner ── */}
+      {(isOffline || bekleyenIslem > 0) && (
+        <View style={[styles.offlineBant, { backgroundColor: colors.danger }]}>
+          <Text style={[styles.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
+            🔴 Offline · {bekleyenIslem} işlem bekliyor
+          </Text>
+        </View>
+      )}
 
       {/* ── Üst Bar ── */}
       <View style={[styles.ustBar, { borderBottomColor: colors.border }]}>
@@ -600,6 +615,15 @@ function _FormAlani({
 // ============================================================
 
 const styles = StyleSheet.create({
+  offlineBant: {
+    paddingVertical  : SPACING.sm,
+    paddingHorizontal: SPACING.base,
+    alignItems       : 'center',
+  },
+  offlineMetin: {
+    color   : '#FFFFFF',
+    fontSize: FONT_SIZE.sm,
+  },
   merkez: {
     flex: 1, alignItems: 'center', justifyContent: 'center', gap: SPACING.base,
   },

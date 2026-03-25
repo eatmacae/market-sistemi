@@ -32,6 +32,7 @@ import { api }             from '../../services/api';
 import { router }          from 'expo-router';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
+import { getPendingCount } from '../../services/storage';
 
 // ============================================================
 // TİPLER
@@ -92,6 +93,8 @@ export default function SystemSettingsScreen() {
   const [yukleniyor, setYukleniyor] = useState(true);
   const [kaydediyor, setKaydediyor] = useState(false);
   const [hata,       setHata]       = useState<string | null>(null);
+  const [isOffline, setIsOffline]         = useState(false);
+  const [bekleyenIslem, setBekleyenIslem] = useState(0);
 
   const isAdmin = user?.role === 'admin';
 
@@ -106,14 +109,17 @@ export default function SystemSettingsScreen() {
       const yanit = await api.get(`/api/settings?branch_id=${branchId}`);
       const data  = yanit.data as Record<string, string>;
       setAyarlar(prev => ({ ...prev, ...data }));
+      setIsOffline(false);
     } catch (err: any) {
+      if (!err.response) setIsOffline(true);
       setHata(err?.response?.data?.detail || 'Ayarlar yüklenemedi.');
     } finally {
       setYukleniyor(false);
     }
   }, [branchId]);
 
-  useEffect(() => { yukle(); }, [yukle]);
+  useEffect(() => {
+    getPendingCount().then(setBekleyenIslem); yukle(); }, [yukle]);
 
   // ============================================================
   // KAYDET
@@ -190,6 +196,15 @@ export default function SystemSettingsScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1, backgroundColor: colors.bgPrimary }}
     >
+
+      {/* ── Offline Banner ── */}
+      {(isOffline || bekleyenIslem > 0) && (
+        <View style={[styles.offlineBant, { backgroundColor: colors.danger }]}>
+          <Text style={[styles.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
+            🔴 Offline · {bekleyenIslem} işlem bekliyor
+          </Text>
+        </View>
+      )}
       <ScrollView contentContainerStyle={styles.icerik}>
 
         {/* ── Market Bilgileri ── */}
@@ -432,6 +447,15 @@ function AyarToggle({
 // ============================================================
 
 const styles = StyleSheet.create({
+  offlineBant: {
+    paddingVertical  : SPACING.sm,
+    paddingHorizontal: SPACING.base,
+    alignItems       : 'center',
+  },
+  offlineMetin: {
+    color   : '#FFFFFF',
+    fontSize: FONT_SIZE.sm,
+  },
   icerik     : { padding: SPACING.md },
   merkez     : { flex: 1, justifyContent: 'center', alignItems: 'center', gap: SPACING.md, padding: SPACING.xxl },
   bilgiMetin : { fontSize: FONT_SIZE.base, fontFamily: FONT_FAMILY.body, textAlign: 'center', marginTop: SPACING.sm },

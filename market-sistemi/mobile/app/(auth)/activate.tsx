@@ -11,7 +11,7 @@
  * ✅ Türkçe yorum satırları
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -28,6 +28,7 @@ import { router }          from 'expo-router';
 import { useTheme }        from '../../hooks/useTheme';
 import { useSettingsStore } from '../../stores/settingsStore';
 import { api }             from '../../services/api';
+import { getPendingCount } from '../services/storage';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 
@@ -61,6 +62,12 @@ export default function ActivateScreen() {
   const [dogruluyor, setDogru]    = useState(false);
   const [sonuc,     setSonuc]     = useState<any>(null);
   const [hata,      setHata]      = useState<string | null>(null);
+  const [isOffline, setIsOffline]         = useState(false);
+  const [bekleyenIslem, setBekleyenIslem] = useState(0);
+
+  useEffect(() => {
+    getPendingCount().then(setBekleyenIslem);
+  }, []);
 
   // ============================================================
   // LİSANS DOĞRULA
@@ -95,6 +102,9 @@ export default function ActivateScreen() {
 
       setSonuc(data);
     } catch (err: any) {
+      if (!err.response) {
+        setIsOffline(true);
+      }
       setHata(err?.response?.data?.detail || 'Sunucuya bağlanılamadı. Bağlantı ayarlarını kontrol edin.');
     } finally {
       setDogru(false);
@@ -137,6 +147,15 @@ export default function ActivateScreen() {
       style={{ flex: 1, backgroundColor: colors.bgPrimary }}
     >
       <ScrollView contentContainerStyle={styles.icerik}>
+        {/* ── Offline Bant ── */}
+        {(isOffline || bekleyenIslem > 0) && (
+          <View style={[styles.offlineBant, { backgroundColor: colors.danger }]}>
+            <Text style={[styles.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
+              🔴 Offline · {bekleyenIslem} işlem bekliyor
+            </Text>
+          </View>
+        )}
+
         {/* Logo & Başlık */}
         <View style={styles.baslik}>
           <Text style={{ fontSize: 64 }}>🔑</Text>
@@ -398,5 +417,14 @@ const styles = StyleSheet.create({
   demoBtnMetin: {
     fontSize  : FONT_SIZE.sm,
     fontFamily: FONT_FAMILY.bodyMedium,
+  },
+  offlineBant: {
+    paddingVertical  : SPACING.sm,
+    paddingHorizontal: SPACING.base,
+    alignItems       : 'center',
+  },
+  offlineMetin: {
+    color   : '#FFFFFF',
+    fontSize: FONT_SIZE.sm,
   },
 });

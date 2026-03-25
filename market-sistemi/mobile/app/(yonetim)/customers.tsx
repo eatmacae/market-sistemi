@@ -33,6 +33,7 @@ import { useAuthStore }    from '../../stores/authStore';
 import { api }             from '../../services/api';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
+import { getPendingCount } from '../../services/storage';
 
 // ============================================================
 // TİPLER
@@ -82,6 +83,8 @@ export default function CustomersScreen() {
   const [yukleniyor, setYukleniyor]       = useState(true);
   const [yenileniyor, setYenileniyor]     = useState(false);
   const [hata, setHata]                   = useState<string | null>(null);
+  const [isOffline, setIsOffline]         = useState(false);
+  const [bekleyenIslem, setBekleyenIslem] = useState(0);
   const [arama, setArama]                 = useState('');
   const [veresiyeFiltre, setVereFiltre]   = useState(false);
   const [toplam, setToplam]               = useState(0);
@@ -134,7 +137,9 @@ export default function CustomersScreen() {
       setToplam(data.total);
       setSayfa(yeniSayfa);
       setDahaVar(yeniSayfa * 30 < data.total);
+      setIsOffline(false);
     } catch (err: any) {
+      if (!err.response) setIsOffline(true);
       setHata(err?.response?.data?.detail || 'Müşteriler yüklenemedi.');
     } finally {
       setYukleniyor(false);
@@ -144,6 +149,7 @@ export default function CustomersScreen() {
   }, [branchId, arama, veresiyeFiltre]);
 
   useEffect(() => {
+    getPendingCount().then(setBekleyenIslem);
     musteriYukle(1);
   }, [musteriYukle]);
 
@@ -523,6 +529,15 @@ export default function CustomersScreen() {
 
   return (
     <View style={[styles.container, styles_dyn.container]}>
+
+      {/* ── Offline Banner ── */}
+      {(isOffline || bekleyenIslem > 0) && (
+        <View style={[styles.offlineBant, { backgroundColor: colors.danger }]}>
+          <Text style={[styles.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
+            🔴 Offline · {bekleyenIslem} işlem bekliyor
+          </Text>
+        </View>
+      )}
       {/* ── Arama & Filtreler ── */}
       <View style={[styles.aramaKutusu, { backgroundColor: colors.bgSecondary, borderBottomColor: colors.border }]}>
         <TextInput
@@ -592,6 +607,15 @@ export default function CustomersScreen() {
 // ============================================================
 
 const styles = StyleSheet.create({
+  offlineBant: {
+    paddingVertical  : SPACING.sm,
+    paddingHorizontal: SPACING.base,
+    alignItems       : 'center',
+  },
+  offlineMetin: {
+    color   : '#FFFFFF',
+    fontSize: FONT_SIZE.sm,
+  },
   container: {
     flex: 1,
   },
