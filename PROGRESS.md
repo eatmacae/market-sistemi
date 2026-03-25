@@ -1,7 +1,7 @@
 # Market Yönetim Sistemi — İlerleme Günlüğü
 
 > Bu dosyayı her oturum başında oku. Nerede kaldığımızı, ne bittiğini, sırada ne olduğunu gösterir.
-> Son güncelleme: 2026-03-25
+> Son güncelleme: 2026-03-25 (Ekran testleri eklendi)
 
 ---
 
@@ -124,6 +124,85 @@ npm test
 
 ---
 
+## 📱 Android Emülatör Ekran Testleri (2026-03-25)
+
+> Pixel 8 Pro, Android 16, Expo Go, Metro `exp://127.0.0.1:8081`
+> Düzeltilen hatalar bu oturumda commit edildi.
+
+| # | Ekran | Durum | Notlar |
+|---|-------|-------|--------|
+| 1 | `(kasa)/index` | ✅ Tamamlandı | Kasa, offline banner, empty state, barkod arama |
+| 2 | `(auth)/activate` | ✅ Tamamlandı | Lisans formu, Doğrula + Demo butonları |
+| 3 | `(auth)/login` | ✅ Tamamlandı | PIN/Yönetici tab, offline banner, error state |
+| 4 | `(kasa)/payment` | ✅ Tamamlandı | Ödeme ekranı, Geri + Ödemeyi Tamamla |
+| 5 | `(kasa)/session-open` | ✅ Tamamlandı | Kasa Aç, tutar seçenekleri, İptal + Kasayı Aç |
+| 6 | `(kasa)/session-close` | ✅ Tamamlandı | Hata state: aktif oturum yok, Geri Dön + Tekrar Dene |
+| 7 | `(tabs)/dashboard` | ✅ Tamamlandı | Loading → "Bağlantı Yok" error state + Yenile |
+| 8 | `(tabs)/stock` | ✅ Tamamlandı | Error state + Yenile |
+| 9 | `(tabs)/reports` | ✅ Tamamlandı | Error state + Yenile |
+| 10 | `(tabs)/customers` | ✅ Tamamlandı | Tab navigasyonu çalışıyor |
+| 11 | `(tabs)/settings` | ✅ Tamamlandı | Tema (Açık/Koyu/Sistem) ✅, dark mode ✅, Çıkış Yap |
+| 12 | `(sahip)/index` | ⏳ Bekliyor | Route `/sahip` unmatched — sitemap'ten açılacak |
+| 13 | `(yonetim)/backup` | ⏳ Bekliyor | — |
+| 14 | `(yonetim)/branches` | ✅ Tamamlandı | Şube Yönetimi, error state + Tekrar Dene |
+| 15 | `(yonetim)/campaigns` | ⏳ Bekliyor | — |
+| 16 | `(yonetim)/customers` | ⏳ Bekliyor | — |
+| 17 | `(yonetim)/invoices` | ✅ Tamamlandı | **Hata düzeltildi:** `user` → `branchId` dependency |
+| 18 | `(yonetim)/musteri-form` | ⏳ Bekliyor | — |
+| 19 | `(yonetim)/personnel` | ⏳ Bekliyor | — |
+| 20 | `(yonetim)/stok-hareket` | ⏳ Bekliyor | — |
+| 21 | `(yonetim)/suppliers` | ⏳ Bekliyor | — |
+| 22 | `(yonetim)/system-settings` | ⏳ Bekliyor | — |
+| 23 | `(yonetim)/targets` | ⏳ Bekliyor | — |
+| 24 | `(yonetim)/transfers` | ⏳ Bekliyor | — |
+| 25 | `(yonetim)/urun-form` | ⏳ Bekliyor | — |
+
+### Bir sonraki oturumda çalıştırılacak otomatik test
+```bash
+# 1. Metro başlat
+cd market-sistemi/mobile && npx expo start --clear
+
+# 2. ADB tüneli
+adb -s emulator-5554 reverse tcp:8081 tcp:8081
+
+# 3. Kalan 14 ekranı otomatik test et (screenshot alır)
+bash scripts/test-screens.sh
+# Çıktı: market-sistemi/mobile/scripts/screenshots/*.png
+```
+Script dosyası: `market-sistemi/mobile/scripts/test-screens.sh`
+
+### Bu oturumda düzeltilen hatalar (emülatör testinde bulunanlar)
+1. `login.tsx` + `activate.tsx` → `../services/storage` yanlış import yolu → `../../services/storage`
+2. `expo-linking@55.0.8` → `6.3.1` (SDK 51 uyumlu) — "Cannot find native module ExpoLinking" hatası
+3. `@expo-google-fonts/dm-sans` + `@expo-google-fonts/syne` kuruldu — yerel font dosyaları eksikti
+4. `expo-constants` eksik bağımlılık eklendi
+5. `(yonetim)/invoices.tsx` satır 180 → `user` tanımsız dependency → `branchId` ile düzeltildi
+
+---
+
+## ✅ Bu Oturumda Tamamlananlar (2026-03-25 — devam)
+
+### 6. Hardcode Renk Temizliği — Tüm Ekranlar ✅
+
+**Değişiklikler:**
+- `colors.ts`: `WHITE = '#FFFFFF'`, `OVERLAY = 'rgba(0,0,0,0.6)'` sabitleri eklendi
+- `ThemeColors` tipi `typeof DarkTheme` yerine `{ [K in keyof]: string }` olarak güncellendi
+- **29 ekran** dosyasında `'#FFFFFF'`/`'#fff'` → `WHITE` sabitiyle değiştirildi
+- `backup.tsx`, `invoices.tsx`, `transfers.tsx`: Durum renkleri `ACCENT.danger/warning/success` ile değiştirildi
+- `tsconfig.json`: `module: "esnext"` eklendi (dynamic import desteği)
+- `Input.tsx`: `leftIcon && styles.x` → `leftIcon ? styles.x : null` (strict mode uyumu)
+
+**Düzeltilen TypeScript hataları:**
+- `session-close.tsx`: TS2367 tip assertion ile giderildi
+- `stock.tsx`: `StokOzet[]` tip cast eklendi
+- `customers.tsx`: `SPACING.xxxl` → `SPACING.xxl`
+- `dashboard.tsx`: `RADIUS.btn` → `RADIUS.button`
+- `invoices.tsx`: circular `branchId` referansı giderildi
+
+**Son commit:** `fix: tüm ekranlarda hardcode renk kaldırıldı, TS hataları giderildi`
+
+---
+
 ## 🔴 Bekleyen / Yapılmayan İşler
 
 ### Orta Öncelik
@@ -195,5 +274,5 @@ APP_ENV=production   # development → otomatik create_tables() çağırır
 https://github.com/eatmacae/market-sistemi
 ```
 
-Son commit: `feat: Windows kurulum sihirbazı (Electron) eklendi`
-(Test dosyaları henüz commit edilmedi — bir sonraki oturumda push edilebilir)
+Son commit: `fix: expo-linking versiyon uyumsuzluğu ve yanlış import yolları giderildi`
+GitHub: https://github.com/eatmacae/market-sistemi

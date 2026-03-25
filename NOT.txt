@@ -1,0 +1,69 @@
+ gayet hızlıydık. isteklerim olacak mesela offline moddan online moda geçerken veriler aktarilacak
+ama o anda tabletin şarjı biterse ne olacak ? kurulumu yapan sunucuda kurulumu nasıl yapacak kurulum
+bitince cihazlar aynı wifi de ise otomatik girbirini görecek mi ? yazarkasa pos makinelerinin kurulum
+ ve terazi kurulumları nasık olacak ? bunları sohbet ederken açıklarmısın ?
+
+● Güzel sorular, bunlar gerçek bir ürünü satarken karşılaşacağın senaryolar. Tek tek konuşalım:
+
+  ---
+  1. Offline → Online geçişte şarj biterse ne olur?                                                   
+  Şu anki mimari:                                                                                       - Tablet offline iken işlemler pending_operations tablosuna SQLite'a yazılıyor
+  - Online olunca sırayla backend'e gönderilecek (sync mekanizması)
+
+  Şarj biterse:
+  SQLite dosyası diskte kalır, veri kaybolmaz. Tablet açılınca kaldığı yerden devam eder. Tek risk:
+  sync yarıda kesmişse aynı işlem iki kez gönderilmesi. Buna idempotency denir — her işleme benzersiz
+  bir operation_id (UUID) koyarsak backend "bunu zaten aldım" diyebilir, iki kez işlemez. Şu an bu
+  yok, eklenebilir.
+
+  ---
+  2. Sunucuya kurulum nasıl olacak?
+
+  Electron installer'ı yaptık ama o masaüstü için. Sunucu kurulumu için senaryo şöyle olabilir:
+
+  Seçenek A — Kolay: Müşteriye hazır bir mini PC (NUC/Raspberry Pi 5) ver, üzerinde PostgreSQL +
+  FastAPI kurulu gelsin. Müşteri sadece prize takar.
+
+  Seçenek B — Teknik: Müşterinin Windows Server veya bilgisayarına uzaktan bağlanıp
+  (TeamViewer/AnyDesk) kurulum yaparsın. Electron installer bunu otomatikleştirebilir.
+
+  Seçenek C — Bulut: Hetzner gibi ucuz bir VPS'e kur (aylık 4-5 euro), müşteri internete bağlı olduğu
+  sürece çalışır. Ama sen "sıfır aylık maliyet" istiyordun, bu o modeli bozar.
+
+  ---
+  3. Aynı WiFi'de cihazlar birbirini otomatik görür mü?
+
+  Şu an hayır, IP adresi settings ekranına elle yazılıyor (192.168.1.100:8000 gibi). Ama bunu
+  otomatikleştirmek mümkün:
+
+  mDNS / Zeroconf teknolojisi ile sunucu kendini ağda market-server.local olarak ilan eder. Tabletler
+  bu ismi otomatik bulur, IP yazmak gerekmez. React Native'de react-native-zeroconf paketi var,
+  backend tarafında Python'da zeroconf kütüphanesi. 1-2 günlük iş.
+
+  ---
+  4. Yazarkasa / POS entegrasyonu
+
+  Türkiye'de iki yol var:
+
+  GİB ÖKC (Ödeme Kaydedici Cihaz):
+  Yasal zorunluluk olan yeni nesil yazarkasalar. Bunlarla entegrasyon çok karmaşık ve lisans
+  gerektiriyor. Şimdilik dışarıda bırakmak mantıklı.
+
+  Banka POS'u:
+  Türk bankalarının POS'ları genelde kapalı sistem. Ama bazı ödeme altyapıları (iyzico, PayTR) sanal
+  POS API'si sunuyor. Fiziksel POS için bankayla ayrı anlaşma lazım.
+
+  Pratik çözüm: Şu an uygulamada "Nakit / Kart / Havale" seçeneği var. Kart ödemesi POS'tan alınır,
+  kasiyер manuel "kart ile ödendi" seçer. Entegrasyon olmadan da çalışır, sadece otomatik değil.
+
+  ---
+  5. Terazi entegrasyonu
+
+  Bu aslında en kolay olanı:
+
+  Barkod terazileri (Bizerba, Mettler Toledo, Dibal) PLU barkod üretir — barkodun içinde ürün kodu +
+  ağırlık gömülüdür. Format genelde 2XXXXXWWWWWC şeklinde. Barkod okuyucu bu kodu okuyunca uygulama
+  içinde ayrıştırıp fiyatı otomatik hesaplayabilir.
+
+  Şu anki barkod okuma sistemi bunu desteklemez ama cartStore'a 5-10 satır ekleme ile halledilir.
+  Terazi ile kablo/Bluetooth bağlantısı gerekmez, sadece barkod formatını tanımak yeterli.
