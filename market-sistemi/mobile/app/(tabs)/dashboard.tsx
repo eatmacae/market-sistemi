@@ -31,6 +31,7 @@ import { Card }            from '../../components/ui/Card';
 import { api }             from '../../services/api';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
+import { WHITE } from '../../constants/colors';
 
 interface Ozet {
   toplam_ciro    : number;
@@ -185,7 +186,7 @@ export default function DashboardScreen() {
       {/* ── Offline uyarısı ── */}
       {isOffline && (
         <View style={[styles.offlineBant, { backgroundColor: colors.danger }]}>
-          <Text style={[styles.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium, color: '#FFFFFF' }]}>
+          <Text style={[styles.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium, color: WHITE }]}>
             🔴 Offline · Veriler en son senkronizasyondan
           </Text>
         </View>
@@ -613,7 +614,7 @@ const styles = StyleSheet.create({
     alignItems   : 'center',
     gap          : SPACING.sm,
     borderWidth  : 1,
-    borderRadius : RADIUS.btn,
+    borderRadius : RADIUS.button,
     padding      : SPACING.sm,
     minHeight    : 56,
   },

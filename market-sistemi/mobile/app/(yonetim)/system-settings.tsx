@@ -33,6 +33,7 @@ import { router }          from 'expo-router';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 import { getPendingCount } from '../../services/storage';
+import { WHITE } from '../../constants/colors';
 
 // ============================================================
 // TİPLER
@@ -185,7 +186,7 @@ export default function SystemSettingsScreen() {
         <Text style={{ fontSize: 40 }}>⚠️</Text>
         <Text style={[styles.bilgiMetin, { color: colors.danger }]}>{hata}</Text>
         <TouchableOpacity style={[styles.tekrarBtn, { backgroundColor: colors.blue }]} onPress={yukle}>
-          <Text style={{ color: '#fff', fontFamily: FONT_FAMILY.bodyMedium }}>Tekrar Dene</Text>
+          <Text style={{ color: WHITE, fontFamily: FONT_FAMILY.bodyMedium }}>Tekrar Dene</Text>
         </TouchableOpacity>
       </View>
     );
@@ -377,7 +378,7 @@ export default function SystemSettingsScreen() {
           disabled={kaydediyor}
         >
           {kaydediyor
-            ? <ActivityIndicator color="#fff" />
+            ? <ActivityIndicator color={WHITE} />
             : <Text style={styles.kaydetBtnMetin}>Ayarları Kaydet</Text>
           }
         </TouchableOpacity>
@@ -453,7 +454,7 @@ const styles = StyleSheet.create({
     alignItems       : 'center',
   },
   offlineMetin: {
-    color   : '#FFFFFF',
+    color   : WHITE,
     fontSize: FONT_SIZE.sm,
   },
   icerik     : { padding: SPACING.md },
@@ -468,5 +469,5 @@ const styles = StyleSheet.create({
   ayarGiris  : { borderRadius: RADIUS.button, borderWidth: 1, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, fontSize: FONT_SIZE.base, fontFamily: FONT_FAMILY.body, minHeight: MIN_TOUCH_SIZE },
   toggleSatiri: { flexDirection: 'row', alignItems: 'center', padding: SPACING.md, minHeight: MIN_TOUCH_SIZE },
   kaydetBtn  : { borderRadius: RADIUS.button, paddingVertical: SPACING.base, alignItems: 'center', marginTop: SPACING.xl, minHeight: MIN_TOUCH_SIZE + 4, justifyContent: 'center' },
-  kaydetBtnMetin: { fontSize: FONT_SIZE.base, fontFamily: FONT_FAMILY.bodyBold, color: '#fff' },
+  kaydetBtnMetin: { fontSize: FONT_SIZE.base, fontFamily: FONT_FAMILY.bodyBold, color: WHITE },
 });

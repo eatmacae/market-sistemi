@@ -33,6 +33,7 @@ import { api }             from '../../services/api';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 import { getPendingCount } from '../../services/storage';
+import { WHITE } from '../../constants/colors';
 
 // ============================================================
 // TİPLER
@@ -359,7 +360,7 @@ export default function SuppliersScreen() {
         <Text style={{ fontSize: 48 }}>⚠️</Text>
         <Text style={[styles.bilgiMetin, { color: colors.danger }]}>{hata}</Text>
         <TouchableOpacity style={[styles.tekrarBtn, { backgroundColor: colors.blue }]} onPress={() => yukle(1)}>
-          <Text style={{ color: '#fff', fontFamily: FONT_FAMILY.bodyMedium }}>Tekrar Dene</Text>
+          <Text style={{ color: WHITE, fontFamily: FONT_FAMILY.bodyMedium }}>Tekrar Dene</Text>
         </TouchableOpacity>
       </View>
     );
@@ -433,7 +434,7 @@ const styles = StyleSheet.create({
     alignItems       : 'center',
   },
   offlineMetin: {
-    color   : '#FFFFFF',
+    color   : WHITE,
     fontSize: FONT_SIZE.sm,
   },
   container  : { flex: 1 },
@@ -454,7 +455,7 @@ const styles = StyleSheet.create({
   bosDurum   : { alignItems: 'center', paddingTop: SPACING.xxl, gap: SPACING.md },
   bosDurumMetin: { fontSize: FONT_SIZE.base, fontFamily: FONT_FAMILY.body, textAlign: 'center', lineHeight: 24 },
   fab        : { position: 'absolute', bottom: SPACING.xl, right: SPACING.xl, width: 56, height: 56, borderRadius: 28, justifyContent: 'center', alignItems: 'center', elevation: 4, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 4 },
-  fabIcon    : { color: '#fff', fontSize: 28, lineHeight: 32, fontFamily: FONT_FAMILY.bodyMedium },
+  fabIcon    : { color: WHITE, fontSize: 28, lineHeight: 32, fontFamily: FONT_FAMILY.bodyMedium },
   modalBaslik: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: SPACING.md, paddingTop: SPACING.lg, paddingBottom: SPACING.md, borderBottomWidth: 1 },
   modalBaslikText: { fontSize: FONT_SIZE.base, fontFamily: FONT_FAMILY.bodySemiBold },
   modalBtn   : { minWidth: 60, minHeight: MIN_TOUCH_SIZE, justifyContent: 'center', alignItems: 'center' },

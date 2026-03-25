@@ -36,6 +36,7 @@ import { api }             from '../../services/api';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 import { getPendingCount } from '../../services/storage';
+import { WHITE } from '../../constants/colors';
 
 interface Personel {
   id        : number;
@@ -276,7 +277,7 @@ export default function PersonnelScreen() {
           style   = {[styles.ekleButon, { backgroundColor: colors.blue, minHeight: MIN_TOUCH_SIZE }]}
           accessibilityLabel = "Yeni personel ekle"
         >
-          <Text style={[{ color: '#FFFFFF', fontFamily: FONT_FAMILY.bodyMedium }]}>+ Ekle</Text>
+          <Text style={[{ color: WHITE, fontFamily: FONT_FAMILY.bodyMedium }]}>+ Ekle</Text>
         </TouchableOpacity>
       </View>
 
@@ -621,7 +622,7 @@ const styles = StyleSheet.create({
     alignItems       : 'center',
   },
   offlineMetin: {
-    color   : '#FFFFFF',
+    color   : WHITE,
     fontSize: FONT_SIZE.sm,
   },
   merkez: {

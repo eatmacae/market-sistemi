@@ -36,6 +36,7 @@ import { useSettingsStore } from '../../stores/settingsStore';
 import { getPendingCount } from '../../services/storage';
 import { SPACING } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE } from '../../constants/typography';
+import { ACCENT } from '../../constants/colors';
 
 // ============================================================
 // TİPLER
@@ -75,10 +76,10 @@ interface SktUrun {
 
 function sktRengi(durum: SktUrun['durum']): string {
   switch (durum) {
-    case 'gecmis': return '#F04F4F';
-    case 'kritik': return '#F04F4F';
-    case 'uyari':  return '#F5A623';
-    default:       return '#12C98A';
+    case 'gecmis': return ACCENT.danger;
+    case 'kritik': return ACCENT.danger;
+    case 'uyari':  return ACCENT.warning;
+    default:       return ACCENT.success;
   }
 }
 
@@ -299,7 +300,7 @@ export default function YedekYonetimi() {
               <Text style={s.durumEtiket}>Geçen Süre</Text>
               <Text style={[
                 s.durumDeger,
-                durum.gecen_gun > 3 && { color: '#F5A623' },
+                durum.gecen_gun > 3 && { color: colors.warning },
               ]}>
                 {durum.gecen_gun === 0 ? 'Bugün' : `${durum.gecen_gun} gün önce`}
               </Text>
@@ -325,7 +326,7 @@ export default function YedekYonetimi() {
           disabled={yedekAliniyor}
         >
           {yedekAliniyor ? (
-            <ActivityIndicator color="#fff" size="small" />
+            <ActivityIndicator color={colors.white} size="small" />
           ) : (
             <Text style={s.butonPrimaryMetin}>💾 Manuel Yedek Al</Text>
           )}
@@ -340,15 +341,15 @@ export default function YedekYonetimi() {
           {/* Özet satırı */}
           <View style={s.sktOzet}>
             {kritikSkt.length > 0 && (
-              <View style={[s.sktOzetItem, { backgroundColor: '#F04F4F20', borderColor: '#F04F4F50' }]}>
-                <Text style={[s.sktOzetSayi, { color: '#F04F4F' }]}>{kritikSkt.length}</Text>
-                <Text style={[s.sktOzetEtiket, { color: '#F04F4F' }]}>Kritik</Text>
+              <View style={[s.sktOzetItem, { backgroundColor: colors.danger + '20', borderColor: colors.danger + '50' }]}>
+                <Text style={[s.sktOzetSayi, { color: colors.danger }]}>{kritikSkt.length}</Text>
+                <Text style={[s.sktOzetEtiket, { color: colors.danger }]}>Kritik</Text>
               </View>
             )}
             {uyariSkt.length > 0 && (
-              <View style={[s.sktOzetItem, { backgroundColor: '#F5A62320', borderColor: '#F5A62350' }]}>
-                <Text style={[s.sktOzetSayi, { color: '#F5A623' }]}>{uyariSkt.length}</Text>
-                <Text style={[s.sktOzetEtiket, { color: '#F5A623' }]}>Bu Ay</Text>
+              <View style={[s.sktOzetItem, { backgroundColor: colors.warning + '20', borderColor: colors.warning + '50' }]}>
+                <Text style={[s.sktOzetSayi, { color: colors.warning }]}>{uyariSkt.length}</Text>
+                <Text style={[s.sktOzetEtiket, { color: colors.warning }]}>Bu Ay</Text>
               </View>
             )}
             <View style={[s.sktOzetItem, { backgroundColor: colors.bgTertiary, borderColor: colors.border }]}>
@@ -440,7 +441,7 @@ const styles = (c: ReturnType<typeof useTheme>['colors']) =>
     alignItems       : 'center',
   },
   offlineMetin: {
-    color   : '#FFFFFF',
+    color   : c.white,
     fontSize: FONT_SIZE.sm,
   },
     merkez: {
@@ -497,15 +498,15 @@ const styles = (c: ReturnType<typeof useTheme>['colors']) =>
       fontFamily: 'DMSans-SemiBold',
     },
     uyariBant: {
-      backgroundColor: '#F5A62318',
+      backgroundColor: c.warning + '18',
       borderLeftWidth: 3,
-      borderLeftColor: '#F5A623',
+      borderLeftColor: c.warning,
       padding        : 10,
       borderRadius   : 6,
     },
     uyariMetin: {
       fontSize: 13,
-      color   : '#F5A623',
+      color   : c.warning,
     },
     bosBant: {
       alignItems: 'center',
@@ -516,7 +517,7 @@ const styles = (c: ReturnType<typeof useTheme>['colors']) =>
       color   : c.textMuted,
     },
     bilgiBant: {
-      backgroundColor: '#4F8EF718',
+      backgroundColor: c.blue + '18',
       borderRadius   : 8,
       padding        : 10,
     },
@@ -584,7 +585,7 @@ const styles = (c: ReturnType<typeof useTheme>['colors']) =>
     },
     dahaFazla: {
       fontSize : 12,
-      color    : '#4F8EF7',
+      color    : c.blue,
       textAlign: 'center',
       paddingVertical: 4,
     },
@@ -613,7 +614,7 @@ const styles = (c: ReturnType<typeof useTheme>['colors']) =>
     },
     silButon: {
       borderWidth  : 1,
-      borderColor  : '#F04F4F60',
+      borderColor  : c.danger + '60',
       borderRadius : 6,
       paddingHorizontal: 10,
       paddingVertical  : 6,
@@ -622,13 +623,13 @@ const styles = (c: ReturnType<typeof useTheme>['colors']) =>
     },
     silButonMetin: {
       fontSize  : 12,
-      color     : '#F04F4F',
+      color     : c.danger,
       fontFamily: 'DMSans-SemiBold',
     },
 
     // Butonlar
     butonPrimary: {
-      backgroundColor: '#4F8EF7',
+      backgroundColor: c.blue,
       borderRadius   : 8,
       paddingVertical: 14,
       alignItems     : 'center',
@@ -636,7 +637,7 @@ const styles = (c: ReturnType<typeof useTheme>['colors']) =>
       justifyContent : 'center',
     },
     butonPrimaryMetin: {
-      color     : '#fff',
+      color     : c.white,
       fontSize  : 15,
       fontFamily: 'DMSans-SemiBold',
     },

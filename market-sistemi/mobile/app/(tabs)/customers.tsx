@@ -33,6 +33,7 @@ import { Button }          from '../../components/ui/Button';
 import { api }             from '../../services/api';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
+import { WHITE } from '../../constants/colors';
 
 interface Musteri {
   id            : number;
@@ -209,7 +210,7 @@ export default function CustomersScreen() {
         {/* ── Offline uyarısı ── */}
         {isOffline && (
           <View style={[styles.offlineBant, { backgroundColor: colors.danger }]}>
-            <Text style={{ color: '#FFFFFF', fontFamily: FONT_FAMILY.bodyMedium, fontSize: FONT_SIZE.sm }}>
+            <Text style={{ color: WHITE, fontFamily: FONT_FAMILY.bodyMedium, fontSize: FONT_SIZE.sm }}>
               🔴 Offline · Son veriler gösteriliyor
             </Text>
           </View>

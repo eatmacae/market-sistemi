@@ -29,6 +29,7 @@ import { useSettingsStore } from '../../stores/settingsStore';
 import { getPendingCount } from '../../services/storage';
 import { SPACING } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE } from '../../constants/typography';
+import { WHITE, ACCENT } from '../../constants/colors';
 
 // ============================================================
 // TİPLER
@@ -88,10 +89,10 @@ type Ekran =
 // ============================================================
 
 function eslemeRengi(tip: EslesmeTipi, confidence: number): string {
-  if (tip === 'unmatched') return '#F04F4F';
-  if (tip === 'barcode')   return '#12C98A';
+  if (tip === 'unmatched') return ACCENT.danger;
+  if (tip === 'barcode')   return ACCENT.success;
   // fuzzy
-  return confidence >= 80 ? '#12C98A' : '#F5A623';
+  return confidence >= 80 ? ACCENT.success : ACCENT.warning;
 }
 
 function eslemeEtiketi(tip: EslesmeTipi, confidence: number): string {
@@ -111,9 +112,9 @@ function durumuCevir(status: string): string {
 
 function durumuRenk(status: string, colors: ReturnType<typeof useTheme>['colors']): string {
   switch (status) {
-    case 'pending':     return '#F5A623';
-    case 'approved':    return '#12C98A';
-    case 'rolled_back': return '#F04F4F';
+    case 'pending':     return ACCENT.warning;
+    case 'approved':    return ACCENT.success;
+    case 'rolled_back': return ACCENT.danger;
     default:            return colors.textMuted;
   }
 }
@@ -159,7 +160,6 @@ export default function FaturaYonetimi() {
     }
 
     try {
-      const branchId = branchId;
       const yanit = await fetch(
         `${serverUrl}/api/invoices?branch_id=${branchId}&per_page=30`,
         { headers: { Authorization: `Bearer ${token}` } },
@@ -177,7 +177,7 @@ export default function FaturaYonetimi() {
       setListeYukleniyor(false);
       setYenileniyor(false);
     }
-  }, [serverUrl, token, user]);
+  }, [serverUrl, token, branchId]);
 
   useFocusEffect(
     useCallback(() => {
@@ -219,8 +219,6 @@ export default function FaturaYonetimi() {
     setHataMesaji('');
 
     try {
-      const branchId = branchId;
-
       // Çarpanları query string'e ekle
       let multiplierParam = '';
       const carpanObj: Record<string, string> = {};
@@ -745,7 +743,7 @@ const styles = (c: ReturnType<typeof useTheme>['colors']) =>
     alignItems       : 'center',
   },
   offlineMetin: {
-    color   : '#FFFFFF',
+    color   : WHITE,
     fontSize: FONT_SIZE.sm,
   },
     kapsayici: {
@@ -1078,7 +1076,7 @@ const styles = (c: ReturnType<typeof useTheme>['colors']) =>
       justifyContent: 'center',
     },
     toggleTik: {
-      color     : '#fff',
+      color     : WHITE,
       fontSize  : 14,
       fontFamily: 'DMSans-SemiBold',
     },
@@ -1117,7 +1115,7 @@ const styles = (c: ReturnType<typeof useTheme>['colors']) =>
       marginTop      : 0,
     },
     butonPrimaryMetin: {
-      color     : '#fff',
+      color     : WHITE,
       fontSize  : 15,
       fontFamily: 'DMSans-SemiBold',
     },

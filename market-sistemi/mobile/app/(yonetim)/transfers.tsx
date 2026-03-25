@@ -36,6 +36,7 @@ import { api }              from '../../services/api';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 import { getPendingCount } from '../../services/storage';
+import { WHITE, ACCENT } from '../../constants/colors';
 
 // ============================================================
 // TİPLER
@@ -59,7 +60,7 @@ interface Sube   { id: number; name: string; }
 interface Urun   { id: number; name: string; barcode: string; stock_qty: number; unit: string; }
 
 // Durum renk & etiket
-const DURUM_RENK   = { pending: '#F5A623', done: '#12C98A', cancelled: '#F04F4F' };
+const DURUM_RENK   = { pending: ACCENT.warning, done: ACCENT.success, cancelled: ACCENT.danger };
 const DURUM_ETİKET = { pending: '⏳ Bekliyor', done: '✅ Tamamlandı', cancelled: '❌ İptal' };
 
 // ============================================================
@@ -523,8 +524,8 @@ export default function TransfersScreen() {
                 disabled={kaydediyor}
               >
                 {kaydediyor
-                  ? <ActivityIndicator color="#fff" size="small" />
-                  : <Text style={[styles.modalBtnMetin, { color: '#fff' }]}>Talep Gönder</Text>
+                  ? <ActivityIndicator color={WHITE} size="small" />
+                  : <Text style={[styles.modalBtnMetin, { color: WHITE }]}>Talep Gönder</Text>
                 }
               </TouchableOpacity>
             </View>
@@ -546,19 +547,19 @@ const styles = StyleSheet.create({
     alignItems       : 'center',
   },
   offlineMetin: {
-    color   : '#FFFFFF',
+    color   : WHITE,
     fontSize: FONT_SIZE.sm,
   },
   konteyner    : { flex: 1 },
   merkez       : { flex: 1, justifyContent: 'center', alignItems: 'center', gap: SPACING.md, padding: SPACING.xxl },
   bilgiMetin   : { fontSize: FONT_SIZE.base, fontFamily: FONT_FAMILY.body, textAlign: 'center', marginTop: SPACING.sm },
   btn          : { borderRadius: RADIUS.button, paddingHorizontal: SPACING.xl, paddingVertical: SPACING.md, minHeight: MIN_TOUCH_SIZE, justifyContent: 'center' },
-  btnMetin     : { color: '#fff', fontFamily: FONT_FAMILY.bodyMedium, fontSize: FONT_SIZE.base },
+  btnMetin     : { color: WHITE, fontFamily: FONT_FAMILY.bodyMedium, fontSize: FONT_SIZE.base },
   araYuz       : { flexDirection: 'row', alignItems: 'center', padding: SPACING.md, borderBottomWidth: 1, gap: SPACING.sm },
   filtreTus    : { paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, borderRadius: RADIUS.button, borderWidth: 1, minHeight: MIN_TOUCH_SIZE, justifyContent: 'center' },
   filtreTusMetin: { fontSize: FONT_SIZE.xs, fontFamily: FONT_FAMILY.bodyMedium },
   ekleBtn      : { paddingHorizontal: SPACING.base, paddingVertical: SPACING.sm, borderRadius: RADIUS.button, minHeight: MIN_TOUCH_SIZE, justifyContent: 'center', alignItems: 'center' },
-  ekleBtnMetin : { color: '#fff', fontFamily: FONT_FAMILY.bodyBold, fontSize: FONT_SIZE.sm },
+  ekleBtnMetin : { color: WHITE, fontFamily: FONT_FAMILY.bodyBold, fontSize: FONT_SIZE.sm },
   subeBilgi    : { paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },
   bosEkran     : { alignItems: 'center', justifyContent: 'center', paddingTop: SPACING.xxl * 2, gap: SPACING.md },
   kart         : { borderRadius: RADIUS.card, borderWidth: 1, overflow: 'hidden' },

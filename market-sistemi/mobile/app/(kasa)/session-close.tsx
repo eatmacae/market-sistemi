@@ -564,7 +564,7 @@ export default function SessionCloseScreen() {
             variant  = "danger"
             size     = "lg"
             onPress  = {kasaKapat}
-            disabled = {!kapanis || durum === 'kapaniyor'}
+            disabled = {!kapanis || (durum as string) === 'kapaniyor'}
             style    = {{ flex: 2 }}
           />
         </View>

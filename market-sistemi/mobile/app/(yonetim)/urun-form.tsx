@@ -37,6 +37,7 @@ import { api } from '../../services/api';
 import { getPendingCount } from '../../services/storage';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE } from '../../constants/typography';
+import { WHITE } from '../../constants/colors';
 
 // ============================================================
 // TİPLER
@@ -520,7 +521,7 @@ export default function UrunFormEkrani() {
             ]}
           >
             {kaydediliyor ? (
-              <ActivityIndicator color="#fff" />
+              <ActivityIndicator color={WHITE} />
             ) : (
               <Text style={[styles.kaydetButonMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
                 {duzenlemeModu ? '💾 Değişiklikleri Kaydet' : '➕ Ürün Ekle'}
@@ -583,7 +584,7 @@ function KategoriButon({ label, secili, onPress, colors }: {
         },
       ]}
     >
-      <Text style={{ color: secili ? '#fff' : colors.textMuted, fontFamily: FONT_FAMILY.body, fontSize: FONT_SIZE.sm }}>
+      <Text style={{ color: secili ? WHITE : colors.textMuted, fontFamily: FONT_FAMILY.body, fontSize: FONT_SIZE.sm }}>
         {label}
       </Text>
     </TouchableOpacity>
@@ -608,7 +609,7 @@ function SecenekButon({ label, secili, onPress, colors }: {
         },
       ]}
     >
-      <Text style={{ color: secili ? '#fff' : colors.textMuted, fontFamily: FONT_FAMILY.body, fontSize: FONT_SIZE.sm }}>
+      <Text style={{ color: secili ? WHITE : colors.textMuted, fontFamily: FONT_FAMILY.body, fontSize: FONT_SIZE.sm }}>
         {label}
       </Text>
     </TouchableOpacity>
@@ -639,7 +640,7 @@ const styles = StyleSheet.create({
     alignItems       : 'center',
   },
   offlineMetin: {
-    color   : '#FFFFFF',
+    color   : WHITE,
     fontSize: FONT_SIZE.sm,
   },
   hataBant: {
@@ -691,7 +692,7 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.md,
   },
   kaydetButonMetin: {
-    color   : '#FFFFFF',
+    color   : WHITE,
     fontSize: FONT_SIZE.base,
   },
   silButon: {

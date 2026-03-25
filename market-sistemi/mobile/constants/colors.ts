@@ -4,6 +4,10 @@
  * UYARI: Bu dosyadan renklere eriş. Hardcode renk YASAK.
  */
 
+// Evrensel sabitler — tema bağımsız, doğrudan kullanılabilir
+export const WHITE   = '#FFFFFF';
+export const OVERLAY = 'rgba(0,0,0,0.6)';
+
 // Aksent ve durum renkleri (her iki temada aynı)
 export const ACCENT = {
   blue   : '#4F8EF7', // Ana aksent
@@ -37,6 +41,11 @@ export const DarkTheme = {
   textMuted  : '#94A3B8',
   textHint   : '#64748B',
 
+  // Evrensel beyaz (her temada aynı — renkli buton metinleri için)
+  white      : '#FFFFFF',
+  // Modal arka plan örtüsü
+  overlay    : 'rgba(0,0,0,0.6)',
+
   // Aksent (temadan bağımsız)
   ...ACCENT,
 } as const;
@@ -56,9 +65,17 @@ export const LightTheme = {
   textMuted  : '#475569',
   textHint   : '#94A3B8',
 
+  // Evrensel beyaz (her temada aynı — renkli buton metinleri için)
+  white      : '#FFFFFF',
+  // Modal arka plan örtüsü
+  overlay    : 'rgba(0,0,0,0.6)',
+
   // Aksent (temadan bağımsız)
   ...ACCENT,
 } as const;
 
 // Tema tipi — useTheme hook'u için
-export type ThemeColors = typeof DarkTheme;
+// Not: string kullanıyoruz, literal tipleri değil; çünkü Light/Dark tema farklı literal değerlere sahip
+export type ThemeColors = {
+  [K in keyof typeof DarkTheme]: string;
+};

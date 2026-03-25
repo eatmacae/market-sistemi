@@ -29,6 +29,7 @@ import { useAuthStore }    from '../../stores/authStore';
 import { api }             from '../../services/api';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
+import { WHITE } from '../../constants/colors';
 
 const { width: EKRAN_GENISLIGI } = Dimensions.get('window');
 
@@ -176,7 +177,7 @@ export default function SahipPaneli() {
           style={[styles.tekrarBtn, { backgroundColor: colors.blue, minHeight: MIN_TOUCH_SIZE }]}
           onPress={() => verileriYukle(true)}
         >
-          <Text style={{ color: '#FFFFFF', fontFamily: FONT_FAMILY.bodyMedium }}>Tekrar Dene</Text>
+          <Text style={{ color: WHITE, fontFamily: FONT_FAMILY.bodyMedium }}>Tekrar Dene</Text>
         </TouchableOpacity>
       </View>
     );

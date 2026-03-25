@@ -38,6 +38,7 @@ import { api } from '../../services/api';
 import { getPendingCount } from '../../services/storage';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE } from '../../constants/typography';
+import { WHITE } from '../../constants/colors';
 
 // Ödeme tipi seçenekleri
 type OdemeTipi = 'cash' | 'card' | 'mixed';
@@ -496,7 +497,7 @@ export default function PaymentScreen() {
                       <Text style={[
                         styles.hizliButonMetin,
                         {
-                          color     : nakitFloat === tutar ? '#FFFFFF' : colors.textPrimary,
+                          color     : nakitFloat === tutar ? WHITE : colors.textPrimary,
                           fontFamily: FONT_FAMILY.bodyMedium,
                         },
                       ]}>
@@ -801,7 +802,7 @@ const styles = StyleSheet.create({
     alignItems       : 'center',
   },
   offlineMetin: {
-    color   : '#FFFFFF',
+    color   : WHITE,
     fontSize: FONT_SIZE.sm,
   },
   kaydirmaIcerik: {

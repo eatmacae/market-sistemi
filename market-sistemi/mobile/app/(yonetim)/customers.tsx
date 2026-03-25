@@ -34,6 +34,7 @@ import { api }             from '../../services/api';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 import { getPendingCount } from '../../services/storage';
+import { WHITE } from '../../constants/colors';
 
 // ============================================================
 // TİPLER
@@ -521,7 +522,7 @@ export default function CustomersScreen() {
           style={[styles.tekrarBtn, { backgroundColor: colors.blue }]}
           onPress={() => musteriYukle(1)}
         >
-          <Text style={{ color: '#fff', fontFamily: FONT_FAMILY.bodyMedium }}>Tekrar Dene</Text>
+          <Text style={{ color: WHITE, fontFamily: FONT_FAMILY.bodyMedium }}>Tekrar Dene</Text>
         </TouchableOpacity>
       </View>
     );
@@ -613,7 +614,7 @@ const styles = StyleSheet.create({
     alignItems       : 'center',
   },
   offlineMetin: {
-    color   : '#FFFFFF',
+    color   : WHITE,
     fontSize: FONT_SIZE.sm,
   },
   container: {
@@ -718,7 +719,7 @@ const styles = StyleSheet.create({
   },
   bosDurum: {
     alignItems  : 'center',
-    paddingTop  : SPACING.xxxl,
+    paddingTop  : SPACING.xxl,
     gap         : SPACING.md,
   },
   bosDurumMetin: {
@@ -743,7 +744,7 @@ const styles = StyleSheet.create({
     shadowRadius  : 4,
   },
   fabIcon: {
-    color      : '#fff',
+    color      : WHITE,
     fontSize   : 28,
     lineHeight : 32,
     fontFamily : FONT_FAMILY.bodyMedium,

@@ -36,6 +36,7 @@ import { api } from '../../services/api';
 import { getPendingCount, getCachedProductByBarcode } from '../../services/storage';
 import { SPACING, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE } from '../../constants/typography';
+import { WHITE } from '../../constants/colors';
 
 export default function KasaScreen() {
   const { colors }    = useTheme();
@@ -189,7 +190,7 @@ export default function KasaScreen() {
         {/* ── Offline / Oturum Uyarısı ── */}
         {(isOffline || bekleyen > 0) && (
           <View style={[styles.uyariBant, { backgroundColor: colors.danger }]}>
-            <Text style={[styles.uyariMetin, { fontFamily: FONT_FAMILY.bodyMedium, color: '#FFFFFF' }]}>
+            <Text style={[styles.uyariMetin, { fontFamily: FONT_FAMILY.bodyMedium, color: WHITE }]}>
               🔴 Offline · {bekleyen} işlem bekliyor
             </Text>
           </View>
@@ -200,7 +201,7 @@ export default function KasaScreen() {
             onPress = {() => router.push('/(kasa)/session-open')}
             style   = {[styles.oturumUyari, { backgroundColor: colors.warning }]}
           >
-            <Text style={[styles.uyariMetin, { fontFamily: FONT_FAMILY.bodyMedium, color: '#FFFFFF' }]}>
+            <Text style={[styles.uyariMetin, { fontFamily: FONT_FAMILY.bodyMedium, color: WHITE }]}>
               ⚠️ Kasa açık değil — Açmak için dokun
             </Text>
           </TouchableOpacity>

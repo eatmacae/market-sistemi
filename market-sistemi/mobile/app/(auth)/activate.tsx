@@ -31,6 +31,7 @@ import { api }             from '../../services/api';
 import { getPendingCount } from '../../services/storage';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
+import { WHITE } from '../../constants/colors';
 
 // ============================================================
 // PAKET BİLGİLERİ (backend ile aynı)
@@ -232,7 +233,7 @@ export default function ActivateScreen() {
             disabled={dogruluyor}
           >
             {dogruluyor
-              ? <ActivityIndicator color="#fff" />
+              ? <ActivityIndicator color={WHITE} />
               : <Text style={styles.btnMetin}>Doğrula</Text>
             }
           </TouchableOpacity>
@@ -404,7 +405,7 @@ const styles = StyleSheet.create({
   btnMetin: {
     fontSize  : FONT_SIZE.base,
     fontFamily: FONT_FAMILY.bodyBold,
-    color     : '#fff',
+    color     : WHITE,
   },
   demoBtn: {
     borderRadius  : RADIUS.button,
@@ -424,7 +425,7 @@ const styles = StyleSheet.create({
     alignItems       : 'center',
   },
   offlineMetin: {
-    color   : '#FFFFFF',
+    color   : WHITE,
     fontSize: FONT_SIZE.sm,
   },
 });

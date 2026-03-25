@@ -27,6 +27,7 @@ import { useSettingsStore } from '../../stores/settingsStore';
 import { api }             from '../../services/api';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
+import { WHITE } from '../../constants/colors';
 
 // Dönem seçenekleri
 type Donem = 'today' | 'week' | 'month' | 'year';
@@ -154,7 +155,7 @@ export default function ReportsScreen() {
           onPress = {() => verileriYukle()}
           style   = {[styles.yenilenButon, { backgroundColor: colors.blue, minHeight: MIN_TOUCH_SIZE }]}
         >
-          <Text style={[{ color: '#FFFFFF', fontFamily: FONT_FAMILY.bodyMedium }]}>Yenile</Text>
+          <Text style={[{ color: WHITE, fontFamily: FONT_FAMILY.bodyMedium }]}>Yenile</Text>
         </TouchableOpacity>
       </View>
     );
@@ -188,7 +189,7 @@ export default function ReportsScreen() {
             ]}
           >
             <Text style={[{
-              color     : donem === d.id ? '#FFFFFF' : colors.textMuted, // seçili buton: sabit beyaz (mavi bg üzerinde)
+              color     : donem === d.id ? WHITE : colors.textMuted, // seçili buton: sabit beyaz (mavi bg üzerinde)
               fontFamily: donem === d.id ? FONT_FAMILY.bodyMedium : FONT_FAMILY.body,
               fontSize  : FONT_SIZE.sm,
             }]}>

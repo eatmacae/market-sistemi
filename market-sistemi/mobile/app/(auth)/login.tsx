@@ -34,6 +34,7 @@ import { api }             from '../../services/api';
 import { getPendingCount } from '../../services/storage';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
+import { WHITE } from '../../constants/colors';
 
 // Giriş modu: yönetici (e-posta) veya kasiyer (PIN)
 type GirisModu = 'email' | 'pin';
@@ -232,7 +233,7 @@ export default function LoginScreen() {
             <Text style={[
               styles.modMetin,
               { fontFamily: FONT_FAMILY.bodyMedium },
-              mod === 'pin' ? { color: '#FFFFFF' } : { color: colors.textMuted },
+              mod === 'pin' ? { color: WHITE } : { color: colors.textMuted },
             ]}>
               🔢 PIN Girişi
             </Text>
@@ -249,7 +250,7 @@ export default function LoginScreen() {
             <Text style={[
               styles.modMetin,
               { fontFamily: FONT_FAMILY.bodyMedium },
-              mod === 'email' ? { color: '#FFFFFF' } : { color: colors.textMuted },
+              mod === 'email' ? { color: WHITE } : { color: colors.textMuted },
             ]}>
               📧 Yönetici Girişi
             </Text>
@@ -508,7 +509,7 @@ const styles = StyleSheet.create({
     alignItems       : 'center',
   },
   offlineMetin: {
-    color   : '#FFFFFF',
+    color   : WHITE,
     fontSize: FONT_SIZE.sm,
   },
 });

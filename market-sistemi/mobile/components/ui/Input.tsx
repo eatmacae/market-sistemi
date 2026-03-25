@@ -76,8 +76,8 @@ export function Input({
               fontFamily: FONT_FAMILY.body,
               fontSize  : FONT_SIZE.base,
             },
-            leftIcon  && styles.girisIkonSol,
-            rightIcon && styles.girisIkonSag,
+            leftIcon  ? styles.girisIkonSol : null,
+            rightIcon ? styles.girisIkonSag : null,
             style,
           ]}
           placeholderTextColor = {colors.textHint}

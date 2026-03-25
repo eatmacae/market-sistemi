@@ -33,6 +33,7 @@ import { useAuthStore }     from '../../stores/authStore';
 import { useSettingsStore } from '../../stores/settingsStore';
 import { api }              from '../../services/api';
 import { getPendingCount }  from '../../services/storage';
+import { WHITE }            from '../../constants/colors';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 
@@ -389,8 +390,8 @@ export default function BranchesScreen() {
                 disabled={kaydediyor}
               >
                 {kaydediyor
-                  ? <ActivityIndicator color="#fff" size="small" />
-                  : <Text style={[styles.modalBtnMetin, { color: '#fff' }]}>Kaydet</Text>
+                  ? <ActivityIndicator color={WHITE} size="small" />
+                  : <Text style={[styles.modalBtnMetin, { color: WHITE }]}>Kaydet</Text>
                 }
               </TouchableOpacity>
             </View>
@@ -451,12 +452,12 @@ const styles = StyleSheet.create({
   merkez    : { flex: 1, justifyContent: 'center', alignItems: 'center', gap: SPACING.md, padding: SPACING.xxl },
   bilgiMetin: { fontSize: FONT_SIZE.base, fontFamily: FONT_FAMILY.body, textAlign: 'center', marginTop: SPACING.sm },
   btn       : { borderRadius: RADIUS.button, paddingHorizontal: SPACING.xl, paddingVertical: SPACING.md, minHeight: MIN_TOUCH_SIZE, justifyContent: 'center' },
-  btnMetin  : { color: '#fff', fontFamily: FONT_FAMILY.bodyMedium, fontSize: FONT_SIZE.base },
+  btnMetin  : { color: WHITE, fontFamily: FONT_FAMILY.bodyMedium, fontSize: FONT_SIZE.base },
   araYüz    : { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: SPACING.md, borderBottomWidth: 1, gap: SPACING.sm },
   filtreTus : { flexDirection: 'row', alignItems: 'center', paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, borderRadius: RADIUS.button, borderWidth: 1, minHeight: MIN_TOUCH_SIZE, justifyContent: 'center' },
   filtreTusMetin: { fontSize: FONT_SIZE.sm, fontFamily: FONT_FAMILY.bodyMedium },
   ekleBtn   : { paddingHorizontal: SPACING.base, paddingVertical: SPACING.sm, borderRadius: RADIUS.button, minHeight: MIN_TOUCH_SIZE, justifyContent: 'center', alignItems: 'center' },
-  ekleBtnMetin: { color: '#fff', fontFamily: FONT_FAMILY.bodyBold, fontSize: FONT_SIZE.sm },
+  ekleBtnMetin: { color: WHITE, fontFamily: FONT_FAMILY.bodyBold, fontSize: FONT_SIZE.sm },
   bosEkran  : { alignItems: 'center', justifyContent: 'center', paddingTop: SPACING.xxl * 2, gap: SPACING.md },
   kart      : { borderRadius: RADIUS.card, borderWidth: 1, overflow: 'hidden' },
   kartUst   : { flexDirection: 'row', padding: SPACING.base, gap: SPACING.md, alignItems: 'flex-start' },
@@ -478,7 +479,7 @@ const styles = StyleSheet.create({
     alignItems       : 'center',
   },
   offlineMetin: {
-    color   : '#FFFFFF',
+    color   : WHITE,
     fontSize: FONT_SIZE.sm,
   },
 });

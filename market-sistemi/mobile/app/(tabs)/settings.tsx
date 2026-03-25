@@ -32,6 +32,7 @@ import { api }             from '../../services/api';
 import { getPendingCount } from '../../services/storage';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
+import { WHITE } from '../../constants/colors';
 
 export default function SettingsScreen() {
   const { colors, isDark }         = useTheme();
@@ -199,7 +200,7 @@ export default function SettingsScreen() {
                 {t === 'light' ? '☀️' : t === 'dark' ? '🌙' : '🔄'}
               </Text>
               <Text style={[styles.temaTusMetin, {
-                color     : themePreference === t ? '#FFFFFF' : colors.textMuted, // seçili buton: sabit beyaz (mavi bg üzerinde)
+                color     : themePreference === t ? WHITE : colors.textMuted, // seçili buton: sabit beyaz (mavi bg üzerinde)
                 fontFamily: FONT_FAMILY.bodyMedium,
               }]}>
                 {t === 'light' ? 'Açık' : t === 'dark' ? 'Koyu' : 'Sistem'}
@@ -413,7 +414,7 @@ const styles = StyleSheet.create({
     alignItems       : 'center',
   },
   offlineMetin: {
-    color   : '#FFFFFF',
+    color   : WHITE,
     fontSize: FONT_SIZE.sm,
   },
 });

@@ -41,6 +41,7 @@ import { api } from '../../services/api';
 import { getPendingCount } from '../../services/storage';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE } from '../../constants/typography';
+import { WHITE } from '../../constants/colors';
 
 // ============================================================
 // TİPLER
@@ -464,7 +465,7 @@ export default function StokHareketEkrani() {
                 ]}
               >
                 {kaydediliyor ? (
-                  <ActivityIndicator color="#fff" />
+                  <ActivityIndicator color={WHITE} />
                 ) : (
                   <Text style={[styles.kaydetButonMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
                     {tip === 'adjust'  ? '📊 Düzeltmeyi Kaydet'
@@ -504,7 +505,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.base,
     alignItems       : 'center',
   },
-  offlineMetin: { color: '#FFFFFF', fontSize: FONT_SIZE.sm },
+  offlineMetin: { color: WHITE, fontSize: FONT_SIZE.sm },
   hataBant: {
     margin      : SPACING.base,
     padding     : SPACING.base,
@@ -578,5 +579,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: SPACING.md,
   },
-  kaydetButonMetin: { color: '#FFFFFF', fontSize: FONT_SIZE.base },
+  kaydetButonMetin: { color: WHITE, fontSize: FONT_SIZE.base },
 });

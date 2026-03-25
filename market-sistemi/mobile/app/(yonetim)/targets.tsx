@@ -34,6 +34,7 @@ import { api }             from '../../services/api';
 import { SPACING, RADIUS, MIN_TOUCH_SIZE } from '../../constants/spacing';
 import { FONT_FAMILY, FONT_SIZE }          from '../../constants/typography';
 import { getPendingCount } from '../../services/storage';
+import { WHITE } from '../../constants/colors';
 
 // ============================================================
 // TİPLER
@@ -243,7 +244,7 @@ export default function HedeflerEkrani() {
           style={[styles.tekrarBtn, { backgroundColor: colors.blue }]}
           onPress={() => yukle()}
         >
-          <Text style={{ color: '#fff', fontFamily: FONT_FAMILY.bodyMedium }}>Tekrar Dene</Text>
+          <Text style={{ color: WHITE, fontFamily: FONT_FAMILY.bodyMedium }}>Tekrar Dene</Text>
         </TouchableOpacity>
       </View>
     );
@@ -421,7 +422,7 @@ export default function HedeflerEkrani() {
                   disabled={formYuk}
                 >
                   {formYuk
-                    ? <ActivityIndicator color="#fff" />
+                    ? <ActivityIndicator color={WHITE} />
                     : <Text style={styles.kaydetBtnMetin}>Kaydet</Text>
                   }
                 </TouchableOpacity>
@@ -566,7 +567,7 @@ const styles = StyleSheet.create({
     alignItems       : 'center',
   },
   offlineMetin: {
-    color   : '#FFFFFF',
+    color   : WHITE,
     fontSize: FONT_SIZE.sm,
   },
   kapsayici: { flex: 1 },
@@ -611,7 +612,7 @@ const styles = StyleSheet.create({
   ekleBtnMetin: {
     fontSize  : FONT_SIZE.sm,
     fontFamily: FONT_FAMILY.bodySemiBold,
-    color     : '#FFFFFF',
+    color     : WHITE,
   },
   bolumBasligi: {
     fontSize     : FONT_SIZE.xs,
@@ -844,6 +845,6 @@ const styles = StyleSheet.create({
   kaydetBtnMetin: {
     fontSize  : FONT_SIZE.base,
     fontFamily: FONT_FAMILY.bodyBold,
-    color     : '#FFFFFF',
+    color     : WHITE,
   },
 });
