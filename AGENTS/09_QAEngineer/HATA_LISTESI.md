@@ -83,5 +83,5 @@
 | Backend coverage raporu | Düşük | `pytest --cov=. --cov-report=html` |
 | Mobile test coverage | Düşük | `npm test -- --coverage` |
 | CI/CD pipeline | Orta | GitHub Actions |
-| Çok şube gerçek akış testi | Düşük | Farklı branch_id'lerle tam akış |
-| Electron installer testi | Düşük | Windows kurulum sihirbazı son kontrol |
+| Çok şube gerçek akış testi | Düşük | ✅ test_multibranch.py yazıldı (6 sınıf, 14 test) |
+| Electron installer testi | Düşük | ✅ 10/10 Jest testi geçti (setup.test.js) |
