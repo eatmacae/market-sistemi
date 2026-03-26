@@ -245,17 +245,48 @@ Portrait modda test: Sahip Paneli ekranı portrait orientasyonda düzgün çalı
 
 ---
 
+## ✅ Bu Oturumda Tamamlananlar (2026-03-26 — devam 3)
+
+### 12. Orta Öncelik — Tamamlandı ✅
+
+| Adım | Sonuç |
+|------|-------|
+| Backend coverage raporu | %57 → `coverage_html/` HTML raporu oluşturuldu |
+| Mobile test coverage | **%93.38** — 77/77 test |
+| test_sales.py | 11 yeni test — satış, stok, iptal, RBAC |
+| test_personnel.py | 17 yeni test — CRUD, toggle, PIN, soft delete |
+| Backend toplam | **119 test, tümü geçti** ✅ |
+
+### 13. Düşük Öncelik — Kısmen Tamamlandı ✅
+
+| Adım | Sonuç |
+|------|-------|
+| Installer Jest testleri | **10/10** ✅ |
+| PostgreSQL kurulumu | ✅ Cluster oluşturuldu, servis çalışıyor |
+| Alembic migrations | ✅ `upgrade head` başarılı (2 migration) |
+| Backend gerçek DB ile | ✅ `http://localhost:8000/api/health` → ok |
+| Admin kullanıcısı | ✅ `admin@market.com` / `Admin1234!` / PIN: `123456` |
+| API smoke test | ✅ Login → Ürün ekle → Listele çalışıyor |
+
+### PostgreSQL El ile Başlatma
+
+```bash
+# PostgreSQL'i başlat (her oturumda gerekli — servis henüz kayıtlı değil)
+"C:\Program Files\PostgreSQL\17\bin\pg_ctl.exe" -D "C:\Program Files\PostgreSQL\17\data" -l "C:\Program Files\PostgreSQL\17\data\logfile.log" start
+
+# Backend'i başlat
+cd market-sistemi/backend
+python -m uvicorn main:app --host 0.0.0.0 --port 8000
+# Swagger UI: http://localhost:8000/docs
+```
+
 ## 🔴 Bekleyen / Yapılmayan İşler
 
-### Orta Öncelik
-- [ ] **E2E testler** — Detox veya Maestro ile gerçek cihaz/emülatör testleri
-- [ ] **Backend coverage raporu** — `pytest --cov=. --cov-report=html`
-- [ ] **Mobile test coverage** — `npm test -- --coverage`
-
 ### Düşük Öncelik
-- [ ] **Electron installer testi** — Windows kurulum sihirbazı son kontrol
-- [ ] **Lisans sistemi testi** — Aktivasyon/doğrulama akışı
-- [ ] **Çok şube gerçek test** — Farklı branch_id'lerle tam akış
+- [ ] **PostgreSQL Windows servisi** — Yönetici cmd ile `pg_ctl register -N postgresql-17 -D "C:\Program Files\PostgreSQL\17\data" -S auto`
+- [ ] **Lisans sistemi testi** — Aktivasyon/doğrulama akışı uçtan uca
+- [ ] **Çok şube gerçek test** — İki branch_id ile tablet + backend tam akış
+- [ ] **E2E testler** — Detox/Maestro (PostgreSQL çalışır durumdayken)
 
 ### İsteğe Bağlı
 - [ ] **Push notification** — Stok uyarısı, kampanya bildirimi
