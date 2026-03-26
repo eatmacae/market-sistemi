@@ -37,6 +37,11 @@ test_engine = create_engine(
 
 TestSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
 
+# Middleware doğrudan SessionLocal() çağırdığı için patch et —
+# dependency override yeterli değil.
+import database as _database_module
+_database_module.SessionLocal = TestSessionLocal
+
 
 def override_get_db():
     """get_db dependency'sini test DB ile override eder"""

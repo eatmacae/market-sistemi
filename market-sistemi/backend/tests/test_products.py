@@ -1,6 +1,6 @@
 """
 Market Yönetim Sistemi — Ürün CRUD Testleri
-Ekle, listele, güncelle, soft delete, branch izolasyonu
+Ekle, listele, güncelle, soft delete, branch izolasyonu, units_per_case
 """
 
 import pytest
@@ -240,3 +240,66 @@ class TestBranchIzolasyonu:
             headers=auth_headers
         )
         assert yanit.status_code == 404
+
+
+class TestUnitesPerCase:
+    """units_per_case — Koli başına adet mantığı"""
+
+    def test_varsayilan_units_per_case_bir(
+        self, client, auth_headers, test_branch, test_category
+    ):
+        """units_per_case belirtilmezse varsayılan 1 olur"""
+        yanit = client.post("/api/products", headers=auth_headers, json={
+            "name"      : "Koli Testi Ürün",
+            "unit"      : "adet",
+            "price"     : 10.0,
+            "branch_id" : test_branch.id,
+        })
+        assert yanit.status_code == 201
+        assert yanit.json()["units_per_case"] == 1
+
+    def test_units_per_case_kaydedilir(
+        self, client, auth_headers, test_branch
+    ):
+        """units_per_case değeri doğru kaydedilir"""
+        yanit = client.post("/api/products", headers=auth_headers, json={
+            "name"          : "Bira 500ml",
+            "unit"          : "adet",
+            "units_per_case": 24,
+            "price"         : 35.0,
+            "branch_id"     : test_branch.id,
+        })
+        assert yanit.status_code == 201
+        assert yanit.json()["units_per_case"] == 24
+
+    def test_units_per_case_guncellenir(
+        self, client, auth_headers, test_product, test_branch
+    ):
+        """PATCH ile units_per_case güncellenebilir"""
+        yanit = client.patch(
+            f"/api/products/{test_product.id}?branch_id={test_branch.id}",
+            headers=auth_headers,
+            json={"units_per_case": 12},
+        )
+        assert yanit.status_code == 200
+        assert yanit.json()["units_per_case"] == 12
+
+    def test_farkli_koli_boyutlari(
+        self, client, auth_headers, test_branch
+    ):
+        """Farklı ürünler farklı koli boyutuna sahip olabilir"""
+        urunler = [
+            ("Çikolata", 24),
+            ("Süt 1L",    6),
+            ("Domates",    1),   # kg — koli yok
+        ]
+        for ad, koli in urunler:
+            yanit = client.post("/api/products", headers=auth_headers, json={
+                "name"          : ad,
+                "unit"          : "adet" if koli > 1 else "kg",
+                "units_per_case": koli,
+                "price"         : 10.0,
+                "branch_id"     : test_branch.id,
+            })
+            assert yanit.status_code == 201
+            assert yanit.json()["units_per_case"] == koli

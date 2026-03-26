@@ -1,6 +1,6 @@
 """
 Market Yönetim Sistemi — Güvenlik Testleri
-Yetkisiz erişim, şube izolasyonu, rol bazlı erişim kontrolü, soft delete bypass
+Yetkisiz erişim, şube izolasyonu, rol bazlı erişim kontrolü, soft delete bypass, idempotency
 """
 
 import pytest
@@ -221,3 +221,77 @@ class TestSaglikKontrolu:
         veri = yanit.json()
         assert veri["status"] == "ok"
         assert "version" in veri
+
+
+class TestIdempotencyMiddleware:
+    """X-Idempotency-Key — Offline sync duplicate koruması"""
+
+    def test_idempotency_key_olmadan_normal_istek(
+        self, client, auth_headers, test_branch
+    ):
+        """Header olmadan istek normal işlenir"""
+        yanit = client.post("/api/products", headers=auth_headers, json={
+            "name"     : "Idempotency Test Ürün",
+            "unit"     : "adet",
+            "price"    : 10.0,
+            "branch_id": test_branch.id,
+        })
+        assert yanit.status_code == 201
+
+    def test_ayni_idempotency_key_ile_ikinci_istek_duplicate_donar(
+        self, client, auth_headers, test_branch
+    ):
+        """Aynı X-Idempotency-Key ile gönderilen ikinci istek duplicate döner"""
+        headers = {**auth_headers, "X-Idempotency-Key": "test-uuid-duplicate-001"}
+
+        # İlk istek — işlenir
+        yanit1 = client.post("/api/products", headers=headers, json={
+            "name"     : "Idempotency Ürün",
+            "unit"     : "adet",
+            "price"    : 10.0,
+            "branch_id": test_branch.id,
+        })
+        assert yanit1.status_code in (200, 201)
+
+        # İkinci istek — aynı key, duplicate
+        yanit2 = client.post("/api/products", headers=headers, json={
+            "name"     : "Idempotency Ürün",
+            "unit"     : "adet",
+            "price"    : 10.0,
+            "branch_id": test_branch.id,
+        })
+        assert yanit2.status_code == 200
+        assert yanit2.json().get("duplicate") is True
+
+    def test_farkli_idempotency_keyleri_farkli_islemler(
+        self, client, auth_headers, test_branch
+    ):
+        """Farklı key'ler farklı işlemler — her ikisi de işlenir"""
+        for i, key in enumerate(["key-aaa", "key-bbb"]):
+            headers = {**auth_headers, "X-Idempotency-Key": key}
+            yanit = client.post("/api/products", headers=headers, json={
+                "name"     : f"Farklı Key Ürün {i}",
+                "unit"     : "adet",
+                "price"    : 10.0,
+                "branch_id": test_branch.id,
+            })
+            assert yanit.status_code in (200, 201)
+            assert yanit.json().get("duplicate") is not True
+
+    def test_get_istegi_idempotency_kontrolune_girmez(
+        self, client, auth_headers, test_branch
+    ):
+        """GET istekleri idempotency middleware'ini bypass eder"""
+        headers = {**auth_headers, "X-Idempotency-Key": "get-key-xyz"}
+
+        # İlk GET
+        yanit1 = client.get(
+            f"/api/products?branch_id={test_branch.id}", headers=headers
+        )
+        # İkinci GET — duplicate dönmemeli
+        yanit2 = client.get(
+            f"/api/products?branch_id={test_branch.id}", headers=headers
+        )
+        assert yanit1.status_code == 200
+        assert yanit2.status_code == 200
+        assert yanit2.json().get("duplicate") is not True

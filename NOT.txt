@@ -1,7 +1,3 @@
- gayet hızlıydık. isteklerim olacak mesela offline moddan online moda geçerken veriler aktarilacak
-ama o anda tabletin şarjı biterse ne olacak ? kurulumu yapan sunucuda kurulumu nasıl yapacak kurulum
-bitince cihazlar aynı wifi de ise otomatik girbirini görecek mi ? yazarkasa pos makinelerinin kurulum
- ve terazi kurulumları nasık olacak ? bunları sohbet ederken açıklarmısın ?
 
 ● Güzel sorular, bunlar gerçek bir ürünü satarken karşılaşacağın senaryolar. Tek tek konuşalım:
 
@@ -67,3 +63,75 @@ bitince cihazlar aynı wifi de ise otomatik girbirini görecek mi ? yazarkasa po
 
   Şu anki barkod okuma sistemi bunu desteklemez ama cartStore'a 5-10 satır ekleme ile halledilir.
   Terazi ile kablo/Bluetooth bağlantısı gerekmez, sadece barkod formatını tanımak yeterli.
+  
+  
+  birde testlerde gördüm 1 koli 1 faturada hep 24 olmayabilir. mesela bir spotcudan hem bira hem çikolata alıyoruz. birada 12 çikolatada 24 adet olabilir. birde bazı liriş kalemleri süt olabilir LT bazıları. KG olabilir domatez gibi veya et gibi
+  
+  ● Güzel soru, bunu doğru modellemek kritik. İki ayrı sorun var:
+
+  ---
+  1. Koli Başına Adet Sorunu                                                                                                                       
+  Şu an: Fatura satırı → direkt stok adedi gibi işleniyor.                                                                                           Gerçek: 5 koli bira → 5 × 12 = 60 adet stoka girmeli.
+
+  Çözüm: Ürüne units_per_case (koli_adedi) alanı ekle.
+
+  Ürün: Bira 500ml
+    unit: adet
+    units_per_case: 12   ← bu ürüne özel, bir kez tanımlanır
+
+  Ürün: Çikolata
+    unit: adet
+    units_per_case: 24
+
+  Fatura satırı:
+    5 koli bira   → 5 × 12 = 60 adet stoka gir
+    3 koli çikolata → 3 × 24 = 72 adet stoka gir
+
+  Zaten invoices.tsx'te "Birim çarpanları (opsiyonel)" accordion'ı var — ama bu her faturada el ile girilmesi gerekiyor. Daha iyi yol:
+  units_per_case ürün tablosunda saklansın, faturada otomatik gelsin.
+
+  ---
+  2. Karışık Birim Sorunu (LT, KG, Adet)
+
+  Sorun değil aslında — her ürünün zaten unit alanı var. Ama faturada gelen birim ile ürünün birimi farklı olabilir.
+
+  Öneri: Fatura satırında 3 alan tut:
+
+  invoice_unit     → faturada yazılan birim  (koli, kutu, kg, lt, adet)
+  invoice_qty      → faturada yazılan miktar (5)
+  unit_multiplier  → dönüşüm çarpanı        (12)
+
+  base_qty = invoice_qty × unit_multiplier  → stoka giren (60)
+  base_unit = ürünün kendi birimi           → adet
+
+  ┌─────────┬────────┬────────┬─────────────┐
+  │  Ürün   │ Fatura │ Çarpan │ Stoka Giren │
+  ├─────────┼────────┼────────┼─────────────┤
+  │ Bira    │ 5 koli │ ×12    │ 60 adet     │
+  ├─────────┼────────┼────────┼─────────────┤
+  │ Süt     │ 3 koli │ ×6     │ 18 LT       │
+  ├─────────┼────────┼────────┼─────────────┤
+  │ Domates │ 10 kg  │ ×1     │ 10 KG       │
+  ├─────────┼────────┼────────┼─────────────┤
+  │ Et      │ 5.5 kg │ ×1     │ 5.5 KG      │
+  └─────────┴────────┴────────┴─────────────┘
+
+  KG ve LT için çarpan 1 olur, direkt geçer.
+
+  ---
+  Pratik Tavsiye
+
+  Şu an ürün tablosuna iki alan ekle:
+
+  units_per_case: int = 1       # koli başına adet (default 1 = koli yok)
+  base_unit: str = "adet"       # stok birimi: adet / kg / lt / mt
+
+  Fatura işlerken:
+  stok_artisi = fatura_miktar * urun.units_per_case
+  # 5 koli bira → 5 * 12 = 60 adet
+  # 10 kg domates → 10 * 1 = 10 kg
+
+  Bu sayede:
+  - Spotçudan her ürün farklı koli boyutuyla gelse de otomatik çözülür
+  - KG/LT ürünler için çarpan 1 kalır, sorun olmaz
+  - Fatura yükleme ekranındaki "birim çarpanları" accordion'ı kaldırılabilir veya sadece override için kullanılabilir

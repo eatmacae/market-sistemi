@@ -1,7 +1,7 @@
 # Market Yönetim Sistemi — İlerleme Günlüğü
 
 > Bu dosyayı her oturum başında oku. Nerede kaldığımızı, ne bittiğini, sırada ne olduğunu gösterir.
-> Son güncelleme: 2026-03-25 (Ekran testleri eklendi)
+> Son güncelleme: 2026-03-26 (CI/CD, testler, idempotency, units_per_case, mDNS)
 
 ---
 
@@ -205,13 +205,52 @@ Portrait modda test: Sahip Paneli ekranı portrait orientasyonda düzgün çalı
 
 ---
 
+## ✅ Bu Oturumda Tamamlananlar (2026-03-26)
+
+### 9. Fonksiyonel Geliştirmeler ✅
+
+| Özellik | Açıklama |
+|---------|----------|
+| `units_per_case` | Product modeline koli/KG/LT çarpanı eklendi (DB + API + UI) |
+| Idempotency Middleware | X-Idempotency-Key ile offline sync duplicate koruması |
+| mDNS / Zeroconf | `market-server.local` ile tablet → sunucu otomatik keşfi |
+| `syncPendingOperations` | SQLite kuyruğu → sunucuya batch sync, retry_count |
+| `datetime.utcnow()` | 8 dosyada `timezone.utc` ile güncellendi |
+| Offline banner fix | "0 işlem bekliyor" artık gösterilmiyor |
+| Agent modelleri | Opus/Sonnet/Haiku rol atamaları yapıldı |
+
+### 10. CI/CD Pipeline ✅
+
+```
+.github/workflows/
+├── ci.yml          Backend + Mobile + Installer paralel
+├── backend.yml     Path-based, Codecov entegrasyonu
+├── mobile.yml      Path-based, Codecov entegrasyonu
+└── installer.yml   Path-based
+```
+
+### 11. Testler Güncellendi ✅
+
+| Dosya | Yeni Testler |
+|-------|-------------|
+| `test_products.py` | `TestUnitesPerCase` — 4 test |
+| `test_security.py` | `TestIdempotencyMiddleware` — 4 test |
+| `storage.test.ts` | `syncPendingOperations` — 6 test, UUID dönüşü |
+| `setup.test.js` | Installer güvenlik testleri — 10 test |
+| `test_multibranch.py` | Şube izolasyonu — 14 test |
+
+**Düzeltilen test altyapısı sorunları:**
+- `bcrypt 5.0.0` → `bcrypt<4.0.0` (passlib uyumsuzluğu giderildi)
+- `conftest.py`: `_database_module.SessionLocal = TestSessionLocal` (idempotency middleware SQLite'ı kullanıyor)
+
+---
+
 ## 🔴 Bekleyen / Yapılmayan İşler
 
 ### Orta Öncelik
 - [ ] **E2E testler** — Detox veya Maestro ile gerçek cihaz/emülatör testleri
 - [ ] **Backend coverage raporu** — `pytest --cov=. --cov-report=html`
 - [ ] **Mobile test coverage** — `npm test -- --coverage`
-- [ ] **CI/CD pipeline** — GitHub Actions ile otomatik test + build
 
 ### Düşük Öncelik
 - [ ] **Electron installer testi** — Windows kurulum sihirbazı son kontrol
@@ -242,13 +281,80 @@ npx expo start
 ```
 
 ### Veritabanı
-- Üretim: PostgreSQL 15 (`.env` içinde `DATABASE_URL`)
+- Üretim: PostgreSQL 15+ (`.env` içinde `DATABASE_URL`)
 - Test: SQLite in-memory (otomatik, PostgreSQL gerekmez)
 - Offline cache: SQLite (`market_offline.db` — tablette yerel)
 
+---
+
+## 🐘 PostgreSQL — Kurulum & Bağlantı Bilgileri
+
+> **NOT:** Installer (Electron) programı PostgreSQL'i otomatik kurar ve aşağıdaki kullanıcıyı oluşturur.
+> Manuel kurulum için aşağıdaki adımları izle.
+
+### Installer'ın Kurduğu Yapı
+
+| Alan | Değer |
+|------|-------|
+| Host | `localhost` |
+| Port | `5432` |
+| Veritabanı | `market_db` |
+| Uygulama kullanıcısı | `market_user` |
+| Uygulama şifresi | `market123` |
+| Superuser | `postgres` |
+| Superuser şifresi | Kurulum sırasında girilen değer |
+
+### pgAdmin ile Bağlantı
+
+1. pgAdmin aç → **Add New Server**
+2. **General** sekmesi → Name: `Market Sistemi`
+3. **Connection** sekmesi:
+   - Host: `localhost`
+   - Port: `5432`
+   - Maintenance database: `market_db`
+   - Username: `market_user`
+   - Password: `market123`
+4. **Save** → Bağlantı kurulur
+
+### Manuel Kurulum (PostgreSQL zaten kuruluysa)
+
+```sql
+-- postgres süper kullanıcısı ile bağlan
+CREATE USER market_user WITH PASSWORD 'market123';
+CREATE DATABASE market_db OWNER market_user;
+GRANT ALL PRIVILEGES ON DATABASE market_db TO market_user;
+```
+
+```bash
+# Tabloları oluştur (Alembic)
+cd market-sistemi/backend
+venv/Scripts/python.exe -m alembic upgrade head
+```
+
+### .env Dosyası (market-sistemi/backend/.env)
+
+```env
+APP_ENV=development
+DATABASE_URL=postgresql://market_user:market123@localhost:5432/market_db
+SECRET_KEY=market-yonetim-sistemi-super-gizli-anahtar-2026-kaan
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=480
+BRANCH_ID=1
+BRANCH_NAME=Merkez
+```
+
+### Testler PostgreSQL Gerektirmez
+
+```bash
+# Testler SQLite in-memory kullanır — PostgreSQL kapalı olsa da çalışır
+APP_ENV=test python -m pytest tests/ -v
+```
+
+---
+
 ### Önemli Ortam Değişkenleri (.env)
 ```
-DATABASE_URL=postgresql://user:pass@localhost/market_db
+DATABASE_URL=postgresql://market_user:market123@localhost:5432/market_db
 SECRET_KEY=...
 BRANCH_ID=1
 BRANCH_NAME=Merkez
