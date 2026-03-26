@@ -3,7 +3,7 @@ Market Yönetim Sistemi — Fatura Route'ları
 PDF/Excel/Word fatura yükleme, önizleme, onay ve rollback
 """
 
-from fastapi import APIRouter, Depends, HTTPException, status, Request, UploadFile, File, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Request, UploadFile, File, Query, Body
 from sqlalchemy.orm import Session
 from typing import List, Optional
 import os
@@ -150,7 +150,7 @@ async def preview_invoice(
 async def approve_invoice(
     invoice_id   : int,
     request      : Request,
-    eslestirmeler: list,   # Önizlemeden dönen + kullanıcının düzelttiği liste
+    eslestirmeler: list = Body(...),   # Önizlemeden dönen + kullanıcının düzelttiği liste
     db           : Session = Depends(get_db),
     current_user : Personnel = Depends(require_role("admin", "warehouse")),
 ):
