@@ -1,0 +1,53 @@
+name: Backend Testleri
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'market-sistemi/backend/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'market-sistemi/backend/**'
+
+jobs:
+  test:
+    name: Pytest — Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Kodu al
+        uses: actions/checkout@v4
+
+      - name: Python 3.11 kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: market-sistemi/backend/requirements.txt
+
+      - name: Bağımlılıkları yükle
+        working-directory: market-sistemi/backend
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Testleri çalıştır
+        working-directory: market-sistemi/backend
+        env:
+          APP_ENV: test
+          DATABASE_URL: sqlite:///./test.db
+          SECRET_KEY: test-secret-key-ci-cd-pipeline
+          ALGORITHM: HS256
+          ACCESS_TOKEN_EXPIRE_MINUTES: 480
+        run: |
+          pytest --cov=. --cov-report=xml --cov-report=term-missing
+
+      - name: Coverage raporunu yükle
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          files: market-sistemi/backend/coverage.xml
+          flags: backend
+          fail_ci_if_error: false

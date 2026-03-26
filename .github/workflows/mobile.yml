@@ -1,0 +1,43 @@
+name: Mobile Testleri
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'market-sistemi/mobile/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'market-sistemi/mobile/**'
+
+jobs:
+  test:
+    name: Jest — Mobile
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Kodu al
+        uses: actions/checkout@v4
+
+      - name: Node.js 20 kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: market-sistemi/mobile/package-lock.json
+
+      - name: Bağımlılıkları yükle
+        working-directory: market-sistemi/mobile
+        run: npm ci
+
+      - name: Testleri çalıştır
+        working-directory: market-sistemi/mobile
+        run: npm test -- --coverage --coverageReporters=lcov --coverageReporters=text
+
+      - name: Coverage raporunu yükle
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          files: market-sistemi/mobile/coverage/lcov.info
+          flags: mobile
+          fail_ci_if_error: false

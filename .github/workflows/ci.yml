@@ -1,0 +1,92 @@
+name: CI — Tam Kontrol
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend:
+    name: Backend (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: market-sistemi/backend/requirements.txt
+
+      - name: Bağımlılıkları yükle
+        working-directory: market-sistemi/backend
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Pytest çalıştır
+        working-directory: market-sistemi/backend
+        env:
+          APP_ENV: test
+          SECRET_KEY: ci-test-secret-key
+          ALGORITHM: HS256
+          ACCESS_TOKEN_EXPIRE_MINUTES: 480
+        run: pytest --cov=. --cov-report=xml -q
+
+      - name: Coverage yükle
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          files: market-sistemi/backend/coverage.xml
+          flags: backend
+          fail_ci_if_error: false
+
+  mobile:
+    name: Mobile (Jest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: market-sistemi/mobile/package-lock.json
+
+      - name: Bağımlılıkları yükle
+        working-directory: market-sistemi/mobile
+        run: npm ci
+
+      - name: Jest çalıştır
+        working-directory: market-sistemi/mobile
+        run: npm test -- --coverage --coverageReporters=lcov --coverageReporters=text
+
+      - name: Coverage yükle
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          files: market-sistemi/mobile/coverage/lcov.info
+          flags: mobile
+          fail_ci_if_error: false
+
+  installer:
+    name: Installer (Jest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: market-sistemi/installer/package-lock.json
+
+      - name: Bağımlılıkları yükle
+        working-directory: market-sistemi/installer
+        run: npm ci --ignore-scripts
+
+      - name: Jest çalıştır
+        working-directory: market-sistemi/installer
+        run: npm test

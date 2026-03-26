@@ -1,0 +1,35 @@
+name: Installer Testleri
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'market-sistemi/installer/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'market-sistemi/installer/**'
+
+jobs:
+  test:
+    name: Jest — Installer
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Kodu al
+        uses: actions/checkout@v4
+
+      - name: Node.js 20 kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: market-sistemi/installer/package-lock.json
+
+      - name: Bağımlılıkları yükle
+        working-directory: market-sistemi/installer
+        run: npm ci --ignore-scripts
+
+      - name: Testleri çalıştır
+        working-directory: market-sistemi/installer
+        run: npm test
