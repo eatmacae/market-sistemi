@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 from database import get_db
 from models import Session as KasaSession, Personnel, Sale
@@ -166,7 +166,7 @@ async def close_session(
 
     # Oturumu kapat
     oturum.closing_amount = data.closing_amount
-    oturum.closed_at      = datetime.utcnow()
+    oturum.closed_at      = datetime.now(timezone.utc)
     db.commit()
 
     z_raporu = {

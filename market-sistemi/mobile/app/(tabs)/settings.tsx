@@ -75,6 +75,50 @@ export default function SettingsScreen() {
   };
 
   // ============================================================
+  // mDNS OTOMATİK SUNUCU KEŞFİ
+  // ============================================================
+
+  const [mdnsAraniyor, setMdnsAraniyor] = useState(false);
+
+  const mdnsAra = async () => {
+    /**
+     * Backend mDNS ile market-server.local olarak yayın yapar.
+     * Bu fonksiyon sisteme ait DNS çözümlemesini kullanarak
+     * http://market-server.local:8000 adresini dener.
+     * Başarılı olursa URL otomatik doldurulur.
+     */
+    setMdnsAraniyor(true);
+    setBaglantiTest('idle');
+
+    const port    = 8000;
+    const adaylar = [
+      `http://market-server.local:${port}`,
+      `http://market-server:${port}`,
+    ];
+
+    for (const aday of adaylar) {
+      try {
+        const yanit = await fetch(`${aday}/api/health`, { signal: AbortSignal.timeout(3000) });
+        if (yanit.ok) {
+          setYeniUrl(aday);
+          setUrlDuzenle(true);
+          setBaglantiTest('ok');
+          setMdnsAraniyor(false);
+          return;
+        }
+      } catch {
+        // Bu adres çalışmıyor, sonrakini dene
+      }
+    }
+
+    setMdnsAraniyor(false);
+    Alert.alert(
+      'Sunucu Bulunamadı',
+      'market-server.local adresi yanıt vermedi.\nSunucunun aynı ağda çalıştığından emin olun veya IP adresini manuel girin.',
+    );
+  };
+
+  // ============================================================
   // ÇIKIŞ
   // ============================================================
 
@@ -148,7 +192,7 @@ export default function SettingsScreen() {
       {(isOffline || bekleyenIslem > 0) && (
         <View style={[styles.offlineBant, { backgroundColor: colors.danger }]}>
           <Text style={[styles.offlineMetin, { fontFamily: FONT_FAMILY.bodyMedium }]}>
-            🔴 Offline · {bekleyenIslem} işlem bekliyor
+            🔴 Offline{bekleyenIslem > 0 ? ` · ${bekleyenIslem} işlem bekliyor` : ''}
           </Text>
         </View>
       )}
@@ -217,11 +261,27 @@ export default function SettingsScreen() {
         </Text>
 
         {!urlDuzenle ? (
-          <AyarSatiri
-            etiket  = "Backend URL"
-            deger   = {serverUrl}
-            onPress = {() => { setYeniUrl(serverUrl); setUrlDuzenle(true); setBaglantiTest('idle'); }}
-          />
+          <>
+            <AyarSatiri
+              etiket  = "Backend URL"
+              deger   = {serverUrl}
+              onPress = {() => { setYeniUrl(serverUrl); setUrlDuzenle(true); setBaglantiTest('idle'); }}
+            />
+            <TouchableOpacity
+              onPress  = {mdnsAra}
+              disabled = {mdnsAraniyor}
+              style    = {[styles.satirKutu, { borderBottomColor: colors.border, minHeight: MIN_TOUCH_SIZE }]}
+            >
+              {mdnsAraniyor ? (
+                <ActivityIndicator size="small" color={colors.blue} />
+              ) : (
+                <Text style={{ fontSize: 16 }}>🔍</Text>
+              )}
+              <Text style={[styles.etiketMetin, { color: colors.blue, fontFamily: FONT_FAMILY.bodyMedium, marginLeft: SPACING.sm }]}>
+                {mdnsAraniyor ? 'Ağda aranıyor...' : 'Otomatik Bul (Wi-Fi)'}
+              </Text>
+            </TouchableOpacity>
+          </>
         ) : (
           <View style={{ gap: SPACING.sm, padding: SPACING.sm }}>
             <TextInput

@@ -216,10 +216,41 @@ async def lifespan(app: FastAPI):
     )
     logger.info(f"Şube: {os.getenv('BRANCH_NAME', 'Merkez')} (ID: {os.getenv('BRANCH_ID', '1')})")
 
+    # mDNS — tabletler sunucuyu otomatik bulsun (market-server.local)
+    _zeroconf = None
+    _mdns_info = None
+    try:
+        import socket
+        from zeroconf import ServiceInfo, Zeroconf
+
+        _port    = int(os.getenv("APP_PORT", "8000"))
+        _host_ip = socket.gethostbyname(socket.gethostname())
+        _zeroconf = Zeroconf()
+        _mdns_info = ServiceInfo(
+            "_http._tcp.local.",
+            "market-server._http._tcp.local.",
+            addresses  = [socket.inet_aton(_host_ip)],
+            port       = _port,
+            properties = {
+                "version"   : b"1.0.0",
+                "branch_id" : os.getenv("BRANCH_ID", "1").encode(),
+            },
+        )
+        _zeroconf.register_service(_mdns_info)
+        logger.info(f"mDNS: market-server.local → {_host_ip}:{_port}")
+    except Exception as e:
+        logger.warning(f"mDNS kaydı yapılamadı (isteğe bağlı): {e}")
+
     yield  # Uygulama çalışıyor
 
-    # Kapanış — scheduler'ı düzgün durdur
+    # Kapanış — scheduler ve mDNS'i düzgün durdur
     scheduler.shutdown()
+    if _zeroconf and _mdns_info:
+        try:
+            _zeroconf.unregister_service(_mdns_info)
+            _zeroconf.close()
+        except Exception:
+            pass
     logger.info("Market Yönetim Sistemi kapatılıyor...")
 
 
@@ -265,6 +296,47 @@ async def log_requests(request: Request, call_next):
         logger.warning(f"{request.method} {request.url.path} → {response.status_code}")
 
     return response
+
+
+@app.middleware("http")
+async def idempotency_middleware(request: Request, call_next):
+    """
+    Offline sync güvenliği: aynı işlem iki kez işlenmez.
+    Tablet şarj bitip yeniden bağlandığında duplicate önler.
+    Mobil X-Idempotency-Key: <UUID> header'ı gönderir.
+    """
+    operation_id = request.headers.get("X-Idempotency-Key")
+
+    if not operation_id or request.method not in ("POST", "PUT", "PATCH", "DELETE"):
+        return await call_next(request)
+
+    from database import SessionLocal
+    from models   import IdempotencyKey
+
+    db = SessionLocal()
+    try:
+        mevcut = db.query(IdempotencyKey).filter(
+            IdempotencyKey.operation_id == operation_id
+        ).first()
+
+        if mevcut:
+            # Daha önce işlendi — duplicate, güvenle atla
+            return JSONResponse(
+                status_code=200,
+                content={"success": True, "duplicate": True, "message": "İşlem daha önce kaydedildi."},
+            )
+
+        # İşlemi çalıştır
+        response = await call_next(request)
+
+        # Başarılıysa operation_id kaydet
+        if response.status_code < 400:
+            db.add(IdempotencyKey(operation_id=operation_id, endpoint=str(request.url.path)))
+            db.commit()
+
+        return response
+    finally:
+        db.close()
 
 
 # ============================================================

@@ -8,7 +8,7 @@ from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
 from typing import List, Optional
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta, timezone
 import random
 import string
 import io
@@ -304,7 +304,7 @@ async def delete_product(
         raise HTTPException(status_code=404, detail="Ürün bulunamadı.")
 
     product.is_deleted = True
-    product.deleted_at = datetime.utcnow()
+    product.deleted_at = datetime.now(timezone.utc)
     db.commit()
 
     audit_log.log_action(

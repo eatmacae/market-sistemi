@@ -178,9 +178,9 @@ async def approve_invoice(
     )
 
     # Fatura durumunu güncelle
-    from datetime import datetime
+    from datetime import datetime, timezone
     fatura.status      = "approved"
-    fatura.approved_at = datetime.utcnow()
+    fatura.approved_at = datetime.now(timezone.utc)
     db.commit()
 
     audit_log.log_action(

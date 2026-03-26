@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from typing import List, Optional
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta, timezone
 
 from database import get_db
 from models import Product, StockMovement, Personnel
@@ -51,7 +51,7 @@ async def smart_stock_list(
     ).all()
 
     # Son 30 günlük satış hızı hesabı
-    otuz_gun_once = datetime.utcnow() - timedelta(days=30)
+    otuz_gun_once = datetime.now(timezone.utc) - timedelta(days=30)
     satis_hizi = dict(
         db.query(
             StockMovement.product_id,
@@ -293,7 +293,7 @@ async def order_suggestions(
         Eksik miktar    = Hedef stok - Mevcut stok
         Öneri           = Eksik miktar (sadece pozitifler)
     """
-    otuz_gun_once = datetime.utcnow() - timedelta(days=30)
+    otuz_gun_once = datetime.now(timezone.utc) - timedelta(days=30)
 
     # Son 30 günlük satış hızı
     satis_hizi = dict(

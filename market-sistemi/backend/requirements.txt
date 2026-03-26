@@ -44,3 +44,6 @@ anthropic==0.28.0
 
 # Form & dosya yükleme
 python-multipart==0.0.9
+
+# mDNS — tabletler sunucuyu otomatik bulsun (opsiyonel)
+zeroconf==0.132.2

@@ -87,6 +87,7 @@ class Product(Base):
     barcode        = Column(String(50), unique=True, nullable=True, index=True)
     category_id    = Column(Integer, ForeignKey("categories.id"), nullable=True)
     unit           = Column(String(20), default="adet")       # adet, kg, lt, gr
+    units_per_case = Column(Integer, default=1)               # Koli başına adet (1 = koli yok)
     price          = Column(Numeric(10, 2), nullable=False)   # Perakende fiyat
     price_wholesale= Column(Numeric(10, 2))                   # Toptan fiyat
     price_credit   = Column(Numeric(10, 2))                   # Veresiye fiyat
@@ -436,3 +437,20 @@ class SupplierPriceLog(Base):
     change_percent = Column(Numeric(6, 2), nullable=True)  # % değişim
     detected_at    = Column(DateTime(timezone=True), server_default=func.now())
     notified       = Column(Boolean, default=False)  # Mail gönderildi mi?
+
+
+# ============================================================
+# İDEMPOTENCY ANAHTARLARI
+# ============================================================
+
+class IdempotencyKey(Base):
+    """
+    Offline sync güvenliği: aynı işlem iki kez işlenmesin.
+    Tablet şarj bitip yeniden bağlandığında duplicate önler.
+    """
+    __tablename__ = "idempotency_keys"
+
+    id           = Column(Integer, primary_key=True, index=True)
+    operation_id = Column(String(36), unique=True, nullable=False, index=True)  # UUID
+    endpoint     = Column(String(200), nullable=False)
+    created_at   = Column(DateTime(timezone=True), server_default=func.now())

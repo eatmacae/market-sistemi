@@ -9,7 +9,7 @@ import logging
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Query
 from sqlalchemy.orm import Session
-from datetime import datetime
+from datetime import datetime, timezone
 
 from database import get_db
 from models import SystemSetting, Branch, Personnel
@@ -285,7 +285,7 @@ async def full_health_check(
     sonuc = {
         "version"   : "1.0.0",
         "branch_id" : branch_id,
-        "timestamp" : str(datetime.utcnow()),
+        "timestamp" : str(datetime.now(timezone.utc)),
     }
 
     # Veritabanı

@@ -156,6 +156,7 @@ class ProductBase(BaseModel):
     barcode:         Optional[str] = None
     category_id:     Optional[int] = None
     unit:            str = "adet"
+    units_per_case:  int = 1
     price:           Decimal = Field(..., gt=0)
     price_wholesale: Optional[Decimal] = None
     price_credit:    Optional[Decimal] = None
@@ -186,6 +187,7 @@ class ProductUpdate(BaseModel):
     margin_percent:  Optional[Decimal] = None
     stock_qty:       Optional[int] = None
     min_stock:       Optional[int] = None
+    units_per_case:  Optional[int] = None
     vat_rate:        Optional[int] = None
     shelf_location:  Optional[str] = None
     expiry_date:     Optional[date] = None

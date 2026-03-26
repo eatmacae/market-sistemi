@@ -191,7 +191,7 @@ export default function KasaScreen() {
         {(isOffline || bekleyen > 0) && (
           <View style={[styles.uyariBant, { backgroundColor: colors.danger }]}>
             <Text style={[styles.uyariMetin, { fontFamily: FONT_FAMILY.bodyMedium, color: WHITE }]}>
-              🔴 Offline · {bekleyen} işlem bekliyor
+              🔴 Offline{bekleyen > 0 ? ` · ${bekleyen} işlem bekliyor` : ''}
             </Text>
           </View>
         )}

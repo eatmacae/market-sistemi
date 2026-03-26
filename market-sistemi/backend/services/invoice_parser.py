@@ -393,8 +393,9 @@ async def apply_invoice(
         yeni_fiyat  = eslestirme.get("yeni_fiyat")
         miktar      = int(item.get("qty", 1))
 
-        # Koli ise çarpa
-        multiplier = eslestirme.get("multiplier", 1)
+        # Çarpan: eslestirme'de manuel girilmişse onu kullan,
+        # yoksa ürünün units_per_case değerini otomatik uygula
+        multiplier    = eslestirme.get("multiplier") or getattr(product, "units_per_case", 1) or 1
         gercek_miktar = miktar * multiplier
 
         # Eski değerleri kaydet (rollback için)

@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
 from typing import List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 from database import get_db
 from models import Customer, Sale, Personnel
@@ -217,7 +217,7 @@ async def delete_customer(
         )
 
     musteri.is_deleted = True
-    musteri.deleted_at = datetime.utcnow()
+    musteri.deleted_at = datetime.now(timezone.utc)
     db.commit()
 
     audit_log.log_action(

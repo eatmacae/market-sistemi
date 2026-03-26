@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request, Query, B
 from sqlalchemy.orm import Session
 from sqlalchemy import or_, desc
 from typing import List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 from database import get_db
 from models import Supplier, SupplierPriceLog, Personnel
@@ -268,7 +268,7 @@ async def delete_supplier(
         raise HTTPException(404, "Tedarikçi bulunamadı.")
 
     tedarikci.is_deleted = True
-    tedarikci.deleted_at = datetime.utcnow()
+    tedarikci.deleted_at = datetime.now(timezone.utc)
     db.commit()
 
     audit_log.log_action(

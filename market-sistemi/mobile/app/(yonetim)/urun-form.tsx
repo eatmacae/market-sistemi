@@ -53,6 +53,7 @@ interface UrunForm {
   barcode       : string;
   category_id   : string;   // string → input'tan gelir, API'ye int gönderilir
   unit          : string;
+  units_per_case: string;   // Koli başına adet (1 = koli yok)
   price         : string;
   cost          : string;
   vat_rate      : string;
@@ -91,6 +92,7 @@ export default function UrunFormEkrani() {
     barcode       : '',
     category_id   : '',
     unit          : 'adet',
+    units_per_case: '1',
     price         : '',
     cost          : '',
     vat_rate      : '18',
@@ -127,6 +129,7 @@ export default function UrunFormEkrani() {
         barcode       : u.barcode        ?? '',
         category_id   : u.category_id != null ? String(u.category_id) : '',
         unit          : u.unit           ?? 'adet',
+        units_per_case: u.units_per_case != null ? String(u.units_per_case) : '1',
         price         : u.price          != null ? String(u.price)     : '',
         cost          : u.cost           != null ? String(u.cost)      : '',
         vat_rate      : u.vat_rate       != null ? String(u.vat_rate)  : '18',
@@ -207,6 +210,7 @@ export default function UrunFormEkrani() {
       barcode       : form.barcode.trim() || undefined,
       category_id   : form.category_id ? parseInt(form.category_id) : undefined,
       unit          : form.unit,
+      units_per_case: parseInt(form.units_per_case) || 1,
       price         : parseFloat(form.price),
       cost          : form.cost ? parseFloat(form.cost) : undefined,
       vat_rate      : parseInt(form.vat_rate),
@@ -383,6 +387,20 @@ export default function UrunFormEkrani() {
               />
             ))}
           </View>
+
+          {/* ── KOLİ ADEDI ── */}
+          <AlanBasligi label="Koli Başına Adet" colors={colors} />
+          <TextInput
+            value            = {form.units_per_case}
+            onChangeText     = {(v) => alaniGuncelle('units_per_case', v)}
+            placeholder      = "1 (koli yoksa 1 bırak)"
+            placeholderTextColor = {colors.textHint}
+            keyboardType     = "number-pad"
+            style={[
+              styles.giris,
+              { backgroundColor: colors.bgSecondary, borderColor: colors.border, color: colors.textPrimary, fontFamily: FONT_FAMILY.body },
+            ]}
+          />
 
           {/* ── FİYATLAR ── */}
           <View style={styles.satirIkiSutun}>

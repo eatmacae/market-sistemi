@@ -1,6 +1,6 @@
 # QA Hata Listesi — Market Yönetim Sistemi
 
-> Son güncelleme: 2026-03-25
+> Son güncelleme: 2026-03-26
 > Tüm fazlar tamamlandı. Bu liste emülatör testi + kod incelemesinden üretilmiştir.
 
 ---
@@ -9,10 +9,10 @@
 
 | ID | Öncelik | Ekran/Modül | Açıklama | Durum |
 |----|---------|-------------|----------|-------|
-| 1  | 🟢 COSMETIC | `products.py:307` | `datetime.utcnow()` deprecated — `datetime.now(UTC)` kullanılmalı | Backlog |
-| 2  | 🟡 MINOR | `(kasa)/index` light tema | Offline banner "🔴 Offline · 0 işlem bekliyor" gösteriyor — 0 işlem varken banner gizlenmeli | Backlog |
+| 1  | 🟢 COSMETIC | `products.py:307` | `datetime.utcnow()` deprecated — `datetime.now(UTC)` kullanılmalı | ✅ Düzeltildi |
+| 2  | 🟡 MINOR | `(kasa)/index` light tema | Offline banner "🔴 Offline · 0 işlem bekliyor" gösteriyor — 0 işlem varken banner gizlenmeli | ✅ Düzeltildi |
 | 3  | 🟡 MINOR | `(sahip)/index` | Deep link sadece `/(sahip)/` formatıyla çalışıyor, `/sahip` çalışmıyor — dahili navigasyon ile erişilmeli | Bilgi |
-| 4  | 🟢 COSMETIC | Tüm ekranlar | `76 pytest warning` — çoğu `DeprecationWarning`, işlevselliği etkilemiyor | Backlog |
+| 4  | 🟢 COSMETIC | Tüm ekranlar | `76 pytest warning` — çoğu `DeprecationWarning`, işlevselliği etkilemiyor | ✅ Düzeltildi |
 
 ---
 
@@ -66,6 +66,14 @@
 | **Toplam** | ✅ **67/67** |
 
 ---
+
+## ✅ Tamamlanan Fonksiyonel Geliştirmeler (2026-03-26)
+
+| Geliştirme | Açıklama |
+|------------|----------|
+| `units_per_case` | Ürün modeli + schema + fatura parser + mobile form + SQLite cache |
+| Offline idempotency | `operation_id` UUID + `syncPendingOperations()` + backend middleware + `idempotency_keys` tablosu |
+| mDNS otomatik keşif | Backend zeroconf kaydı + Settings ekranı "Otomatik Bul" butonu |
 
 ## 📋 Bekleyen QA Görevleri
 
