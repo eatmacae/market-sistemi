@@ -207,13 +207,13 @@ async def transfer_onayla(
 
     # Kaynak şubeden düş
     stok_guncelle(
-        db         = db,
-        product_id = transfer.product_id,
-        qty_delta  = -transfer.qty,
+        db           = db,
+        product      = kaynak_urun,
+        miktar       = -transfer.qty,
         hareket_tipi = "transfer_out",
-        aciklama   = f"Transfer #{transfer.id} — çıkış",
-        personel_id  = current_user.id,
-        branch_id  = transfer.from_branch_id,
+        note         = f"Transfer #{transfer.id} — çıkış",
+        user_id      = current_user.id,
+        branch_id    = transfer.from_branch_id,
     )
 
     # Hedef şubede ürün var mı?
@@ -227,24 +227,24 @@ async def transfer_onayla(
         # Var — stok ekle
         stok_guncelle(
             db           = db,
-            product_id   = hedef_urun.id,
-            qty_delta    = transfer.qty,
+            product      = hedef_urun,
+            miktar       = transfer.qty,
             hareket_tipi = "transfer_in",
-            aciklama     = f"Transfer #{transfer.id} — giriş",
-            personel_id  = current_user.id,
+            note         = f"Transfer #{transfer.id} — giriş",
+            user_id      = current_user.id,
             branch_id    = transfer.to_branch_id,
         )
     else:
         # Yok — kopyala ve oluştur
         yeni = Product(
             branch_id     = transfer.to_branch_id,
-            barcode       = kaynak_urun.barcode,
+            barcode       = None,   # Barkod çakışmasını önle; sonradan atanabilir
             name          = kaynak_urun.name,
             category_id   = kaynak_urun.category_id,
             unit          = kaynak_urun.unit,
-            sale_price    = kaynak_urun.sale_price,
-            cost_price    = kaynak_urun.cost_price,
-            kdv_rate      = kaynak_urun.kdv_rate,
+            price         = kaynak_urun.price,
+            cost          = kaynak_urun.cost,
+            vat_rate      = kaynak_urun.vat_rate,
             stock_qty     = transfer.qty,
             min_stock     = kaynak_urun.min_stock,
             shelf_location= kaynak_urun.shelf_location,
